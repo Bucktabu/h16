@@ -16,7 +16,7 @@ import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
 import { BanUserDTO } from "./dto/ban-user.dto";
-import { CreateUserUseCase } from "./use-cases/create-user.use-case";
+import { CreateUserUseCase } from "../use-cases/create-user.use-case";
 
 @UseGuards(AuthBasicGuard)
 @Controller('sa/users')

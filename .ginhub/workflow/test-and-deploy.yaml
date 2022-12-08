@@ -1,0 +1,32 @@
+#name: Test & Deploy # Название pipeline, который будет выполняться github actions
+#
+#on:
+#  push:
+#    branches:
+#      - staging # Указываем название ветки, в которую хотим пушить и запускать наш деплой
+#
+#jobs:
+#  tests:
+#    name: Tests # Название конкретной работы в pipeline
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout # Клонируем репозиторий
+#        uses: actions/checkout@v2
+#
+#      - name: Install dependencies
+#        run: yarn # Устанавливаем зависимости
+#
+#      - name: Test
+#        run: yarn test # Запускаем скрипт с тестами
+#
+#  deploy:
+#    name: Deploy
+#    needs: tests # Указываем зависую джобу т.е.в данном случае деплой не запустится, если тесты завершились ошибкой
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - user: akhileshns/
+#        with:
+#          key:
+#          name:
+#          email:

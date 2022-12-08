@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { UserDTO } from "../dto/userDTO";
-import { UserDBModel } from "../../infrastructure/entity/userDB.model";
-import { EmailConfirmationModel } from "../../infrastructure/entity/emailConfirmation.model";
+import { UserDTO } from "../api/dto/userDTO";
+import { UserDBModel } from "../infrastructure/entity/userDB.model";
+import { EmailConfirmationModel } from "../infrastructure/entity/emailConfirmation.model";
 import add from "date-fns/add";
-import { BanInfoModel } from "../../infrastructure/entity/banInfo.model";
-import { UserAccountModel } from "../../infrastructure/entity/userAccount.model";
-import { toCreateUserViewModel } from "../../../../data-mapper/to-create-user-view.model";
+import { BanInfoModel } from "../infrastructure/entity/banInfo.model";
+import { UserAccountModel } from "../infrastructure/entity/userAccount.model";
+import { toCreateUserViewModel } from "../../../data-mapper/to-create-user-view.model";
 import { v4 as uuidv4 } from 'uuid';
-import { _generateHash } from "../../../../helper.functions";
-import { BanInfoRepository } from "../../infrastructure/banInfo.repository";
-import { EmailConfirmationRepository } from "../../infrastructure/emailConfirmation.repository";
-import { UsersRepository } from "../../infrastructure/users.repository";
-import { settings } from "../../../../settings";
+import { _generateHash } from "../../../helper.functions";
+import { BanInfoRepository } from "../infrastructure/banInfo.repository";
+import { EmailConfirmationRepository } from "../infrastructure/emailConfirmation.repository";
+import { UsersRepository } from "../infrastructure/users.repository";
+import { settings } from "../../../settings";
 
 @Injectable()
 export class CreateUserUseCase {
