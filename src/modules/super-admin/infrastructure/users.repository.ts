@@ -49,6 +49,10 @@ export class UsersRepository {
     });
   }
 
+  // async save(model) {
+  //   await model.save()
+  // }
+
   async createUser(newUser: UserDBModel): Promise<UserDBModel | null> {
     try {
       await UserScheme.create(newUser);

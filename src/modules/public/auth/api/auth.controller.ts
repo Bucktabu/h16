@@ -131,7 +131,7 @@ export class AuthController {
   @HttpCode(204)
   async registration(@Body() dto: UserDTO) {
     const createdUser = await this.createUserUseCase.execute( dto);
-    console.log(createdUser);
+
     if (!createdUser) {
       throw new NotImplementedException();
     }

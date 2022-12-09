@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  HttpCode,
   Param,
   Put,
   Query,

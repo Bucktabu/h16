@@ -1,9 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from './../src/app.module';
+import { INestApplication } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
+import { AppModule } from "../src/app.module";
 import request from 'supertest';
+import { preparedUser } from "./helper/prepeared-data";
+import { registrationNewUser } from "./helper/registration-user";
+import { EmailAdapters } from "../src/modules/public/auth/email-transfer/email.adapter";
+import { createNewUser } from "./helper/helpers";
 
-describe('AppController (e2e)', () => {
+jest.setTimeout(30000)
+
+describe('e2e tests', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -19,62 +25,27 @@ describe('AppController (e2e)', () => {
     await request(app).delete('/testing/all-data');
   });
 
+  it('Should return 400. So short input body and incorrect email', async () => {
+    await registrationNewUser(request, app, preparedUser.short, 400, true)
+  })
+
+  it('Should return 400. So long input body and incorrect email', async () => {
+    await registrationNewUser(request, app, preparedUser.long, 400, true)
+  })
+
+  it('Should registrate new user. Return 204.', async () => {
+    await registrationNewUser(request, app, preparedUser.valid, 204, false)
+  })
+
+  it('', () => {
+    const emailAdapterMock: jest.Mocked<EmailAdapters> = {
+      sendEmail: jest.fn()
+    }
+    console.log(' ---> ', emailAdapterMock);
+    //expect(emailAdapterMock.sendEmail).
+  })
+
   it('', async () => {
-    const createdBlog = await request(app)
-      .post('/blogs')
-      .send({
-        name: 'new blog',
-        description: 'new description',
-        websiteUrl: 'https://someurl.com',
-      })
-      .expect(201);
-
-    await request(app).get(`/blogs/0`).expect(404);
-
-    await request(app).get(`/blogs/${createdBlog.body.id}`).expect(200);
-
-    await request(app)
-      .put('/blogs/0')
-      .send({
-        name: 'old blog',
-        description: 'old description',
-        websiteUrl: 'https://someoldurl.com',
-      })
-      .expect(404);
-
-    await request(app)
-      .put(`/blogs/${createdBlog.body.id}`)
-      .send({
-        name: 'old blog',
-        description: 'old description',
-        websiteUrl: 'https://someoldurl.com',
-      })
-      .expect(204);
-
-    await request(app).delete(`/blogs/${createdBlog.body.id}`).expect(204);
-
-    await request(app).delete(`/blogs/${createdBlog.body.id}`).expect(404);
-
-    await request(app)
-      .post(`/blogs/0`)
-      .send({
-        title: 'New title',
-        shortDescription: 'New shortDescription',
-        content: 'New content!!!!!!!!!!',
-      })
-      .expect(404);
-
-    const createdPost = await request(app)
-      .post(`/blogs/${createdBlog.body.id}/posts`)
-      .send({
-        title: 'New title',
-        shortDescription: 'New shortDescription',
-        content: 'New content!!!!!!!!!!',
-      })
-      .expect(201);
-
-    await request(app).post(`/blogs/0/posts`).expect(404);
-
-    await request(app).post(`/blogs/${createdBlog.body.id}/posts`).expect(200);
-  });
+    await createNewUser(request, app)
+  })
 });
