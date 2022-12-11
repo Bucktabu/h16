@@ -24,6 +24,7 @@ describe('Integration test for super admin service',() => {
     await mongoServer.stop()
   })
 
+
   const banInfoRepository = new BanInfoRepository()
   const emailConfirmationRepository = new EmailConfirmationRepository()
   const usersRepository = new UsersRepository()
@@ -85,6 +86,7 @@ describe('Integration test for super admin service',() => {
         searchLoginTerm: '',
         searchEmailTerm: ''
       }
+      Moked(v => [])
       const result = await saBlogsService.getBlogs(defaultQuery)
     })
   })

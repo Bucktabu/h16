@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 describe('e2e tests', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -22,19 +22,19 @@ describe('e2e tests', () => {
   });
 
   beforeEach(async () => {
-    await request(app).delete('/testing/all-data');
+    await request(app.getHttpServer()).delete('/testing/all-data');
   });
 
   it('Should return 400. So short input body and incorrect email', async () => {
-    await registrationNewUser(request, app, preparedUser.short, 400, true)
+    await registrationNewUser(request, app.getHttpServer(), preparedUser.short, 400, true)
   })
 
   it('Should return 400. So long input body and incorrect email', async () => {
-    await registrationNewUser(request, app, preparedUser.long, 400, true)
+    await registrationNewUser(request, app.getHttpServer(), preparedUser.long, 400, true)
   })
 
   it('Should registrate new user. Return 204.', async () => {
-    await registrationNewUser(request, app, preparedUser.valid, 204, false)
+    await registrationNewUser(request, app.getHttpServer(), preparedUser.valid, 204, false)
   })
 
   it('', () => {
