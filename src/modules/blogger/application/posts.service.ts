@@ -2,16 +2,16 @@ import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-befo
 import { PostDTO } from '../api/dto/postDTO';
 import { PostDBModel } from '../infrastructure/entity/post-db.model';
 import { PostViewModel } from '../../public/posts/api/dto/postsView.model';
-import { BloggerBlogRepository } from '../infrastructure/blogs.repository';
-import { BloggerPostsRepository } from '../infrastructure/posts.repository';
 import { v4 as uuidv4 } from 'uuid';
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
+import { IBloggerBlogRepository } from "../infrastructure/blogger-blog-repository.interface";
+import { IBloggerPostRepository } from "../infrastructure/blogger-post-repository.interface";
 
 @Injectable()
-export class BloggerPostsService {
+export class BloggerPostService {
   constructor(
-    protected postsRepository: BloggerPostsRepository,
-    protected blogsRepository: BloggerBlogRepository,
+    @Inject(IBloggerPostRepository) protected postsRepository: IBloggerPostRepository,
+    @Inject(IBloggerBlogRepository) protected blogsRepository: IBloggerBlogRepository,
   ) {}
 
   async createPost(

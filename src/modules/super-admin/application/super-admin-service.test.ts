@@ -3,7 +3,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { isEmail, isUUID } from "class-validator";
 import { SortDirections, SortParametersModel } from "../../../global-model/sort-parameters.model";
 import { BanInfoRepository } from "../infrastructure/banInfo.repository";
-import { EmailConfirmationRepository } from "../infrastructure/emailConfirmation.repository";
+import { EmailConfirmationRepository } from "../infrastructure/email-confirmation.repository";
 import { CreateUserUseCase } from "../use-cases/create-user.use-case";
 import { UsersRepository } from "../infrastructure/users.repository";
 import { SaBlogsRepository } from "../infrastructure/sa-blogs.repository";
@@ -86,7 +86,7 @@ describe('Integration test for super admin service',() => {
         searchLoginTerm: '',
         searchEmailTerm: ''
       }
-      Moked(v => [])
+
       const result = await saBlogsService.getBlogs(defaultQuery)
     })
   })

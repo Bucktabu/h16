@@ -4,9 +4,10 @@ import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.
 import { BlogSchema } from '../../../super-admin/infrastructure/entity/blog.schema';
 import { giveSkipNumber } from '../../../../helper.functions';
 import { LikesScheme } from "../../likes/infrastructure/entity/likes.scheme";
+import { IBlogsRepository } from "./blogs-repository.interface";
 
 @Injectable()
-export class BlogsRepository {
+export class BlogsRepository implements IBlogsRepository {
   async getBlogs(query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
@@ -28,7 +29,7 @@ export class BlogsRepository {
     return BlogSchema.findOne({ id,  }, { _id: false, __v: false });
   }
 
-  async updateBanStatus(userId: string, isBanned: boolean) {
+  async updateBanStatus(userId: string, isBanned: boolean): Promise<boolean> {
     try {
       await LikesScheme.updateOne(
         { userId },

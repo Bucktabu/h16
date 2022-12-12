@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
@@ -11,16 +11,18 @@ import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { UserDBModel } from '../../../super-admin/infrastructure/entity/userDB.model';
 import { toCommentOutputBeforeCreate } from '../../../../data-mapper/to-comment-view-before-create.model';
-import { BanInfoRepository } from "../../../super-admin/infrastructure/banInfo.repository";
+import { ICommentsRepository } from "../infrastructure/comments-repository.interface";
+import { ILikesRepository } from "../../likes/infrastructure/likes-repository.interface";
+import { IBanInfo } from "../../../super-admin/infrastructure/ban-info.interface";
 
 @Injectable()
 export class CommentsService {
   constructor(
-    protected banInfoRepository: BanInfoRepository,
     protected likesService: LikesService,
     protected jwtService: JwtService,
-    protected commentsRepository: CommentsRepository,
-    protected likesRepository: LikesRepository,
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
+    @Inject(ICommentsRepository) protected commentsRepository: ICommentsRepository,
+    @Inject(ILikesRepository) protected likesRepository: ILikesRepository,
   ) {}
 
   async getComments(

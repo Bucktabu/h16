@@ -1,27 +1,24 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { PostsRepository } from '../infrastructure/posts.repository';
-import { PostWithBlogIdDTO } from '../api/dto/postDTO';
 import { PostViewModel } from '../api/dto/postsView.model';
-import { v4 as uuidv4 } from 'uuid';
-import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
 import { UsersRepository } from '../../../super-admin/infrastructure/users.repository';
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
-import { toPostOutputBeforeCreate } from '../../../../data-mapper/to-post-view-before-create.model';
+import { IPostsRepository } from "../infrastructure/posts-repository.interface";
+import { IUsersRepository } from "../../../super-admin/infrastructure/users-repository.interface";
 
 @Injectable()
 export class PostsService {
   constructor(
     protected jwtService: JwtService,
     protected likesService: LikesService,
-    protected likesRepository: LikesRepository,
-    protected postsRepository: PostsRepository,
-    protected usersRepository: UsersRepository,
+    @Inject(IPostsRepository) protected postsRepository: IPostsRepository,
+    @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
 
   async getPosts(
@@ -64,48 +61,6 @@ export class PostsService {
     return await this.addLikesInfoForPost(post, userId);
   }
 
-  // async createPost(
-  //   dto: any /*PostDTO | PostWithBlogIdDTO,*/,
-  //   blogId?: string,
-  // ): Promise<PostViewModel | null> {
-  //   let id = blogId;
-  //   if (!blogId) {
-  //     id = dto.blogId;
-  //   }
-  //
-  //   const newPost = new PostDBModel(
-  //     uuidv4(),
-  //     dto.title,
-  //     dto.shortDescription,
-  //     dto.content,
-  //     id,
-  //     await this.getBlogName(id),
-  //     new Date().toISOString(),
-  //   );
-  //
-  //   const createdPost = await this.postsRepository.createPost(newPost);
-  //
-  //   if (!createdPost) {
-  //     return null;
-  //   }
-  //
-  //   return toPostOutputBeforeCreate(createdPost);
-  // }
-  //
-  // async getBlogName(blogId: string): Promise<string> {
-  //   const blog = await this.blogsRepository.getBlogById(blogId);
-  //
-  //   if (!blog) {
-  //     return '';
-  //   }
-  //
-  //   return blog.name;
-  // }
-  //
-  // async updatePost(postId: string, dto: PostWithBlogIdDTO): Promise<boolean> {
-  //   return await this.postsRepository.updatePost(postId, dto);
-  // }
-
   async updateLikesInfo(
     userId: string,
     commentId: string,
@@ -118,7 +73,7 @@ export class PostsService {
       return false;
     }
 
-    return await this.likesRepository.updateUserReaction(
+    return await this.likesService.updateUserReaction(
       commentId,
       userId,
       likeStatus,
@@ -126,10 +81,6 @@ export class PostsService {
       login.login,
     );
   }
-
-  // async deletePostById(postId: string): Promise<boolean> {
-  //   return await this.postsRepository.deletePostById(postId);
-  // }
 
   private async addLikesInfoForPost(
     post: PostDBModel,
@@ -139,7 +90,7 @@ export class PostsService {
       post.id,
       userId!,
     );
-    const newestLikes = await this.likesRepository.getNewestLikes(post.id);
+    const newestLikes = await this.likesService.getNewestLikes(post.id);
 
     return {
       id: post.id,

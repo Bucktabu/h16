@@ -4,9 +4,10 @@ import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../helper.functions';
 import { BlogDBModel } from 'src/modules/super-admin/infrastructure/entity/blog-db.model';
 import { BlogSchema } from '../../super-admin/infrastructure/entity/blog.schema';
+import { IBloggerBlogRepository } from "./blogger-blog-repository.interface";
 
 @Injectable()
-export class BloggerBlogRepository {
+export class BloggerBlogRepository implements IBloggerBlogRepository {
   async getBlogs(userId: string, query: QueryParametersDTO): Promise<BlogDBModel[]> {
     return BlogSchema.find({
         $and: [

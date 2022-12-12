@@ -1,12 +1,12 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
-import { UsersRepository } from '../modules/super-admin/infrastructure/users.repository';
+import { Inject, Injectable, PipeTransform } from "@nestjs/common";
 import { EmailConfirmationService } from '../modules/super-admin/application/emailConfirmation.service';
+import { IUsersRepository } from "../modules/super-admin/infrastructure/users-repository.interface";
 
 @Injectable()
 export class EmailResendingValidationPipe implements PipeTransform {
   constructor(
     protected emailConfirmationService: EmailConfirmationService,
-    protected usersRepository: UsersRepository,
+    @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
 
   async transform(dto, metadata) {

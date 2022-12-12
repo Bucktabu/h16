@@ -2,9 +2,10 @@ import { PostDBModel } from './entity/post-db.model';
 import { PostsScheme } from './entity/posts.scheme';
 import { PostDTO } from '../api/dto/postDTO';
 import { Injectable } from "@nestjs/common";
+import { IBloggerPostRepository } from "./blogger-post-repository.interface";
 
 @Injectable()
-export class BloggerPostsRepository {
+export class BloggerPostRepository implements IBloggerPostRepository {
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
     try {
       await PostsScheme.create(newPost);

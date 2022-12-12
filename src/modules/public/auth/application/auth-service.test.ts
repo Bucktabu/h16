@@ -1,4 +1,4 @@
-import { EmailConfirmationRepository } from "../../../super-admin/infrastructure/emailConfirmation.repository";
+import { EmailConfirmationRepository } from "../../../super-admin/infrastructure/email-confirmation.repository";
 import { BanInfoRepository } from "../../../super-admin/infrastructure/banInfo.repository";
 import { UsersRepository } from "../../../super-admin/infrastructure/users.repository";
 import { CreateUserUseCase } from "../../../super-admin/use-cases/create-user.use-case";

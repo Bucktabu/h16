@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { BlogsRepository } from '../infrastructure/blogs.repository';
+import { Inject, Injectable } from "@nestjs/common";
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { toBlogViewModel } from "../../../../data-mapper/to-blog-view.model";
 import { BlogViewModel } from "../api/dto/blogView.model";
+import { IBlogsRepository } from "../infrastructure/blogs-repository.interface";
 
 @Injectable()
 export class BlogsService {
-  constructor(protected blogsRepository: BlogsRepository) {}
+  constructor(@Inject(IBlogsRepository) protected blogsRepository: IBlogsRepository) {}
 
   async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {
     const blogs = await this.blogsRepository.getBlogs(query);

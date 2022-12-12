@@ -3,9 +3,10 @@ import { CommentsSchema } from './entity/comments.scheme';
 import { CommentBDModel } from './entity/commentDB.model';
 import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../../helper.functions';
+import { ICommentsRepository } from "./comments-repository.interface";
 
 @Injectable()
-export class CommentsRepository {
+export class CommentsRepository implements ICommentsRepository {
   async getComments(
     query: QueryParametersDTO,
     postId: string,

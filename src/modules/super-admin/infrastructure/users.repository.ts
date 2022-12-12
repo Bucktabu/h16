@@ -3,9 +3,10 @@ import { giveSkipNumber } from '../../../helper.functions';
 import { UserScheme } from './entity/users.scheme';
 import { UserDBModel } from './entity/userDB.model';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { IUsersRepository } from "./users-repository.interface";
 
 @Injectable()
-export class UsersRepository {
+export class UsersRepository implements IUsersRepository {
   async getUserByIdOrLoginOrEmail(
     IdOrLoginOrEmail: string,
   ): Promise<UserDBModel | null> {

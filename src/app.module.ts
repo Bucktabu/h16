@@ -5,14 +5,13 @@ import {
 } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
 import { BloggerController } from "./modules/blogger/api/blogger.controller";
-import { BloggerPostsService } from "./modules/blogger/application/posts.service";
+import { BloggerPostService } from "./modules/blogger/application/posts.service";
 import { BloggerBlogService } from "./modules/blogger/application/blogs.service";
-import { BloggerPostsRepository } from "./modules/blogger/infrastructure/posts.repository";
+import { BloggerPostRepository } from "./modules/blogger/infrastructure/posts.repository";
 import { BloggerBlogRepository } from "./modules/blogger/infrastructure/blogs.repository";
 import { BanInfoRepository } from "./modules/super-admin/infrastructure/banInfo.repository";
-import { EmailConfirmationRepository } from "./modules/super-admin/infrastructure/emailConfirmation.repository";
+import { EmailConfirmationRepository } from "./modules/super-admin/infrastructure/email-confirmation.repository";
 import { SaBlogsController } from "./modules/super-admin/api/sa-blogs.controller";
 import { SaBlogsService } from "./modules/super-admin/application/sa-blogs-service";
 import { SaBlogsRepository } from "./modules/super-admin/infrastructure/sa-blogs.repository";
@@ -47,6 +46,19 @@ import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
 import { BlogExistValidator } from "./validation/blog-exist.validator";
 import { ConfirmationCodeValidator } from "./validation/confirmation-code.validator";
 import { CreateUserUseCase } from "./modules/super-admin/use-cases/create-user.use-case";
+import { /*Blog,*/ BlogSchema } from "./modules/super-admin/infrastructure/entity/blog.schema";
+import { IBloggerBlogRepository } from "./modules/blogger/infrastructure/blogger-blog-repository.interface";
+import { IBloggerPostRepository } from "./modules/blogger/infrastructure/blogger-post-repository.interface";
+import { IJwtRepository } from "./modules/public/auth/infrastructure/jwt-repository.interface";
+import { IBlogsRepository } from "./modules/public/blogs/infrastructure/blogs-repository.interface";
+import { ICommentsRepository } from "./modules/public/comments/infrastructure/comments-repository.interface";
+import { ILikesRepository } from "./modules/public/likes/infrastructure/likes-repository.interface";
+import { IPostsRepository } from "./modules/public/posts/infrastructure/posts-repository.interface";
+import { ISecurityRepository } from "./modules/public/security/infrastructure/security-repository.interface";
+import { IBanInfo } from "./modules/super-admin/infrastructure/ban-info.interface";
+import { IEmailConfirmation } from "./modules/super-admin/infrastructure/email-confirmation.interface";
+import { ISaBlogsRepository } from "./modules/super-admin/infrastructure/sa-blogs-repository.interface";
+import { IUsersRepository } from "./modules/super-admin/infrastructure/users-repository.interface";
 
 const controllers = [
   BloggerController,
@@ -67,23 +79,23 @@ const pipes = [
 ]
 
 const repositories = [
-  BloggerBlogRepository,
-  BloggerPostsRepository,
-  BanInfoRepository,
-  BlogsRepository,
-  CommentsRepository,
-  EmailConfirmationRepository,
-  JwtRepository,
-  LikesRepository,
-  PostsRepository,
-  SecurityRepository,
-  SaBlogsRepository,
-  UsersRepository
+  { provide: IBloggerBlogRepository, useClass: BloggerBlogRepository },
+  { provide: IBloggerPostRepository, useClass: BloggerPostRepository },
+  { provide: IBanInfo, useClass: BanInfoRepository },
+  { provide: IBlogsRepository, useClass: BlogsRepository },
+  { provide: ICommentsRepository, useClass: CommentsRepository },
+  { provide: IEmailConfirmation, useClass: EmailConfirmationRepository },
+  { provide: IJwtRepository, useClass: JwtRepository },
+  { provide: ILikesRepository, useClass: LikesRepository },
+  { provide: IPostsRepository, useClass: PostsRepository },
+  { provide: ISecurityRepository, useClass: SecurityRepository },
+  { provide: ISaBlogsRepository, useClass: SaBlogsRepository },
+  { provide: IUsersRepository, useClass: UsersRepository }
 ]
 
 const services = [
   BloggerBlogService,
-  BloggerPostsService,
+  BloggerPostService,
   AuthService,
   BlogsService,
   CommentsService,
@@ -98,6 +110,10 @@ const services = [
   UsersService
 ]
 
+const schemes = [
+ // { name: Blog.name, schema: BlogSchema },
+]
+
 const validators = [BlogExistValidator, ConfirmationCodeValidator]
 
 const useCases = [CreateUserUseCase]
@@ -106,6 +122,7 @@ const useCases = [CreateUserUseCase]
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forFeature(schemes)
     //ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
   ],
   controllers: [

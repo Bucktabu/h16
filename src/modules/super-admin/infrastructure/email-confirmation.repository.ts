@@ -1,32 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { EmailConfirmationScheme } from './entity/emailConfirm.scheme';
 import { EmailConfirmationModel } from './entity/emailConfirmation.model';
+import { IEmailConfirmation } from "./email-confirmation.interface";
 
 @Injectable()
-export class EmailConfirmationRepository {
+export class EmailConfirmationRepository implements IEmailConfirmation {
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
-  )/*: Promise<EmailConfirmationModel | null>*/ { // TODO Type error
+  ): Promise</*EmailConfirmationModel | null*/any> { // TODO Type error
     return EmailConfirmationScheme.findOne(
       { $or: [{ confirmationCode: codeOrId }, { id: codeOrId }] },
       { _id: false, __v: false },
     );
   }
 
-  async checkConfirmation(id: string) {
-    return EmailConfirmationScheme.findOne(
-      { id },
-      {
-        _id: false,
-        id: false,
-        confirmationCode: false,
-        expirationDate: false,
-        __v: false,
-      },
-    );
+  async checkConfirmation(id: string): Promise<boolean | null> {
+    try {
+      const result = await EmailConfirmationScheme.findOne(
+        { id },
+        {
+          _id: false,
+          id: false,
+          confirmationCode: false,
+          expirationDate: false,
+          __v: false,
+        }
+      )
+
+      return result.isConfirmed
+    } catch (e) {
+      return null
+    }
+
   }
 
-  async createEmailConfirmation(emailConfirmation: EmailConfirmationModel) {
+  async createEmailConfirmation(emailConfirmation: EmailConfirmationModel): Promise<EmailConfirmationModel | null> {
     try {
       await EmailConfirmationScheme.create(emailConfirmation);
       return emailConfirmation;
@@ -48,7 +56,7 @@ export class EmailConfirmationRepository {
     return result.modifiedCount === 1;
   }
 
-  async updateConfirmationInfo(idOrCode: string) {
+  async updateConfirmationInfo(idOrCode: string): Promise<boolean> {
     const result = await EmailConfirmationScheme.updateOne(
       { idOrCode },
       { $set: { isConfirmed: true } },

@@ -1,33 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { BanInfoRepository } from '../infrastructure/banInfo.repository';
-import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
+import { EmailConfirmationRepository } from '../infrastructure/email-confirmation.repository';
 import { UsersRepository } from '../infrastructure/users.repository';
-import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
-import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
-import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
 import { UserDBModel } from '../infrastructure/entity/userDB.model';
-import { UserDTO } from '../api/dto/userDTO';
 import { UserViewModelWithBanInfo } from '../api/dto/userView.model';
-import { toCreateUserViewModel } from '../../../data-mapper/to-create-user-view.model';
 import { _generateHash, paginationContentPage } from "../../../helper.functions";
-import { v4 as uuidv4 } from 'uuid';
-import add from 'date-fns/add';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BanUserDTO } from "../api/dto/ban-user.dto";
-import { LikesRepository } from "../../public/likes/infrastructure/likes.repository";
-import { BlogsRepository } from "../../public/blogs/infrastructure/blogs.repository";
-import bcrypt from "bcrypt";
-import { settings } from "../../../settings";
+import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
+import { IBanInfo } from "../infrastructure/ban-info.interface";
+import { IEmailConfirmation } from "../infrastructure/email-confirmation.interface";
+import { ILikesRepository } from "../../public/likes/infrastructure/likes-repository.interface";
+import { IUsersRepository } from "../infrastructure/users-repository.interface";
 
 @Injectable()
 export class UsersService {
   constructor(
-    protected banInfoRepository: BanInfoRepository,
-    protected blogRepository: BlogsRepository,
-    protected emailConfirmationRepository: EmailConfirmationRepository,
-    protected likesRepository: LikesRepository,
-    protected usersRepository: UsersRepository,
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
+    @Inject(IBlogsRepository) protected blogsRepository: IBlogsRepository,
+    @Inject(IEmailConfirmation) protected emailConfirmationRepository: IEmailConfirmation,
+    @Inject(ILikesRepository) protected likesRepository: ILikesRepository,
+    @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
 
   async getUserByIdOrLoginOrEmail(
@@ -75,7 +69,7 @@ export class UsersService {
       banDate = new Date()
       banReason = dto.banReason
     }
-    await this.blogRepository.updateBanStatus(userId, dto.isBanned)
+    await this.blogsRepository.updateBanStatus(userId, dto.isBanned)
     await this.likesRepository.updateBanStatus(userId, dto.isBanned)
     return this.banInfoRepository.updateBanStatus(userId, dto.isBanned, banReason, banDate)
   }

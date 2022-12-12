@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from '../../auth/application/jwt.service';
-import { SecurityRepository } from '../infrastructure/security.repository';
 import { DeviceSecurityModel } from '../infrastructure/entity/deviceSecurity.model';
 import { UserDeviceModel } from '../infrastructure/entity/userDevice.model';
 import UserAgent from 'user-agents';
 import { toActiveSessionsViewModel } from '../../../../data-mapper/to-active-session-view.model';
 import { TokenPayloadModel } from '../../../../global-model/token-payload.model';
+import { ISecurityRepository } from "../infrastructure/security-repository.interface";
 
 @Injectable()
 export class SecurityService {
   constructor(
     protected jwtService: JwtService,
-    protected securityRepository: SecurityRepository,
+    @Inject(ISecurityRepository) protected securityRepository: ISecurityRepository,
   ) {}
 
   async getAllActiveSessions(userId: string) {

@@ -1,14 +1,14 @@
 import {
   CanActivate,
   ExecutionContext,
-  ForbiddenException, Injectable,
+  ForbiddenException, Inject, Injectable,
   NotFoundException
 } from "@nestjs/common";
-import { BloggerBlogRepository } from '../modules/blogger/infrastructure/blogs.repository';
+import { IBloggerBlogRepository } from "../modules/blogger/infrastructure/blogger-blog-repository.interface";
 
 @Injectable()
 export class ForbiddenGuard implements CanActivate {
-  constructor(protected blogsRepository: BloggerBlogRepository) {}
+  constructor(@Inject(IBloggerBlogRepository) protected blogsRepository: IBloggerBlogRepository) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();

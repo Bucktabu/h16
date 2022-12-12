@@ -1,18 +1,18 @@
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../helper.functions';
-import { SaBlogsRepository } from '../infrastructure/sa-blogs.repository';
 import { BindBlogDTO } from '../api/dto/bind-blog.dto';
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { BlogDBModel } from "../infrastructure/entity/blog-db.model";
-import { UsersRepository } from "../infrastructure/users.repository";
 import { BlogViewWithOwnerInfoModel } from "../api/dto/blog-view-with-owner-info.model";
+import { ISaBlogsRepository } from "../infrastructure/sa-blogs-repository.interface";
+import { IUsersRepository } from "../infrastructure/users-repository.interface";
 
 @Injectable()
 export class SaBlogsService {
   constructor(
-    protected saBlogsRepository: SaBlogsRepository,
-    protected userRepository: UsersRepository
+    @Inject(ISaBlogsRepository) protected saBlogsRepository: ISaBlogsRepository,
+    @Inject(IUsersRepository) protected userRepository: IUsersRepository
   ) {}
 
   async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {

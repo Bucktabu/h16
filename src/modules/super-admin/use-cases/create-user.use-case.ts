@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { UserDTO } from "../api/dto/userDTO";
 import { UserDBModel } from "../infrastructure/entity/userDB.model";
 import { EmailConfirmationModel } from "../infrastructure/entity/emailConfirmation.model";
@@ -8,17 +8,17 @@ import { UserAccountModel } from "../infrastructure/entity/userAccount.model";
 import { toCreateUserViewModel } from "../../../data-mapper/to-create-user-view.model";
 import { v4 as uuidv4 } from 'uuid';
 import { _generateHash } from "../../../helper.functions";
-import { BanInfoRepository } from "../infrastructure/banInfo.repository";
-import { EmailConfirmationRepository } from "../infrastructure/emailConfirmation.repository";
-import { UsersRepository } from "../infrastructure/users.repository";
 import { settings } from "../../../settings";
+import { IBanInfo } from "../infrastructure/ban-info.interface";
+import { IEmailConfirmation } from "../infrastructure/email-confirmation.interface";
+import { IUsersRepository } from "../infrastructure/users-repository.interface";
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
-    protected banInfoRepository: BanInfoRepository,
-    protected emailConfirmationRepository: EmailConfirmationRepository,
-    protected usersRepository: UsersRepository,
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
+    @Inject(IEmailConfirmation) protected emailConfirmationRepository: IEmailConfirmation,
+    @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
 
   async execute(dto: UserDTO) {

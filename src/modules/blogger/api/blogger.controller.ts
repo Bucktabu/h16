@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { User } from '../../../decorator/user.decorator';
 import { BloggerBlogService } from '../application/blogs.service';
-import { BloggerPostsService } from '../application/posts.service';
+import { BloggerPostService } from '../application/posts.service';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { ForbiddenGuard } from '../../../guards/forbidden.guard';
 import { BlogDTO } from './dto/blogDTO';
@@ -27,7 +27,7 @@ import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
 export class BloggerController {
   constructor(
     protected blogsService: BloggerBlogService,
-    protected postsService: BloggerPostsService,
+    protected postsService: BloggerPostService,
   ) {}
 
   @Get()
