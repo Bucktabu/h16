@@ -122,7 +122,7 @@ const useCases = [CreateUserUseCase]
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    MongooseModule.forFeature(schemes)
+    //MongooseModule.forFeature(schemes)
     //ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
   ],
   controllers: [
