@@ -1,11 +1,12 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
-import { IEmailConfirmation } from "../infrastructure/email-confirmation.interface";
+import { IEmailConfirmation } from '../infrastructure/email-confirmation/email-confirmation.interface';
 
 @Injectable()
 export class EmailConfirmationService {
   constructor(
-    @Inject(IEmailConfirmation) protected emailConfirmationRepository: IEmailConfirmation,
+    @Inject(IEmailConfirmation)
+    protected emailConfirmationRepository: IEmailConfirmation,
   ) {}
 
   async getConfirmationByCode(code: string): Promise<EmailConfirmationModel> {
@@ -16,7 +17,6 @@ export class EmailConfirmationService {
 
   async checkConfirmation(id: string): Promise<boolean | null> {
     return this.emailConfirmationRepository.checkConfirmation(id);
-
   }
 
   async updateConfirmationInfo(idOrCode: string) {

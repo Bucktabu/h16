@@ -1,13 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 import { EmailManager } from '../email-transfer/email.manager';
-import { IEmailConfirmation } from "../../../super-admin/infrastructure/email-confirmation.interface";
+import { IEmailConfirmation } from '../../../super-admin/infrastructure/email-confirmation/email-confirmation.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(IEmailConfirmation) protected emailConfirmationRepository: IEmailConfirmation,
+    @Inject(IEmailConfirmation)
+    protected emailConfirmationRepository: IEmailConfirmation,
     protected emailsManager: EmailManager,
   ) {}
 

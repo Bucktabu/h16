@@ -9,7 +9,7 @@ import {
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { Request } from 'express';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 
 @Controller('blogs')
 export class BlogsController {
@@ -21,7 +21,7 @@ export class BlogsController {
   @Get()
   getBlogs(
     @Query()
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
   ) {
     return this.blogsService.getBlogs(query);
   }
@@ -39,7 +39,7 @@ export class BlogsController {
 
   @Get(':id/posts')
   async getPostsByBlogId(
-    @Query() query: QueryParametersDTO,
+    @Query() query: QueryParametersDto,
     @Param('id') blogId: string,
     @Req() req: Request,
   ) {

@@ -5,6 +5,6 @@ export class LikesModel {
     public status: string,
     public addedAt: string,
     public login: string,
-    public isBanned: boolean
+    public isBanned: boolean,
   ) {}
 }

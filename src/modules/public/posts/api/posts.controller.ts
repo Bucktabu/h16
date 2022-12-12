@@ -17,7 +17,7 @@ import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
 import { PostWithBlogIdDTO } from './dto/postDTO';
 import { Request } from 'express';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { AuthBasicGuard } from '../../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../../guards/auth.bearer.guard';
 import { User } from '../../../../decorator/user.decorator';
@@ -32,7 +32,7 @@ export class PostsController {
   ) {}
 
   @Get()
-  getPosts(@Query() query: QueryParametersDTO, @Req() req: Request) {
+  getPosts(@Query() query: QueryParametersDto, @Req() req: Request) {
     const blogId = '';
     return this.postsService.getPosts(query, blogId, req.headers.authorization);
   }
@@ -53,7 +53,7 @@ export class PostsController {
 
   @Get(':id/comments')
   async getCommentsByPostId(
-    @Query() query: QueryParametersDTO,
+    @Query() query: QueryParametersDto,
     @Param('id') postId: string,
     @Req() req: Request,
   ) {

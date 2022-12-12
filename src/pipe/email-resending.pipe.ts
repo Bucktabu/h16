@@ -1,6 +1,6 @@
-import { Inject, Injectable, PipeTransform } from "@nestjs/common";
+import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { EmailConfirmationService } from '../modules/super-admin/application/emailConfirmation.service';
-import { IUsersRepository } from "../modules/super-admin/infrastructure/users-repository.interface";
+import { IUsersRepository } from '../modules/super-admin/infrastructure/users/users-repository.interface';
 
 @Injectable()
 export class EmailResendingValidationPipe implements PipeTransform {

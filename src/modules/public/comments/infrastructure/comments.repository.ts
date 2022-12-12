@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CommentsSchema } from './entity/comments.scheme';
 import { CommentBDModel } from './entity/commentDB.model';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../../helper.functions';
-import { ICommentsRepository } from "./comments-repository.interface";
+import { ICommentsRepository } from './comments-repository.interface';
 
 @Injectable()
 export class CommentsRepository implements ICommentsRepository {
   async getComments(
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
     postId: string,
   ): Promise<CommentBDModel[]> {
     return CommentsSchema.find(

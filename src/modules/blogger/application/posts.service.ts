@@ -1,21 +1,23 @@
 import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
-import { PostDTO } from '../api/dto/postDTO';
+import { PostDto } from '../api/dto/post.dto';
 import { PostDBModel } from '../infrastructure/entity/post-db.model';
 import { PostViewModel } from '../../public/posts/api/dto/postsView.model';
 import { v4 as uuidv4 } from 'uuid';
-import { Inject, Injectable } from "@nestjs/common";
-import { IBloggerBlogRepository } from "../infrastructure/blogger-blog-repository.interface";
-import { IBloggerPostRepository } from "../infrastructure/blogger-post-repository.interface";
+import { Inject, Injectable } from '@nestjs/common';
+import { IBloggerBlogRepository } from '../infrastructure/blogs/blogger-blog-repository.interface';
+import { IBloggerPostRepository } from '../infrastructure/posts/blogger-post-repository.interface';
 
 @Injectable()
 export class BloggerPostService {
   constructor(
-    @Inject(IBloggerPostRepository) protected postsRepository: IBloggerPostRepository,
-    @Inject(IBloggerBlogRepository) protected blogsRepository: IBloggerBlogRepository,
+    @Inject(IBloggerPostRepository)
+    protected postsRepository: IBloggerPostRepository,
+    @Inject(IBloggerBlogRepository)
+    protected blogsRepository: IBloggerBlogRepository,
   ) {}
 
   async createPost(
-    dto: PostDTO,
+    dto: PostDto,
     blogId: string,
   ): Promise<PostViewModel | null> {
     const newPost = new PostDBModel(
@@ -47,7 +49,7 @@ export class BloggerPostService {
     return blog.name;
   }
 
-  async updatePost(postId: string, dto: PostDTO): Promise<boolean> {
+  async updatePost(postId: string, dto: PostDto): Promise<boolean> {
     return await this.postsRepository.updatePost(postId, dto);
   }
 

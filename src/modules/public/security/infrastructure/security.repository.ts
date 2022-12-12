@@ -1,7 +1,7 @@
 import { SecurityScheme } from './entity/security.scheme';
 import { DeviceSecurityModel } from './entity/deviceSecurity.model';
 import { Injectable } from '@nestjs/common';
-import { ISecurityRepository } from "./security-repository.interface";
+import { ISecurityRepository } from './security-repository.interface';
 
 @Injectable()
 export class SecurityRepository implements ISecurityRepository {
@@ -19,7 +19,9 @@ export class SecurityRepository implements ISecurityRepository {
     );
   }
 
-  async createUserDevice(createDevice: DeviceSecurityModel): Promise<DeviceSecurityModel | null> {
+  async createUserDevice(
+    createDevice: DeviceSecurityModel,
+  ): Promise<DeviceSecurityModel | null> {
     try {
       return SecurityScheme.create(createDevice);
     } catch (e) {

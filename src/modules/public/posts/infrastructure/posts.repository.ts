@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
 import { PostsScheme } from '../../../blogger/infrastructure/entity/posts.scheme';
 import { giveSkipNumber } from '../../../../helper.functions';
-import { IPostsRepository } from "./posts-repository.interface";
+import { IPostsRepository } from './posts-repository.interface';
 
 @Injectable()
 export class PostsRepository implements IPostsRepository {
   async getPosts(
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
     blogId: string | undefined,
   ): Promise<PostDBModel[]> {
     return PostsScheme.find(

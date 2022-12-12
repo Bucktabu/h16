@@ -1,7 +1,11 @@
-import mongoose, { Model } from "mongoose";
+import mongoose, { Model } from 'mongoose';
 import { EmailConfirmationModel } from './emailConfirmation.model';
 
-const emailConfirmationScheme = new mongoose.Schema<EmailConfirmationModel, EmailConfirmationModelType, EmailConfirmMethodType>({
+const emailConfirmationScheme = new mongoose.Schema<
+  EmailConfirmationModel,
+  EmailConfirmationModelType,
+  EmailConfirmMethodType
+>({
   id: { type: String, required: true },
   confirmationCode: { type: String, required: true },
   expirationDate: { type: Date, required: true },
@@ -9,7 +13,7 @@ const emailConfirmationScheme = new mongoose.Schema<EmailConfirmationModel, Emai
 });
 
 emailConfirmationScheme.method('canBeConfirmed', function canBeConfirmed() {
-  const that = this as EmailConfirmationModel
+  const that = this as EmailConfirmationModel;
   if (that.isConfirmed === true) {
     return false;
   }
@@ -19,15 +23,19 @@ emailConfirmationScheme.method('canBeConfirmed', function canBeConfirmed() {
   }
 
   return true;
-})
+});
 
-export const EmailConfirmationScheme = mongoose.model<EmailConfirmationModel, EmailConfirmationModelType>(
-  'emailConfirmation',
-  emailConfirmationScheme,
-);
+export const EmailConfirmationScheme = mongoose.model<
+  EmailConfirmationModel,
+  EmailConfirmationModelType
+>('emailConfirmation', emailConfirmationScheme);
 
 export type EmailConfirmMethodType = {
-  canBeConfirmed: () => boolean
-}
+  canBeConfirmed: () => boolean;
+};
 
-type EmailConfirmationModelType = Model<EmailConfirmationModel, {}, EmailConfirmMethodType>
+type EmailConfirmationModelType = Model<
+  EmailConfirmationModel,
+  {},
+  EmailConfirmMethodType
+>;

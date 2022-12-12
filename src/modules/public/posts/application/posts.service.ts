@@ -1,16 +1,16 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostViewModel } from '../api/dto/postsView.model';
-import { UsersRepository } from '../../../super-admin/infrastructure/users.repository';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { UsersRepository } from '../../../super-admin/infrastructure/users/users.repository';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
-import { IPostsRepository } from "../infrastructure/posts-repository.interface";
-import { IUsersRepository } from "../../../super-admin/infrastructure/users-repository.interface";
+import { IPostsRepository } from '../infrastructure/posts-repository.interface';
+import { IUsersRepository } from '../../../super-admin/infrastructure/users/users-repository.interface';
 
 @Injectable()
 export class PostsService {
@@ -22,7 +22,7 @@ export class PostsService {
   ) {}
 
   async getPosts(
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
     blogId: string,
     token?: string,
   ): Promise<ContentPageModel | null> {

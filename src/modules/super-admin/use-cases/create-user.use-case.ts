@@ -1,23 +1,24 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { UserDTO } from "../api/dto/userDTO";
-import { UserDBModel } from "../infrastructure/entity/userDB.model";
-import { EmailConfirmationModel } from "../infrastructure/entity/emailConfirmation.model";
-import add from "date-fns/add";
-import { BanInfoModel } from "../infrastructure/entity/banInfo.model";
-import { UserAccountModel } from "../infrastructure/entity/userAccount.model";
-import { toCreateUserViewModel } from "../../../data-mapper/to-create-user-view.model";
+import { Inject, Injectable } from '@nestjs/common';
+import { UserDTO } from '../api/dto/userDTO';
+import { UserDBModel } from '../infrastructure/entity/userDB.model';
+import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
+import add from 'date-fns/add';
+import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
+import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
+import { toCreateUserViewModel } from '../../../data-mapper/to-create-user-view.model';
 import { v4 as uuidv4 } from 'uuid';
-import { _generateHash } from "../../../helper.functions";
-import { settings } from "../../../settings";
-import { IBanInfo } from "../infrastructure/ban-info.interface";
-import { IEmailConfirmation } from "../infrastructure/email-confirmation.interface";
-import { IUsersRepository } from "../infrastructure/users-repository.interface";
+import { _generateHash } from '../../../helper.functions';
+import { settings } from '../../../settings';
+import { IBanInfo } from '../infrastructure/ban-info/ban-info.interface';
+import { IEmailConfirmation } from '../infrastructure/email-confirmation/email-confirmation.interface';
+import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
-    @Inject(IEmailConfirmation) protected emailConfirmationRepository: IEmailConfirmation,
+    @Inject(IEmailConfirmation)
+    protected emailConfirmationRepository: IEmailConfirmation,
     @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
 
@@ -44,7 +45,7 @@ export class CreateUserUseCase {
       false,
     );
 
-    const banInfo = new BanInfoModel(userAccountId, false, null, null);
+    const banInfo = new BanInfoModel(userAccountId, false, null, null, null);
 
     const userAccount = new UserAccountModel(
       accountData,

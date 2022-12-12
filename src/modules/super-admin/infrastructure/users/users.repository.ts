@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { giveSkipNumber } from '../../../helper.functions';
-import { UserScheme } from './entity/users.scheme';
-import { UserDBModel } from './entity/userDB.model';
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { IUsersRepository } from "./users-repository.interface";
+import { giveSkipNumber } from '../../../../helper.functions';
+import { UserScheme } from '../entity/users.scheme';
+import { UserDBModel } from '../entity/userDB.model';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
+import { IUsersRepository } from './users-repository.interface';
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
@@ -22,7 +22,7 @@ export class UsersRepository implements IUsersRepository {
     );
   }
 
-  async getUsers(query: QueryParametersDTO): Promise<UserDBModel[]> {
+  async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
     return UserScheme.find(
       {
         $or: [
@@ -36,6 +36,26 @@ export class UsersRepository implements IUsersRepository {
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
       .lean();
+  }
+
+  async getLogin(id: string): Promise<string | null> {
+    try {
+      const result = await UserScheme.findOne(
+        { id },
+        {
+          _id: false,
+          id: false,
+          email: false,
+          passwordHash: false,
+          passwordSalt: false,
+          createdAt: false,
+          __v: false,
+        },
+      );
+      return result.login;
+    } catch (e) {
+      return null;
+    }
   }
 
   async getTotalCount(

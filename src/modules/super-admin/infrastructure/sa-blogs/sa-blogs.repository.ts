@@ -1,14 +1,14 @@
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { giveSkipNumber } from '../../../helper.functions';
-import { BindBlogDTO } from '../api/dto/bind-blog.dto';
-import { BlogDBModel } from './entity/blog-db.model';
-import { BlogSchema } from './entity/blog.schema';
-import { Injectable } from "@nestjs/common";
-import { ISaBlogsRepository } from "./sa-blogs-repository.interface";
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
+import { giveSkipNumber } from '../../../../helper.functions';
+import { BindBlogDTO } from '../../api/dto/bind-blog.dto';
+import { BlogDBModel } from '../entity/blog-db.model';
+import { BlogSchema } from '../entity/blog.schema';
+import { Injectable } from '@nestjs/common';
+import { ISaBlogsRepository } from './sa-blogs-repository.interface';
 
 @Injectable()
 export class SaBlogsRepository implements ISaBlogsRepository {
-  async getBlogs(query: QueryParametersDTO): Promise<BlogDBModel[]> {
+  async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
       { _id: false, __v: false },
@@ -34,6 +34,12 @@ export class SaBlogsRepository implements ISaBlogsRepository {
       { id: params.id },
       { $set: { userId: params.userId } },
     );
+
+    return result.matchedCount === 1;
+  }
+
+  async updateBlogBanStatus(id: string, isBanned: boolean): Promise<boolean> {
+    const result = await BlogSchema.updateOne({id}, {$set: {isBanned}})
 
     return result.matchedCount === 1;
   }

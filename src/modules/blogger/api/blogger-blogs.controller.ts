@@ -9,39 +9,36 @@ import {
   Post,
   Put,
   Query,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { User } from '../../../decorator/user.decorator';
 import { BloggerBlogService } from '../application/blogs.service';
 import { BloggerPostService } from '../application/posts.service';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { ForbiddenGuard } from '../../../guards/forbidden.guard';
-import { BlogDTO } from './dto/blogDTO';
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { PostDTO } from './dto/postDTO';
+import { BlogDto } from './dto/blog.dto';
+import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
+import { PostDto } from './dto/post.dto';
 import { UserDBModel } from '../../super-admin/infrastructure/entity/userDB.model';
 import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
 
 @UseGuards(AuthBearerGuard)
 @Controller('blogger/blogs')
-export class BloggerController {
+export class BloggerBlogsController {
   constructor(
     protected blogsService: BloggerBlogService,
     protected postsService: BloggerPostService,
   ) {}
 
   @Get()
-  getBlogs(
-    @Query() query: QueryParametersDTO,
-    @User() user: UserDBModel,
-  ) {
+  getBlogs(@Query() query: QueryParametersDto, @User() user: UserDBModel) {
     return this.blogsService.getBlogs(user.id, query);
   }
 
   @Post()
   @HttpCode(201)
   createBlog(
-    @Body() dto: BlogDTO,
+    @Body() dto: BlogDto,
     @User() user: UserDBModel,
   ): Promise<BlogViewModel> {
     const createdBlog = this.blogsService.createBlog(user.id, dto);
@@ -57,7 +54,7 @@ export class BloggerController {
   @Post(':blogId/posts')
   @HttpCode(201)
   async createPostByBlogId(
-    @Body() dto: PostDTO,
+    @Body() dto: PostDto,
     @Param('blogId') blogId: string,
   ) {
     const createdPost = await this.postsService.createPost(dto, blogId);
@@ -73,7 +70,7 @@ export class BloggerController {
   @Put(':blogId')
   @HttpCode(204)
   async updateBlog(
-    @Body() inputModel: BlogDTO,
+    @Body() inputModel: BlogDto,
     @Param('blogId') blogId: string,
   ) {
     const result = await this.blogsService.updateBlog(blogId, inputModel);
@@ -88,7 +85,7 @@ export class BloggerController {
   @UseGuards(ForbiddenGuard)
   @Put(':blogId/posts/:postId')
   @HttpCode(204)
-  async updatePost(@Body() dto: PostDTO, @Param('postId') postId: string) {
+  async updatePost(@Body() dto: PostDto, @Param('postId') postId: string) {
     const result = await this.postsService.updatePost(postId, dto);
 
     if (!result) {
@@ -102,7 +99,7 @@ export class BloggerController {
   @Delete(':blogId')
   @HttpCode(204)
   async deleteBlog(@Param('blogId') blogId: string) {
-    console.log(blogId)
+    console.log(blogId);
     const result = await this.blogsService.deleteBlog(blogId);
 
     if (!result) {

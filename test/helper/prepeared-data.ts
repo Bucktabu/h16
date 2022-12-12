@@ -7,19 +7,19 @@ export const preparedUser = {
   valid: {
     login: 'login',
     password: 'password',
-    email: 'somemail@gmail.com'
+    email: 'somemail@gmail.com',
   },
   short: {
     login: 'sb',
     password: 'vvyky',
-    email: 'somemailgmail.com'
+    email: 'somemailgmail.com',
   },
   long: {
     login: 'Length-11_s',
     password: 'Length-21_GwUy2x2LASw',
-    email: 'somemail@gmail.c'
-  }
-}
+    email: 'somemail@gmail.c',
+  },
+};
 
 export const preparedBlog = {
   valid: {
@@ -39,9 +39,11 @@ export const preparedBlog = {
   },
   long: {
     name: 'Length-16_RJmZKM',
-    description: 'Length-501_Zv6FCrIL6WKFyizDZqffLmVhF7j3IdDQouOuO7WWamy5H7FfhGA8aH6FWsKcnBy5QYEvk1vtgIvLmq50mONRGE8vbdpf91EXhZmWXivlFim9srvAQJzes6jPfIzLWXgB7PrSAAclz1Uk2WkIK12fCfUZ90MYVB387mQSh1eCZrotzPjeXev5oE8f9fHPPBpuooSRZmd4z1RPx9jGJs6G1QPfaO1EYRUbD1XonEWBb9cU5YCDSxe5ap2yPoCaNIbjOB6yQfz29XO0cTj46KyQsYCThNE3mmZSbobqpqZeGI0jwrw4SZU9BkzW755w6XRNCljQl64MY60xUgO4dYuR1UAxi5dz9KcMVzRxWVdBUbWLaV7D41ngUnl37ylFdmdGTW8ErpE6ae2IOOWcgyq37L18170MAKafvbolfGNTSVRUYs0eV0j0TrJiuzhROtCPpgDaOxdrzGuwZBwjXAruicca8DGa0dzXm8YSMoG4LI',
-    websiteUrl: 'https://it-incubator.io/new/FrO3tox5Efs0KgUp95aA2QbCmH32uQkqMPYQqjeKpaaCtVu3GXzviSqQ6ZrIYDrdOh96ckaiWI6iCbHrGMiTNRoUeR5i3LI3hGqG',
-  }
+    description:
+      'Length-501_Zv6FCrIL6WKFyizDZqffLmVhF7j3IdDQouOuO7WWamy5H7FfhGA8aH6FWsKcnBy5QYEvk1vtgIvLmq50mONRGE8vbdpf91EXhZmWXivlFim9srvAQJzes6jPfIzLWXgB7PrSAAclz1Uk2WkIK12fCfUZ90MYVB387mQSh1eCZrotzPjeXev5oE8f9fHPPBpuooSRZmd4z1RPx9jGJs6G1QPfaO1EYRUbD1XonEWBb9cU5YCDSxe5ap2yPoCaNIbjOB6yQfz29XO0cTj46KyQsYCThNE3mmZSbobqpqZeGI0jwrw4SZU9BkzW755w6XRNCljQl64MY60xUgO4dYuR1UAxi5dz9KcMVzRxWVdBUbWLaV7D41ngUnl37ylFdmdGTW8ErpE6ae2IOOWcgyq37L18170MAKafvbolfGNTSVRUYs0eV0j0TrJiuzhROtCPpgDaOxdrzGuwZBwjXAruicca8DGa0dzXm8YSMoG4LI',
+    websiteUrl:
+      'https://it-incubator.io/new/FrO3tox5Efs0KgUp95aA2QbCmH32uQkqMPYQqjeKpaaCtVu3GXzviSqQ6ZrIYDrdOh96ckaiWI6iCbHrGMiTNRoUeR5i3LI3hGqG',
+  },
 };
 
 export const preparedPost = {
@@ -66,5 +68,5 @@ export const preparedPost = {
     shortDescription: '',
     content: '',
     blogId: '',
-  }
+  },
 };

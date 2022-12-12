@@ -1,19 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { BlogDTO } from '../api/dto/blogDTO';
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { giveSkipNumber } from '../../../helper.functions';
+import { BlogDto } from '../../api/dto/blog.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
+import { giveSkipNumber } from '../../../../helper.functions';
 import { BlogDBModel } from 'src/modules/super-admin/infrastructure/entity/blog-db.model';
-import { BlogSchema } from '../../super-admin/infrastructure/entity/blog.schema';
-import { IBloggerBlogRepository } from "./blogger-blog-repository.interface";
+import { BlogSchema } from '../../../super-admin/infrastructure/entity/blog.schema';
+import { IBloggerBlogRepository } from './blogger-blog-repository.interface';
 
 @Injectable()
 export class BloggerBlogRepository implements IBloggerBlogRepository {
-  async getBlogs(userId: string, query: QueryParametersDTO): Promise<BlogDBModel[]> {
-    return BlogSchema.find({
+  async getBlogs(
+    userId: string,
+    query: QueryParametersDto,
+  ): Promise<BlogDBModel[]> {
+    return BlogSchema.find(
+      {
         $and: [
           { userId, isBanned: false },
-          { name: { $regex: query.searchNameTerm, $options: 'i' } }
-        ]}, { _id: false, __v: false, userId: false, isBanned: false },
+          { name: { $regex: query.searchNameTerm, $options: 'i' } },
+        ],
+      },
+      { _id: false, __v: false, userId: false, isBanned: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
@@ -23,10 +29,7 @@ export class BloggerBlogRepository implements IBloggerBlogRepository {
 
   async getTotalCount(userId: string, searchNameTerm: string): Promise<number> {
     return BlogSchema.countDocuments({
-      $and: [
-        { userId },
-        { name: {$regex: searchNameTerm, $options: 'i' }}
-      ],
+      $and: [{ userId }, { name: { $regex: searchNameTerm, $options: 'i' } }],
     });
   }
 
@@ -43,7 +46,7 @@ export class BloggerBlogRepository implements IBloggerBlogRepository {
     }
   }
 
-  async updateBlog(blogId: string, inputModel: BlogDTO): Promise<boolean> {
+  async updateBlog(blogId: string, inputModel: BlogDto): Promise<boolean> {
     const result = await BlogSchema.updateOne(
       { id: blogId },
       {

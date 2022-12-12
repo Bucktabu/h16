@@ -1,19 +1,32 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { BlogDTO } from '../api/dto/blogDTO';
+import { Inject, Injectable } from '@nestjs/common';
+import { BlogDto } from '../api/dto/blog.dto';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { toBlogViewModel } from '../../../data-mapper/to-blog-view.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { BlogDBModel } from '../../super-admin/infrastructure/entity/blog-db.model';
 import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
-import { IBloggerBlogRepository } from "../infrastructure/blogger-blog-repository.interface";
+import { IBloggerBlogRepository } from '../infrastructure/blogs/blogger-blog-repository.interface';
+import { BanUserDto } from '../api/dto/ban-user.dto';
+import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.interface';
+import { BanInfoModel } from '../../super-admin/infrastructure/entity/banInfo.model';
+import { ViewBanInfoModel } from '../api/dto/view-ban-info.model';
+import { IUsersRepository } from '../../super-admin/infrastructure/users/users-repository.interface';
 
 @Injectable()
 export class BloggerBlogService {
-  constructor(@Inject(IBloggerBlogRepository) protected blogsRepository: IBloggerBlogRepository) {}
+  constructor(
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
+    @Inject(IBloggerBlogRepository)
+    protected blogsRepository: IBloggerBlogRepository,
+    @Inject(IUsersRepository) protected userRepository: IUsersRepository,
+  ) {}
 
-  async getBlogs(userId: string, query: QueryParametersDTO): Promise<ContentPageModel | null> {
+  async getBlogs(
+    userId: string,
+    query: QueryParametersDto,
+  ): Promise<ContentPageModel | null> {
     const blogs = await this.blogsRepository.getBlogs(userId, query);
 
     if (!blogs) {
@@ -21,7 +34,8 @@ export class BloggerBlogService {
     }
 
     const totalCount = await this.blogsRepository.getTotalCount(
-      userId, query.searchNameTerm,
+      userId,
+      query.searchNameTerm,
     );
 
     return paginationContentPage(
@@ -32,9 +46,27 @@ export class BloggerBlogService {
     );
   }
 
+  async getBannedUsers(
+    blogId: string,
+    query: QueryParametersDto,
+  ): Promise<ContentPageModel> {
+    const banInfo = await this.banInfoRepository.getBannedUsers(blogId);
+    const totalCount = await this.banInfoRepository.getTotalCount(blogId);
+    const viewBanInfo = await Promise.all(
+      banInfo.map(async (b) => await this.viewBanInfo(b)),
+    );
+
+    return paginationContentPage(
+      query.pageNumber,
+      query.pageSize,
+      viewBanInfo,
+      totalCount,
+    );
+  }
+
   async createBlog(
     userId: string,
-    inputModel: BlogDTO,
+    inputModel: BlogDto,
   ): Promise<BlogViewModel | null> {
     const newBlog = new BlogDBModel(
       uuidv4(),
@@ -43,7 +75,7 @@ export class BloggerBlogService {
       inputModel.description,
       inputModel.websiteUrl,
       new Date().toISOString(),
-      false
+      false,
     );
 
     const createdBlog = await this.blogsRepository.createBlog(newBlog);
@@ -55,11 +87,35 @@ export class BloggerBlogService {
     return toBlogViewModel(createdBlog);
   }
 
-  async updateBlog(blogId: string, inputModel: BlogDTO): Promise<boolean> {
+  async updateBlog(blogId: string, inputModel: BlogDto): Promise<boolean> {
     return await this.blogsRepository.updateBlog(blogId, inputModel);
+  }
+
+  async updateUserBanStatus(userId: string, dto: BanUserDto): Promise<boolean> {
+    const banDate = new Date();
+
+    return await this.banInfoRepository.bloggerUpdateBanStatus(
+      userId,
+      dto,
+      banDate,
+    );
   }
 
   async deleteBlog(blogId: string): Promise<boolean> {
     return await this.blogsRepository.deleteBlog(blogId);
+  }
+
+  private async viewBanInfo(banInfo: BanInfoModel): Promise<ViewBanInfoModel> {
+    const login = await this.userRepository.getLogin(banInfo.id);
+
+    return {
+      id: banInfo.id,
+      login,
+      banInfo: {
+        isBanned: banInfo.isBanned,
+        banDate: banInfo.banDate,
+        banReason: banInfo.banReason,
+      },
+    };
   }
 }

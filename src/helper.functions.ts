@@ -3,9 +3,10 @@ import { PostViewModel } from './modules/public/posts/api/dto/postsView.model';
 import { UserViewModelWithBanInfo } from './modules/super-admin/api/dto/userView.model';
 import bcrypt from 'bcrypt';
 import { BlogViewModel } from './modules/public/blogs/api/dto/blogView.model';
-import { BlogViewWithOwnerInfoModel } from "./modules/super-admin/api/dto/blog-view-with-owner-info.model";
-import { ContentPageModel } from "./global-model/contentPage.model";
-import { settings } from "./settings";
+import { BlogViewWithOwnerInfoModel } from './modules/super-admin/api/dto/blog-view-with-owner-info.model';
+import { ContentPageModel } from './global-model/contentPage.model';
+import { settings } from './settings';
+import { ViewBanInfoModel } from './modules/blogger/api/dto/view-ban-info.model';
 
 export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
   return (pageNumber - 1) * pageSize;
@@ -16,10 +17,12 @@ export const givePagesCount = (totalCount: number, pageSize: number) => {
 };
 
 export const _generateHash = async (password: string) => {
-  const passwordSalt = await bcrypt.genSalt(Number(settings.SALT_GENERATE_ROUND));
+  const passwordSalt = await bcrypt.genSalt(
+    Number(settings.SALT_GENERATE_ROUND),
+  );
   const passwordHash = await bcrypt.hash(password, passwordSalt);
 
-  return {passwordSalt, passwordHash};
+  return { passwordSalt, passwordHash };
 };
 
 export const paginationContentPage = (
@@ -30,7 +33,8 @@ export const paginationContentPage = (
     | BlogViewWithOwnerInfoModel[]
     | PostViewModel[]
     | UserViewModelWithBanInfo[]
-    | CommentViewModel[],
+    | CommentViewModel[]
+    | ViewBanInfoModel[],
   totalCount: number,
 ): ContentPageModel => {
   return {

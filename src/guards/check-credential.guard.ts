@@ -1,18 +1,21 @@
 import {
   CanActivate,
-  ExecutionContext, Inject,
+  ExecutionContext,
+  Inject,
   Injectable,
-  UnauthorizedException
-} from "@nestjs/common";
+  UnauthorizedException,
+} from '@nestjs/common';
 import bcrypt from 'bcrypt';
 import { UserDBModel } from '../modules/super-admin/infrastructure/entity/userDB.model';
-import { IUsersRepository } from "../modules/super-admin/infrastructure/users-repository.interface";
-import { IBanInfo } from "../modules/super-admin/infrastructure/ban-info.interface";
+import { IUsersRepository } from '../modules/super-admin/infrastructure/users/users-repository.interface';
+import { IBanInfo } from '../modules/super-admin/infrastructure/ban-info/ban-info.interface';
 
 @Injectable()
 export class CheckCredentialGuard implements CanActivate {
-  constructor(@Inject(IUsersRepository) protected usersRepository: IUsersRepository,
-              @Inject(IBanInfo) protected banInfoRepository: IBanInfo) {}
+  constructor(
+    @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
@@ -26,7 +29,7 @@ export class CheckCredentialGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const banInfo = await this.banInfoRepository.getBanInfo(user.id)
+    const banInfo = await this.banInfoRepository.getBanInfo(user.id);
 
     if (banInfo.isBanned) {
       throw new UnauthorizedException();

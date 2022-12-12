@@ -7,7 +7,7 @@ const likesScheme = new mongoose.Schema<LikesModel>({
   status: { type: String, required: true },
   addedAt: { type: String, required: true },
   login: { type: String, required: true },
-  isBanned: { type: Boolean, default: false }
+  isBanned: { type: Boolean, default: false },
 });
 
 export const LikesScheme = mongoose.model('likes', likesScheme);

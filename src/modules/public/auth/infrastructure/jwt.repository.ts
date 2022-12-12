@@ -1,5 +1,5 @@
 import { TokenBlackListScheme } from './entity/tokenBlackList.scheme';
-import { IJwtRepository } from "./jwt-repository.interface";
+import { IJwtRepository } from './jwt-repository.interface';
 
 export class JwtRepository implements IJwtRepository {
   async giveToken(refreshToken: string): Promise<string> {
@@ -8,10 +8,10 @@ export class JwtRepository implements IJwtRepository {
 
   async addTokenInBlackList(refreshToken: string): Promise<boolean> {
     try {
-      await TokenBlackListScheme.create({ refreshToken })
-      return true
+      await TokenBlackListScheme.create({ refreshToken });
+      return true;
     } catch (e) {
-      return false
+      return false;
     }
   }
 }

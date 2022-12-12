@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
@@ -6,14 +6,14 @@ import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
 import { CommentViewModel } from '../api/dto/commentView.model';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { UserDBModel } from '../../../super-admin/infrastructure/entity/userDB.model';
 import { toCommentOutputBeforeCreate } from '../../../../data-mapper/to-comment-view-before-create.model';
-import { ICommentsRepository } from "../infrastructure/comments-repository.interface";
-import { ILikesRepository } from "../../likes/infrastructure/likes-repository.interface";
-import { IBanInfo } from "../../../super-admin/infrastructure/ban-info.interface";
+import { ICommentsRepository } from '../infrastructure/comments-repository.interface';
+import { ILikesRepository } from '../../likes/infrastructure/likes-repository.interface';
+import { IBanInfo } from '../../../super-admin/infrastructure/ban-info/ban-info.interface';
 
 @Injectable()
 export class CommentsService {
@@ -21,13 +21,14 @@ export class CommentsService {
     protected likesService: LikesService,
     protected jwtService: JwtService,
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
-    @Inject(ICommentsRepository) protected commentsRepository: ICommentsRepository,
+    @Inject(ICommentsRepository)
+    protected commentsRepository: ICommentsRepository,
     @Inject(ILikesRepository) protected likesRepository: ILikesRepository,
   ) {}
 
   async getComments(
     postId: string,
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
     token?: string,
   ): Promise<ContentPageModel | null> {
     const commentsDB = await this.commentsRepository.getComments(query, postId);
@@ -60,7 +61,7 @@ export class CommentsService {
       return null;
     }
 
-    const banInfo = await this.banInfoRepository.getBanInfo(comment.userId)
+    const banInfo = await this.banInfoRepository.getBanInfo(comment.userId);
 
     if (banInfo.isBanned) {
       return null;

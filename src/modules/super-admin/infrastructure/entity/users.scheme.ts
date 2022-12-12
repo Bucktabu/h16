@@ -1,8 +1,8 @@
-import mongoose, { Model } from "mongoose";
+import mongoose, { Model } from 'mongoose';
 import { UserDBModel } from './userDB.model';
-import { UserDTO } from "../../api/dto/userDTO";
+import { UserDTO } from '../../api/dto/userDTO';
 
-const usersScheme = new mongoose.Schema<UserDBModel/*, UserModelStaticType*/>({
+const usersScheme = new mongoose.Schema<UserDBModel /*, UserModelStaticType*/>({
   id: { type: String, required: true },
   login: { type: String, required: true },
   email: { type: String, required: true },
@@ -11,7 +11,10 @@ const usersScheme = new mongoose.Schema<UserDBModel/*, UserModelStaticType*/>({
   createdAt: { type: String, required: true },
 });
 
-export const UserScheme = mongoose.model<UserDBModel/*, UserModelStaticType*/>('users', usersScheme);
+export const UserScheme = mongoose.model<UserDBModel /*, UserModelStaticType*/>(
+  'users',
+  usersScheme,
+);
 
 // type UserModelStaticType = Model<UserDBModel> & {
 //   makeInstance(id: string, dto: UserDTO, hash: any, createdAt: Date): any

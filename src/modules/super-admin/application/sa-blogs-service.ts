@@ -1,21 +1,21 @@
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { BindBlogDTO } from '../api/dto/bind-blog.dto';
-import { Inject, Injectable } from "@nestjs/common";
-import { BlogDBModel } from "../infrastructure/entity/blog-db.model";
-import { BlogViewWithOwnerInfoModel } from "../api/dto/blog-view-with-owner-info.model";
-import { ISaBlogsRepository } from "../infrastructure/sa-blogs-repository.interface";
-import { IUsersRepository } from "../infrastructure/users-repository.interface";
+import { Inject, Injectable } from '@nestjs/common';
+import { BlogDBModel } from '../infrastructure/entity/blog-db.model';
+import { BlogViewWithOwnerInfoModel } from '../api/dto/blog-view-with-owner-info.model';
+import { ISaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs-repository.interface';
+import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
 
 @Injectable()
 export class SaBlogsService {
   constructor(
     @Inject(ISaBlogsRepository) protected saBlogsRepository: ISaBlogsRepository,
-    @Inject(IUsersRepository) protected userRepository: IUsersRepository
+    @Inject(IUsersRepository) protected userRepository: IUsersRepository,
   ) {}
 
-  async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {
+  async getBlogs(query: QueryParametersDto): Promise<ContentPageModel | null> {
     const blogsDB = await this.saBlogsRepository.getBlogs(query);
 
     if (!blogsDB) {
@@ -23,7 +23,7 @@ export class SaBlogsService {
     }
 
     const blogs = await Promise.all(
-      blogsDB.map(async  (b) => await this.addOwnerInfo(b))
+      blogsDB.map(async (b) => await this.addOwnerInfo(b)),
     );
 
     const totalCount = await this.saBlogsRepository.getTotalCount(
@@ -42,14 +42,22 @@ export class SaBlogsService {
     return this.saBlogsRepository.bindBlog(params);
   }
 
-  private async addOwnerInfo(blog: BlogDBModel): Promise<BlogViewWithOwnerInfoModel> {
-    const ownerInfo = await this.userRepository.getUserByIdOrLoginOrEmail(blog.userId)
+  async updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
+    return this.saBlogsRepository.updateBlogBanStatus(blogId, isBanned)
+  }
 
-    let userId = null
-    let userLogin = null
+  private async addOwnerInfo(
+    blog: BlogDBModel,
+  ): Promise<BlogViewWithOwnerInfoModel> {
+    const ownerInfo = await this.userRepository.getUserByIdOrLoginOrEmail(
+      blog.userId,
+    );
+
+    let userId = null;
+    let userLogin = null;
     if (ownerInfo) {
-      userId = ownerInfo.id
-      userLogin = ownerInfo.login
+      userId = ownerInfo.id;
+      userLogin = ownerInfo.login;
     }
 
     return {
@@ -60,8 +68,8 @@ export class SaBlogsService {
       createdAt: blog.createdAt,
       blogOwnerInfo: {
         userId,
-        userLogin
-      }
-    }
+        userLogin,
+      },
+    };
   }
 }

@@ -1,6 +1,6 @@
 export interface IJwtRepository {
-  giveToken(refreshToken: string): Promise<string>
-  addTokenInBlackList(refreshToken: string): Promise<boolean>
+  giveToken(refreshToken: string): Promise<string>;
+  addTokenInBlackList(refreshToken: string): Promise<boolean>;
 }
 
-export const IJwtRepository = 'IJwtRepository'
+export const IJwtRepository = 'IJwtRepository';

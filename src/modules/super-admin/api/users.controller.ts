@@ -6,28 +6,31 @@ import {
   HttpCode,
   NotFoundException,
   Param,
-  Post, Put,
+  Post,
+  Put,
   Query,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { UsersService } from '../application/users.service';
-import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
-import { BanUserDTO } from "./dto/ban-user.dto";
-import { CreateUserUseCase } from "../use-cases/create-user.use-case";
+import { BanUserDTO } from './dto/ban-user.dto';
+import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 
 @UseGuards(AuthBasicGuard)
 @Controller('sa/users')
 export class UsersController {
-  constructor(protected usersService: UsersService,
-              protected createUserUseCase: CreateUserUseCase) {}
+  constructor(
+    protected usersService: UsersService,
+    protected createUserUseCase: CreateUserUseCase,
+  ) {}
 
   @Get()
   getUsers(
     @Query()
-    query: QueryParametersDTO,
+    query: QueryParametersDto,
   ) {
     return this.usersService.getUsers(query);
   }
@@ -42,9 +45,11 @@ export class UsersController {
 
   @Put(':userId/ban')
   @HttpCode(204)
-  async updateBanStatus(@Body() dto: BanUserDTO,
-                @Param('userId') userId: string) {
-    return await this.usersService.updateBanStatus(userId, dto)
+  async updateBanStatus(
+    @Body() dto: BanUserDTO,
+    @Param('userId') userId: string,
+  ) {
+    return await this.usersService.updateBanStatus(userId, dto);
   }
 
   @Delete(':id')

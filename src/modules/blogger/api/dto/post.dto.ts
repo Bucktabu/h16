@@ -1,7 +1,7 @@
 import { IsString, Length } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 
-export class PostDTO {
+export class PostDto {
   @IsString()
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @Length(3, 30)

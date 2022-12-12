@@ -1,8 +1,8 @@
-import { PostDBModel } from './entity/post-db.model';
-import { PostsScheme } from './entity/posts.scheme';
-import { PostDTO } from '../api/dto/postDTO';
-import { Injectable } from "@nestjs/common";
-import { IBloggerPostRepository } from "./blogger-post-repository.interface";
+import { PostDBModel } from '../entity/post-db.model';
+import { PostsScheme } from '../entity/posts.scheme';
+import { PostDto } from '../../api/dto/post.dto';
+import { Injectable } from '@nestjs/common';
+import { IBloggerPostRepository } from './blogger-post-repository.interface';
 
 @Injectable()
 export class BloggerPostRepository implements IBloggerPostRepository {
@@ -15,7 +15,7 @@ export class BloggerPostRepository implements IBloggerPostRepository {
     }
   }
 
-  async updatePost(postId: string, dto: PostDTO): Promise<boolean> {
+  async updatePost(postId: string, dto: PostDto): Promise<boolean> {
     const result = await PostsScheme.updateOne(
       { id: postId },
       {

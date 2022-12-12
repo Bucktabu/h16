@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { LikesScheme } from './entity/likes.scheme';
 import { NewestLikesModel } from './entity/newestLikes.model';
-import { LikesModel } from "./entity/likes.model";
-import { ILikesRepository } from "./likes-repository.interface";
+import { LikesModel } from './entity/likes.model';
+import { ILikesRepository } from './likes-repository.interface';
 
 @Injectable()
 export class LikesRepository implements ILikesRepository {
-  async getUserReaction(parentId: string, userId: string): Promise<LikesModel | null> {
+  async getUserReaction(
+    parentId: string,
+    userId: string,
+  ): Promise<LikesModel | null> {
     try {
       return LikesScheme.findOne(
         { parentId, userId, isBanned: false },
@@ -32,10 +35,18 @@ export class LikesRepository implements ILikesRepository {
   }
 
   async getLikeReactionsCount(parentId: string): Promise<number> {
-    return LikesScheme.countDocuments({ parentId, status: 'Like', isBanned: false });
+    return LikesScheme.countDocuments({
+      parentId,
+      status: 'Like',
+      isBanned: false,
+    });
   }
   async getDislikeReactionsCount(parentId: string): Promise<number> {
-    return LikesScheme.countDocuments({ parentId, status: 'Dislike', isBanned: false });
+    return LikesScheme.countDocuments({
+      parentId,
+      status: 'Dislike',
+      isBanned: false,
+    });
   }
 
   async updateUserReaction(
@@ -59,10 +70,7 @@ export class LikesRepository implements ILikesRepository {
 
   async updateBanStatus(userId: string, isBanned: boolean): Promise<boolean> {
     try {
-      await LikesScheme.updateOne(
-        { userId },
-        { $set: { isBanned } },
-      );
+      await LikesScheme.updateOne({ userId }, { $set: { isBanned } });
       return true;
     } catch (e) {
       return false;

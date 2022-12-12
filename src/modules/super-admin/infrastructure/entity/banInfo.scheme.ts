@@ -6,6 +6,7 @@ const banInfoScheme = new mongoose.Schema<BanInfoModel>({
   isBanned: { type: Boolean, required: true, default: false },
   banDate: { type: Date },
   banReason: { type: String },
+  blogId: { type: String },
 });
 
 export const BanInfoScheme = mongoose.model('banInfo', banInfoScheme);

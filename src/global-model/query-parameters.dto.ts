@@ -2,7 +2,7 @@ import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import { SortDirections, SortParametersModel } from './sort-parameters.model';
 
-export class QueryParametersDTO {
+export class QueryParametersDto {
   @IsEnum(SortParametersModel)
   @IsOptional()
   sortBy: string = SortParametersModel.CreatedAt;

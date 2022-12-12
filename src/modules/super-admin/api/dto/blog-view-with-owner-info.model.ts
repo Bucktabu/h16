@@ -6,8 +6,8 @@ export class BlogViewWithOwnerInfoModel {
     public websiteUrl: string,
     public createdAt: string,
     public blogOwnerInfo: {
-      userId: string,
-      userLogin: string
-    }
+      userId: string;
+      userLogin: string;
+    },
   ) {}
 }

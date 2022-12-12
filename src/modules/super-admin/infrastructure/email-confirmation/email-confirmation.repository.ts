@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { EmailConfirmationScheme } from './entity/emailConfirm.scheme';
-import { EmailConfirmationModel } from './entity/emailConfirmation.model';
-import { IEmailConfirmation } from "./email-confirmation.interface";
+import { EmailConfirmationScheme } from '../entity/emailConfirm.scheme';
+import { EmailConfirmationModel } from '../entity/emailConfirmation.model';
+import { IEmailConfirmation } from './email-confirmation.interface';
 
 @Injectable()
 export class EmailConfirmationRepository implements IEmailConfirmation {
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
-  ): Promise</*EmailConfirmationModel | null*/any> { // TODO Type error
+  ): Promise</*EmailConfirmationModel | null*/ any> {
+    // TODO Type error
     return EmailConfirmationScheme.findOne(
       { $or: [{ confirmationCode: codeOrId }, { id: codeOrId }] },
       { _id: false, __v: false },
@@ -24,17 +25,18 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
           confirmationCode: false,
           expirationDate: false,
           __v: false,
-        }
-      )
+        },
+      );
 
-      return result.isConfirmed
+      return result.isConfirmed;
     } catch (e) {
-      return null
+      return null;
     }
-
   }
 
-  async createEmailConfirmation(emailConfirmation: EmailConfirmationModel): Promise<EmailConfirmationModel | null> {
+  async createEmailConfirmation(
+    emailConfirmation: EmailConfirmationModel,
+  ): Promise<EmailConfirmationModel | null> {
     try {
       await EmailConfirmationScheme.create(emailConfirmation);
       return emailConfirmation;

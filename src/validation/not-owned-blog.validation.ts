@@ -1,9 +1,11 @@
-import { ExecutionContext, Inject, PipeTransform } from "@nestjs/common";
-import { SaBlogsRepository } from '../modules/super-admin/infrastructure/sa-blogs.repository';
-import { ISaBlogsRepository } from "../modules/super-admin/infrastructure/sa-blogs-repository.interface";
+import { ExecutionContext, Inject, PipeTransform } from '@nestjs/common';
+import { SaBlogsRepository } from '../modules/super-admin/infrastructure/sa-blogs/sa-blogs.repository';
+import { ISaBlogsRepository } from '../modules/super-admin/infrastructure/sa-blogs/sa-blogs-repository.interface';
 
 export class NotOwnedBlogValidation implements PipeTransform {
-  constructor(@Inject(ISaBlogsRepository) protected saBlogRepository: ISaBlogsRepository) {}
+  constructor(
+    @Inject(ISaBlogsRepository) protected saBlogRepository: ISaBlogsRepository,
+  ) {}
 
   async transform(context: ExecutionContext, metadata) {
     const req = context.switchToHttp().getRequest();

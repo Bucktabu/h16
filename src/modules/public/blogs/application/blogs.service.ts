@@ -1,16 +1,18 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { QueryParametersDTO } from '../../../../global-model/query-parameters.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
-import { toBlogViewModel } from "../../../../data-mapper/to-blog-view.model";
-import { BlogViewModel } from "../api/dto/blogView.model";
-import { IBlogsRepository } from "../infrastructure/blogs-repository.interface";
+import { toBlogViewModel } from '../../../../data-mapper/to-blog-view.model';
+import { BlogViewModel } from '../api/dto/blogView.model';
+import { IBlogsRepository } from '../infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class BlogsService {
-  constructor(@Inject(IBlogsRepository) protected blogsRepository: IBlogsRepository) {}
+  constructor(
+    @Inject(IBlogsRepository) protected blogsRepository: IBlogsRepository,
+  ) {}
 
-  async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {
+  async getBlogs(query: QueryParametersDto): Promise<ContentPageModel | null> {
     const blogs = await this.blogsRepository.getBlogs(query);
 
     if (!blogs) {
@@ -30,10 +32,10 @@ export class BlogsService {
   }
 
   async getBlogById(blogId: string): Promise<BlogViewModel | null> {
-    const blog = await this.blogsRepository.getBlogById(blogId)
+    const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
-      return null
+      return null;
     }
 
     return toBlogViewModel(blog);
