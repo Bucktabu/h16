@@ -14,7 +14,7 @@ export class BanInfoRepository implements IBanInfo {
     return BanInfoScheme.find({
       $and: [
         { id },
-        {isBanned: true}
+        { isBanned: true }
       ]}, { _id: false, __v: false }).lean();
   }
 
@@ -22,7 +22,7 @@ export class BanInfoRepository implements IBanInfo {
     return BanInfoScheme.countDocuments({
       $and: [
         { id },
-        {isBanned: true}
+        { isBanned: true }
       ] });
   }
 
@@ -44,6 +44,7 @@ export class BanInfoRepository implements IBanInfo {
     const result = await BanInfoScheme.updateOne(
       { id },
       { $set: { isBanned, banReason, banDate } },
+      { upsert: true }
     );
 
     return result.matchedCount === 1;
@@ -54,21 +55,16 @@ export class BanInfoRepository implements IBanInfo {
     dto: BanUserDto,
     banDate: Date,
   ): Promise<boolean> {
-    try {
-      await BanInfoScheme.updateOne(
+    const result = await BanInfoScheme.updateOne(
+      {
+        id,
+        blogId: dto.blogId,
+      },
         {
-          id,
-          blogId: dto.blogId,
-        },
-        {
-          $set: { isBanned: dto.isBanned, banReason: dto.banReason, banDate },
-        },
-        { upsert: true },
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
+        $set: { isBanned: dto.isBanned, banReason: dto.banReason, banDate },
+      }
+    );
+    return result.matchedCount === 1;
   }
 
   async deleteBanInfoById(id: string): Promise<boolean> {

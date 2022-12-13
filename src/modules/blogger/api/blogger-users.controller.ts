@@ -2,16 +2,17 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
+  HttpCode, NotFoundException,
   Param,
   Put,
   Query,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { BloggerBlogService } from '../application/blogs.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
+import { ForbiddenGuard } from "../../../guards/forbidden.guard";
 
 @UseGuards(AuthBearerGuard)
 @Controller('blogger/users')
@@ -26,12 +27,19 @@ export class BloggerUsersController {
     return await this.blogsService.getBannedUsers(blogId, query);
   }
 
+  @UseGuards(ForbiddenGuard)
   @Put(':id/ban')
   @HttpCode(204)
   async updateUserBanStatus(
     @Body() dto: BanUserDto,
     @Param('id') userId: string,
   ) {
-    return await this.blogsService.updateUserBanStatus(userId, dto);
+    const result = await this.blogsService.updateUserBanStatus(userId, dto);
+
+    if (!result) {
+      throw new NotFoundException()
+    }
+
+    return
   }
 }
