@@ -42,9 +42,6 @@ import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
 import { BlogExistValidator } from './validation/blog-exist.validator';
 import { ConfirmationCodeValidator } from './validation/confirmation-code.validator';
 import { CreateUserUseCase } from './modules/super-admin/use-cases/create-user.use-case';
-import {
-  /*Blog,*/ BlogSchema,
-} from './modules/super-admin/infrastructure/entity/blog.schema';
 import { IBloggerBlogRepository } from './modules/blogger/infrastructure/blogs/blogger-blog-repository.interface';
 import { IBloggerPostRepository } from './modules/blogger/infrastructure/posts/blogger-post-repository.interface';
 import { IJwtRepository } from './modules/public/auth/infrastructure/jwt-repository.interface';
@@ -57,9 +54,11 @@ import { IBanInfo } from './modules/super-admin/infrastructure/ban-info/ban-info
 import { IEmailConfirmation } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.interface';
 import { ISaBlogsRepository } from './modules/super-admin/infrastructure/sa-blogs/sa-blogs-repository.interface';
 import { IUsersRepository } from './modules/super-admin/infrastructure/users/users-repository.interface';
+import { BloggerUsersController } from "./modules/blogger/api/blogger-users.controller";
 
 const controllers = [
   BloggerBlogsController,
+  BloggerUsersController,
   SaBlogsController,
   AuthController,
   BlogsController,

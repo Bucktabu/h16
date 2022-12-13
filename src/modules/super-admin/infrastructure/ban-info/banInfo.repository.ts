@@ -54,7 +54,6 @@ export class BanInfoRepository implements IBanInfo {
     dto: BanUserDto,
     banDate: Date,
   ): Promise<boolean> {
-    console.log(id, dto, banDate);
     try {
       await BanInfoScheme.updateOne(
         {
