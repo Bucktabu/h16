@@ -51,13 +51,13 @@ export class PostsService {
     token?: string,
   ): Promise<PostViewModel | null> {
     const post = await this.postsRepository.getPostById(postId);
-
+    console.log(post);
     if (!post) {
       return null;
     }
-    console.log(token);
+
     const userId = await this.jwtService.getUserIdViaToken(token);
-    console.log(userId);
+
     return await this.addLikesInfoForPost(post, userId);
   }
 
