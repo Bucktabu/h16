@@ -77,7 +77,7 @@ describe('Integration test for super admin service', () => {
 
   const saBlogsRepository = new SaBlogsRepository();
   const userRepository = new UsersRepository();
-  const saBlogsService = new SaBlogsService(saBlogsRepository, userRepository);
+  const saBlogsService = new SaBlogsService(banInfoRepository, saBlogsRepository, userRepository);
   describe('Get blogs', () => {
     beforeAll(async () => {
       await mongoose.connection.db.dropDatabase();
