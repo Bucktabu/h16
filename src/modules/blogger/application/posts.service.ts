@@ -28,6 +28,7 @@ export class BloggerPostService {
       blogId,
       await this.getBlogName(blogId),
       new Date().toISOString(),
+      false
     );
 
     const createdPost = await this.postsRepository.createPost(newPost);

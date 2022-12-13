@@ -9,9 +9,9 @@ import { ISaBlogsRepository } from './sa-blogs-repository.interface';
 @Injectable()
 export class SaBlogsRepository implements ISaBlogsRepository {
   async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
-    return BlogSchema.find(
-      { name: { $regex: query.searchNameTerm, $options: 'i' } },
-      { _id: false, __v: false },
+    return BlogSchema.find({
+        $and: [{name: { $regex: query.searchNameTerm, $options: 'i' }}, {isBanned: false}]
+      }, { _id: false, __v: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
@@ -21,7 +21,7 @@ export class SaBlogsRepository implements ISaBlogsRepository {
 
   async getTotalCount(searchNameTerm: string): Promise<number> {
     return BlogSchema.countDocuments({
-      name: { $regex: searchNameTerm, $options: 'i' },
+      $and: [{name: { $regex: searchNameTerm, $options: 'i' }}, {isBanned: false}],
     });
   }
 

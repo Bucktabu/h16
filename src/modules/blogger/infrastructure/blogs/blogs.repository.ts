@@ -17,6 +17,7 @@ export class BloggerBlogRepository implements IBloggerBlogRepository {
         $and: [
           { userId, isBanned: false },
           { name: { $regex: query.searchNameTerm, $options: 'i' } },
+          { isBanned: false },
         ],
       },
       { _id: false, __v: false, userId: false, isBanned: false },
@@ -29,12 +30,15 @@ export class BloggerBlogRepository implements IBloggerBlogRepository {
 
   async getTotalCount(userId: string, searchNameTerm: string): Promise<number> {
     return BlogSchema.countDocuments({
-      $and: [{ userId }, { name: { $regex: searchNameTerm, $options: 'i' } }],
+      $and: [
+        { userId },
+        { name: { $regex: searchNameTerm, $options: 'i' } },
+        { isBanned: false }],
     });
   }
 
   async getBlogById(id: string): Promise<BlogDBModel | null> {
-    return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
+    return BlogSchema.findOne({ id: id, isBanned: false }, { _id: false, __v: false });
   }
 
   async createBlog(newBlog: BlogDBModel): Promise<BlogDBModel | null> {

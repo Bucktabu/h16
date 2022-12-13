@@ -11,8 +11,11 @@ export class PostsRepository implements IPostsRepository {
     query: QueryParametersDto,
     blogId: string | undefined,
   ): Promise<PostDBModel[]> {
-    return PostsScheme.find(
-      { blogId: { $regex: blogId } },
+    return PostsScheme.find({
+      $and: [
+        { blogId: { $regex: blogId } },
+        { isBanned: false }
+      ]},
       { _id: false, __v: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
@@ -22,10 +25,20 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async getTotalCount(blogId: string | undefined): Promise<number> {
-    return PostsScheme.countDocuments({ blogId: { $regex: blogId } });
+    return PostsScheme.countDocuments({
+      $and: [
+        { blogId: { $regex: blogId } },
+        { isBanned: false }
+      ]});
   }
 
   async getPostById(postId: string): Promise<PostDBModel | null> {
-    return PostsScheme.findOne({ id: postId }, { _id: false, __v: false });
+    return PostsScheme.findOne({
+      $and: [
+        { id: postId },
+        { isBanned: false }
+      ]
+    },
+    { _id: false, __v: false });
   }
 }

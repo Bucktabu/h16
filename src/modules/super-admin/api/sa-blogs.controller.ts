@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, UseGuards } from "@nestjs/common";
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { SaBlogsService } from '../application/sa-blogs-service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
@@ -19,11 +19,13 @@ export class SaBlogsController {
   }
 
   @Put(':id/bind-with-user/:userId')
+  @HttpCode(204)
   bindBlog(@Param() params: BindBlogDTO) {
     return this.saBlogsService.bindBlog(params);
   }
 
   @Put(':id/ban')
+  @HttpCode(204)
   updateBlogStatus(
     @Body() dto: BanBlogDto,// TODO можно ли не создавать отдельную дто для одного параметра
     @Param('id') blogId: string) {

@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   NotFoundException,
@@ -15,10 +14,8 @@ import {
 import { CommentsService } from '../../comments/application/comments.service';
 import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
-import { PostWithBlogIdDTO } from './dto/postDTO';
 import { Request } from 'express';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
-import { AuthBasicGuard } from '../../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../../guards/auth.bearer.guard';
 import { User } from '../../../../decorator/user.decorator';
 import { UserDBModel } from '../../../super-admin/infrastructure/entity/userDB.model';

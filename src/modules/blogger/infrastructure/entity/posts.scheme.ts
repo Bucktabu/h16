@@ -9,6 +9,7 @@ const postsScheme = new mongoose.Schema<PostDBModel>({
   blogId: { type: String, required: true },
   blogName: { type: String, required: true },
   createdAt: { type: String, required: true },
+  isBanned: { type: Boolean, default: false }
 });
 
 export const PostsScheme = mongoose.model('posts', postsScheme);

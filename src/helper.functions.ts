@@ -3,7 +3,7 @@ import { PostViewModel } from './modules/public/posts/api/dto/postsView.model';
 import { UserViewModelWithBanInfo } from './modules/super-admin/api/dto/userView.model';
 import bcrypt from 'bcrypt';
 import { BlogViewModel } from './modules/public/blogs/api/dto/blogView.model';
-import { BlogViewWithOwnerInfoModel } from './modules/super-admin/api/dto/blog-view-with-owner-info.model';
+import { BlogViewWithOwnerAndBanInfo } from './modules/super-admin/api/dto/blog-view-with-owner-and-ban.info';
 import { ContentPageModel } from './global-model/contentPage.model';
 import { settings } from './settings';
 import { ViewBanInfoModel } from './modules/blogger/api/dto/view-ban-info.model';
@@ -30,7 +30,7 @@ export const paginationContentPage = (
   pageSize: number,
   content:
     | BlogViewModel[]
-    | BlogViewWithOwnerInfoModel[]
+    | BlogViewWithOwnerAndBanInfo[]
     | PostViewModel[]
     | UserViewModelWithBanInfo[]
     | CommentViewModel[]

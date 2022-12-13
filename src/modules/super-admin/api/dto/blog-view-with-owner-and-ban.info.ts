@@ -1,4 +1,4 @@
-export class BlogViewWithOwnerInfoModel {
+export class BlogViewWithOwnerAndBanInfo {
   constructor(
     public id: string,
     public name: string,
@@ -9,5 +9,9 @@ export class BlogViewWithOwnerInfoModel {
       userId: string;
       userLogin: string;
     },
+    public banInfo: {
+      isBanned: boolean;
+      banDate: Date;
+    }
   ) {}
 }
