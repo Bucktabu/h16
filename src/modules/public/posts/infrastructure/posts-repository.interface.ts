@@ -8,6 +8,7 @@ export interface IPostsRepository {
   ): Promise<PostDBModel[]>;
   getTotalCount(blogId: string | undefined): Promise<number>;
   getPostById(postId: string): Promise<PostDBModel | null>;
+  updatePostsBanStatus(blogId: string, isBanned: boolean): Promise<boolean>;
 }
 
 export const IPostsRepository = 'IPostsRepository';

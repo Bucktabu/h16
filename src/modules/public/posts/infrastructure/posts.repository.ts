@@ -41,4 +41,13 @@ export class PostsRepository implements IPostsRepository {
     },
     { _id: false, __v: false });
   }
+
+  async updatePostsBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
+    try {
+      await PostsScheme.updateMany({ blogId }, {$set: {isBanned}})
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 }

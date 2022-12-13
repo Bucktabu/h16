@@ -1,13 +1,14 @@
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../helper.functions';
-import { BindBlogDTO } from '../api/dto/bind-blog.dto';
+import { BindBlogDto } from '../api/dto/bind-blog.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { BlogDBModel } from '../infrastructure/entity/blog-db.model';
 import { BlogViewWithOwnerAndBanInfo } from '../api/dto/blog-view-with-owner-and-ban.info';
 import { ISaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs-repository.interface';
 import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
 import { IBanInfo } from "../infrastructure/ban-info/ban-info.interface";
+import { IPostsRepository } from "../../public/posts/infrastructure/posts-repository.interface";
 
 @Injectable()
 export class SaBlogsService {
@@ -15,14 +16,15 @@ export class SaBlogsService {
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
     @Inject(ISaBlogsRepository) protected saBlogsRepository: ISaBlogsRepository,
     @Inject(IUsersRepository) protected userRepository: IUsersRepository,
+    @Inject(IPostsRepository) protected postsRepository: IPostsRepository,
   ) {}
 
   async getBlogs(query: QueryParametersDto): Promise<ContentPageModel | null> {
     const blogsDB = await this.saBlogsRepository.getBlogs(query);
 
-    if (!blogsDB) {
-      return null;
-    }
+    // if (!blogsDB.length) {
+    //   return null;
+    // }
 
     const blogs = await Promise.all(
       blogsDB.map(async (b) => await this.addOwnerInfo(b)),
@@ -40,11 +42,12 @@ export class SaBlogsService {
     );
   }
 
-  async bindBlog(params: BindBlogDTO) {
+  async bindBlog(params: BindBlogDto) {
     return this.saBlogsRepository.bindBlog(params);
   }
 
   async updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
+    await this.postsRepository.updatePostsBanStatus(blogId, isBanned)
     return this.saBlogsRepository.updateBlogBanStatus(blogId, isBanned)
   }
 

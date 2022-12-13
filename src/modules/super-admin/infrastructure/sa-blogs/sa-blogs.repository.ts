@@ -1,6 +1,6 @@
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../../helper.functions';
-import { BindBlogDTO } from '../../api/dto/bind-blog.dto';
+import { BindBlogDto } from '../../api/dto/bind-blog.dto';
 import { BlogDBModel } from '../entity/blog-db.model';
 import { BlogSchema } from '../entity/blog.schema';
 import { Injectable } from '@nestjs/common';
@@ -10,7 +10,9 @@ import { ISaBlogsRepository } from './sa-blogs-repository.interface';
 export class SaBlogsRepository implements ISaBlogsRepository {
   async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
     return BlogSchema.find({
-        $and: [{name: { $regex: query.searchNameTerm, $options: 'i' }}, {isBanned: false}]
+        $and: [
+          {name: { $regex: query.searchNameTerm, $options: 'i' }},
+          {isBanned: false}]
       }, { _id: false, __v: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
@@ -29,7 +31,7 @@ export class SaBlogsRepository implements ISaBlogsRepository {
     return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
   }
 
-  async bindBlog(params: BindBlogDTO): Promise<boolean> {
+  async bindBlog(params: BindBlogDto): Promise<boolean> {
     const result = await BlogSchema.updateOne(
       { id: params.id },
       { $set: { userId: params.userId } },

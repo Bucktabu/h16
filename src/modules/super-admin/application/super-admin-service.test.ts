@@ -11,6 +11,7 @@ import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { UsersRepository } from '../infrastructure/users/users.repository';
 import { SaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs.repository';
 import { SaBlogsService } from './sa-blogs-service';
+import { PostsRepository } from "../../public/posts/infrastructure/posts.repository";
 
 //jest.setTimeout(100000000)
 
@@ -77,7 +78,8 @@ describe('Integration test for super admin service', () => {
 
   const saBlogsRepository = new SaBlogsRepository();
   const userRepository = new UsersRepository();
-  const saBlogsService = new SaBlogsService(banInfoRepository, saBlogsRepository, userRepository);
+  const postRepository = new PostsRepository();
+  const saBlogsService = new SaBlogsService(banInfoRepository, saBlogsRepository, userRepository, postRepository);
   describe('Get blogs', () => {
     beforeAll(async () => {
       await mongoose.connection.db.dropDatabase();

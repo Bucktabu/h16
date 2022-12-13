@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, UseGuar
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { SaBlogsService } from '../application/sa-blogs-service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
-import { BindBlogDTO } from './dto/bind-blog.dto';
+import { BindBlogDto } from './dto/bind-blog.dto';
 import { BanBlogDto } from "./dto/ban-blog.dto";
 
 @UseGuards(AuthBasicGuard)
@@ -20,7 +20,7 @@ export class SaBlogsController {
 
   @Put(':id/bind-with-user/:userId')
   @HttpCode(204)
-  bindBlog(@Param() params: BindBlogDTO) {
+  bindBlog(@Param() params: BindBlogDto) {
     return this.saBlogsService.bindBlog(params);
   }
 
