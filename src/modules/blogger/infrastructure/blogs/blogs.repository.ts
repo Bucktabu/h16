@@ -50,9 +50,9 @@ export class BloggerBlogRepository implements IBloggerBlogRepository {
     }
   }
 
-  async updateBlog(blogId: string, inputModel: BlogDto): Promise<boolean> {
+  async updateBlog(id: string, inputModel: BlogDto): Promise<boolean> {
     const result = await BlogSchema.updateOne(
-      { id: blogId },
+      { id },
       {
         $set: {
           name: inputModel.name,
