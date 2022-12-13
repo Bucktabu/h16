@@ -5,6 +5,7 @@ export class CommentBDModel {
     public userId: string,
     public userLogin: string,
     public createdAt: string,
-    public postId?: string,
+    public bloggerId: string,
+    public postId?: string, // TODO убрать ? знак
   ) {}
 }

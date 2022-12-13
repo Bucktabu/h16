@@ -13,6 +13,7 @@ import { BloggerBlogService } from '../application/blogs.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { ForbiddenGuard } from "../../../guards/forbidden.guard";
+import { readdir } from "fs/promises";
 
 @UseGuards(AuthBearerGuard)
 @Controller('blogger/users')
@@ -24,7 +25,13 @@ export class BloggerUsersController {
     @Query() query: QueryParametersDto,
     @Param('id') blogId: string,
   ) {
-    return await this.blogsService.getBannedUsers(blogId, query);
+    const result = await this.blogsService.getBannedUsers(blogId, query);
+
+    if (!result) {
+      throw new NotFoundException()
+    }
+
+    return result
   }
 
   @UseGuards(ForbiddenGuard)

@@ -7,6 +7,7 @@ const commentsScheme = new mongoose.Schema<CommentBDModel>({
   userId: { type: String, required: true },
   userLogin: { type: String, required: true },
   createdAt: { type: String, required: true },
+  bloggerId: { type: String, required: true },
   postId: { type: String, required: true },
 });
 

@@ -6,6 +6,10 @@ import { IBloggerPostRepository } from './blogger-post-repository.interface';
 
 @Injectable()
 export class BloggerPostRepository implements IBloggerPostRepository {
+  async getPostById(postId: string): Promise<PostDBModel> {
+    return PostsScheme.findOne({postId})
+  }
+
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
     try {
       await PostsScheme.create(newPost);

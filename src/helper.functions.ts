@@ -7,6 +7,7 @@ import { BlogViewWithOwnerAndBanInfo } from './modules/super-admin/api/dto/blog-
 import { ContentPageModel } from './global-model/contentPage.model';
 import { settings } from './settings';
 import { ViewBanInfoModel } from './modules/blogger/api/dto/view-ban-info.model';
+import { CommentWithAdditionalInfoModel } from "./modules/blogger/api/dto/comment-with-additional-info.model";
 
 export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
   return (pageNumber - 1) * pageSize;
@@ -31,6 +32,7 @@ export const paginationContentPage = (
   content:
     | BlogViewModel[]
     | BlogViewWithOwnerAndBanInfo[]
+    | CommentWithAdditionalInfoModel[]
     | PostViewModel[]
     | UserViewModelWithBanInfo[]
     | CommentViewModel[]

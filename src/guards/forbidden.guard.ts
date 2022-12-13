@@ -18,7 +18,12 @@ export class ForbiddenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    const blog = await this.blogsRepository.getBlogById(req.params.blogId);
+    let blogId = req.params.blogId
+    if (!req.params.blogId) {
+      blogId = req.body.blogId
+    }
+
+    const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
       throw new NotFoundException();

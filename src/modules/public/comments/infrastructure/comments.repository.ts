@@ -9,10 +9,14 @@ import { ICommentsRepository } from './comments-repository.interface';
 export class CommentsRepository implements ICommentsRepository {
   async getComments(
     query: QueryParametersDto,
-    postId: string,
+    id: string,
   ): Promise<CommentBDModel[]> {
-    return CommentsSchema.find(
-      { postId },
+    return CommentsSchema.find({
+      $or: [
+        { postId: id },
+        { userId: id }
+      ]
+    },
       { _id: false, postId: false, __v: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })

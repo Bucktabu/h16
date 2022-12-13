@@ -49,9 +49,13 @@ export class BloggerBlogService {
   async getBannedUsers(
     blogId: string,
     query: QueryParametersDto,
-  ): Promise<ContentPageModel> {
+  ): Promise<ContentPageModel | null> {
     const banInfo = await this.banInfoRepository.getBannedUsers(blogId);
-    console.log(banInfo);
+
+    if (!banInfo) {
+      return null
+    }
+
     const totalCount = await this.banInfoRepository.getTotalCount(blogId);
     const viewBanInfo = await Promise.all(
       banInfo.map(async (b) => await this.viewBanInfo(b)),

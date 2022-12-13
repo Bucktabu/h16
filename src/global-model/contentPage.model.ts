@@ -4,6 +4,7 @@ import { PostViewModel } from '../modules/public/posts/api/dto/postsView.model';
 import { CommentViewModel } from '../modules/public/comments/api/dto/commentView.model';
 import { BlogViewWithOwnerAndBanInfo } from '../modules/super-admin/api/dto/blog-view-with-owner-and-ban.info';
 import { ViewBanInfoModel } from '../modules/blogger/api/dto/view-ban-info.model';
+import { CommentWithAdditionalInfoModel } from "../modules/blogger/api/dto/comment-with-additional-info.model";
 
 export class ContentPageModel {
   constructor(
@@ -14,6 +15,7 @@ export class ContentPageModel {
     public items:
       | BlogViewModel[]
       | BlogViewWithOwnerAndBanInfo[]
+      | CommentWithAdditionalInfoModel[]
       | PostViewModel[]
       | UserViewModel[]
       | CommentViewModel[]
