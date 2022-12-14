@@ -1,9 +1,11 @@
 import { BanInfoModel } from '../entity/banInfo.model';
 import { BanUserDto } from '../../../blogger/api/dto/ban-user.dto';
+import { QueryParametersDto } from "../../../../global-model/query-parameters.dto";
 
 export interface IBanInfo {
   getBanInfo(id: string): Promise<BanInfoModel>;
-  getBannedUsers(blogId: string): Promise<BanInfoModel[]>;
+  getBannedUsers(blogId: string, query: QueryParametersDto): Promise<BanInfoModel[]>;
+  getTotalCount(id: string, query: QueryParametersDto): Promise<number>;
   createBanInfo(banInfo: BanInfoModel): Promise<BanInfoModel | null>;
   saUpdateBanStatus(
     id: string,

@@ -3,6 +3,8 @@ import { BanInfoScheme } from '../entity/banInfo.scheme';
 import { Injectable } from '@nestjs/common';
 import { IBanInfo } from './ban-info.interface';
 import { BanUserDto } from '../../../blogger/api/dto/ban-user.dto';
+import { giveSkipNumber } from "../../../../helper.functions";
+import { QueryParametersDto } from "../../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class BanInfoRepository implements IBanInfo {
@@ -10,12 +12,16 @@ export class BanInfoRepository implements IBanInfo {
     return BanInfoScheme.findOne({ parentId }, { _id: false, id: false, __v: false });
   }
 
-  async getBannedUsers(blogId: string): Promise<BanInfoModel[]> {
+  async getBannedUsers(blogId: string, query: QueryParametersDto): Promise<BanInfoModel[]> {
     return BanInfoScheme.find({
       $and: [
         { blogId },
         { isBanned: true }
-      ]}, { _id: false, __v: false }).lean();
+      ]}, { _id: false, __v: false })
+      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+      .skip(giveSkipNumber(query.pageNumber, query.pageSize))
+      .limit(query.pageSize)
+      .lean();
   }
 
   async getTotalCount(id: string): Promise<number> {
