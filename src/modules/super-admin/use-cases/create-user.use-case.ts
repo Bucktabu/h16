@@ -46,7 +46,7 @@ export class CreateUserUseCase {
       false,
     );
 
-    const banInfo = new BanInfoModel(userAccountId, false, null, null, null);
+    const banInfo = new BanInfoModel(userAccountId, false, null, null, null, dto.login);
 
     const userAccount = new UserAccountModel(
       accountData,

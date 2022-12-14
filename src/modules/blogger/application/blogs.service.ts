@@ -62,31 +62,10 @@ export class BloggerBlogService {
       banInfo.map(async (b) => await this.viewBanInfo(b))
     );
 
-    const bannedUsers = viewBanInfo.sort((a, b) => {
-      if (query.sortDirection === SortDirections.Distending) {
-        if (a.login > b.login) {
-          return 1
-        }
-        if (a.login < b.login) {
-          return -1
-        }
-        return 0
-      }
-      if (query.sortDirection === SortDirections.Ascending) {
-        if (a.login > b.login) {
-          return -1
-        }
-        if (a.login < b.login) {
-          return 1
-        }
-        return 0
-      }
-    })
-
     return paginationContentPage(
       query.pageNumber,
       query.pageSize,
-      bannedUsers,
+      viewBanInfo,
       totalCount,
     );
   }

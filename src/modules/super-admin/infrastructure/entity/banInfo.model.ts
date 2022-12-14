@@ -5,5 +5,6 @@ export class BanInfoModel {
     public banDate: Date | null,
     public banReason: string | null,
     public blogId: string | null,
+    public userLogin: string | null,
   ) {}
 }

@@ -18,7 +18,7 @@ export class BanInfoRepository implements IBanInfo {
         { blogId },
         { isBanned: true }
       ]}, { _id: false, __v: false })
-      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+      .sort({ userLogin: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
       .lean();
