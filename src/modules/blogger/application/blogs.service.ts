@@ -112,11 +112,9 @@ export class BloggerBlogService {
   }
 
   private async viewBanInfo(banInfo: BanInfoModel): Promise<ViewBanInfoModel> {
-    const login = await this.userRepository.getLogin(banInfo.parentId);
-
     return {
       id: banInfo.parentId,
-      login,
+      login: banInfo.userLogin,
       banInfo: {
         isBanned: banInfo.isBanned,
         banDate: banInfo.banDate,
