@@ -24,14 +24,17 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
-    let banStatus = {}
+    let filter = {}
     if (query.banStatus === BanStatusModel.Banned) {
-      banStatus = true
+      filter = { banStatus: true }
     } else if (query.banStatus === BanStatusModel.NotBanned) {
-      banStatus = false
+      filter = { banStatus: false }
+    } else {
+      filter = { $and: [{ banStatus: false }, { banStatus: true }] }
     }
+
     return UserScheme.find({$and: [
-        {banStatus},
+        {filter},
         {$or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
             { email: { $regex: query.searchEmailTerm, $options: 'i' } },
@@ -68,14 +71,17 @@ export class UsersRepository implements IUsersRepository {
   async getTotalCount(
     query: QueryParametersDto
   ): Promise<number> {
-    let banStatus = {}
+    let filter = {}
     if (query.banStatus === BanStatusModel.Banned) {
-      banStatus = true
+      filter = { banStatus: true }
     } else if (query.banStatus === BanStatusModel.NotBanned) {
-      banStatus = false
+      filter = { banStatus: false }
+    } else {
+      filter = { $and: [{ banStatus: false }, { banStatus: true }] }
     }
+
     return UserScheme.countDocuments({$and: [
-        {banStatus},
+        {filter},
         {$or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
             { email: { $regex: query.searchEmailTerm, $options: 'i' } },
