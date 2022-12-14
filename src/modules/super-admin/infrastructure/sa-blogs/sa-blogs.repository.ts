@@ -10,7 +10,7 @@ import { BanStatusModel } from "../../../../global-model/ban-status.model";
 @Injectable()
 export class SaBlogsRepository implements ISaBlogsRepository {
   async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
-    let filter
+    let filter = {}
     if (query.banStatus === BanStatusModel.Banned) {
       filter = { isBanned: true }
     } else if (query.banStatus === BanStatusModel.NotBanned) {
@@ -30,7 +30,7 @@ export class SaBlogsRepository implements ISaBlogsRepository {
   }
 
   async getTotalCount(banStatus: string, searchNameTerm: string): Promise<number> {
-    let filter
+    let filter = {}
     if (banStatus === BanStatusModel.Banned) {
       filter = { isBanned: true }
     } else if (banStatus === BanStatusModel.NotBanned) {
