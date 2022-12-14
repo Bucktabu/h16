@@ -64,6 +64,7 @@ export class BanInfoRepository implements IBanInfo {
     parentId: string,
     dto: BanUserDto,
     banDate: Date,
+    userLogin: string
   ): Promise<boolean> {
     try {
       await BanInfoScheme.updateOne(
@@ -72,7 +73,7 @@ export class BanInfoRepository implements IBanInfo {
           blogId: dto.blogId,
         },
         {
-          $set: { isBanned: dto.isBanned, banReason: dto.banReason, banDate },
+          $set: { isBanned: dto.isBanned, banReason: dto.banReason, banDate, userLogin },
         },
         { upsert: true },
       );

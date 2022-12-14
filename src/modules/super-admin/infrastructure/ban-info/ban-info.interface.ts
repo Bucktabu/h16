@@ -17,6 +17,7 @@ export interface IBanInfo {
     userId: string,
     dto: BanUserDto,
     banDate: Date,
+    userLogin: string
   ): Promise<boolean>;
   deleteBanInfoById(id: string): Promise<boolean>;
   getTotalCount(blogId: string): Promise<number>;

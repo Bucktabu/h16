@@ -19,13 +19,14 @@ export class ForbiddenGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     let blogId = req.params.blogId
-    if (!req.params.blogId) {
+    if (req.body.blogId) {
       blogId = req.body.blogId
     }
 
     const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
+      console.log();
       throw new NotFoundException();
     }
 

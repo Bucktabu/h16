@@ -41,12 +41,6 @@ export class BloggerUsersController {
     @Body() dto: BanUserDto,
     @Param('id') userId: string,
   ) {
-    const result = await this.blogsService.updateUserBanStatus(userId, dto);
-
-    if (!result) {
-      throw new NotFoundException()
-    }
-
-    return
+    return await this.blogsService.updateUserBanStatus(userId, dto);
   }
 }

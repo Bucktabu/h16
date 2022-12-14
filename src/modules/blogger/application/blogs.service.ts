@@ -99,11 +99,12 @@ export class BloggerBlogService {
 
   async updateUserBanStatus(userId: string, dto: BanUserDto): Promise<boolean> {
     const banDate = new Date();
-
+    const user = await this.userRepository.getUserByIdOrLoginOrEmail(userId)
     return await this.banInfoRepository.bloggerUpdateBanStatus(
       userId,
       dto,
       banDate,
+      user.login
     );
   }
 
