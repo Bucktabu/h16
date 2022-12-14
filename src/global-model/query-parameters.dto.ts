@@ -6,7 +6,14 @@ import { BanStatusModel } from "./ban-status.model";
 export class QueryParametersDto {
   @IsEnum(BanStatusModel)
   @IsOptional()
-  banStatus: string = BanStatusModel.All
+  @Transform(({ value }) => {
+    if (value === BanStatusModel.Banned) {
+      return true
+    } else if (value === BanStatusModel.NotBanned) {
+      return false
+    }
+  })
+  banStatus: string = ''
 
   @IsEnum(SortParametersModel)
   @IsOptional()
@@ -16,28 +23,28 @@ export class QueryParametersDto {
   @IsOptional()
   sortDirection: string = SortDirections.Distending;
 
-  @Transform(({ value }: TransformFnParams) => Number(value))
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   @IsOptional()
   pageNumber = 1;
 
-  @Transform(({ value }: TransformFnParams) => Number(value))
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   @IsOptional()
   pageSize = 10;
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }) => value?.trim())
   @IsOptional()
   searchNameTerm = '';
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }) => value?.trim())
   @IsOptional()
   searchLoginTerm = '';
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }) => value?.trim())
   @IsOptional()
   searchEmailTerm = '';
 }
