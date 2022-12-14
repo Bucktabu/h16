@@ -10,18 +10,18 @@ export class BanInfoRepository implements IBanInfo {
     return BanInfoScheme.findOne({ parentId }, { _id: false, id: false, __v: false });
   }
 
-  async getBannedUsers(parentId: string): Promise<BanInfoModel[]> {
+  async getBannedUsers(blogId: string): Promise<BanInfoModel[]> {
     return BanInfoScheme.find({
       $and: [
-        { parentId },
+        { blogId },
         { isBanned: true }
       ]}, { _id: false, __v: false }).lean();
   }
 
-  async getTotalCount(parentId: string): Promise<number> {
+  async getTotalCount(id: string): Promise<number> {
     return BanInfoScheme.countDocuments({
       $and: [
-        { parentId },
+        { $or: [ { parentId: id }, { blogId: id } ] },
         { isBanned: true }
       ] });
   }
