@@ -8,8 +8,8 @@ export interface IBanInfo {
   saUpdateBanStatus(
     id: string,
     isBanned: boolean,
-    banReason: string,
     banDate: Date,
+    banReason?: string,
   ): Promise<boolean>;
   bloggerUpdateBanStatus(
     userId: string,

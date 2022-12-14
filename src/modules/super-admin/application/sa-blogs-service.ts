@@ -31,6 +31,7 @@ export class SaBlogsService {
     );
 
     const totalCount = await this.saBlogsRepository.getTotalCount(
+      query.banStatus,
       query.searchNameTerm,
     );
 
@@ -47,7 +48,9 @@ export class SaBlogsService {
   }
 
   async updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
+    const banDate = new Date()
     await this.postsRepository.updatePostsBanStatus(blogId, isBanned)
+    await this.banInfoRepository.saUpdateBanStatus(blogId, isBanned, banDate)
     return this.saBlogsRepository.updateBlogBanStatus(blogId, isBanned)
   }
 
@@ -57,13 +60,21 @@ export class SaBlogsService {
     const ownerInfo = await this.userRepository.getUserByIdOrLoginOrEmail(
       blog.userId,
     );
-    const banInfo = await this.banInfoRepository.getBanInfo(blog.userId)
 
     let userId = null;
     let userLogin = null;
     if (ownerInfo) {
       userId = ownerInfo.id;
       userLogin = ownerInfo.login;
+    }
+    
+    const banInfo = await this.banInfoRepository.getBanInfo(blog.id)
+    
+    let isBanned = false
+    let banDate = null
+    if (banInfo) {
+      isBanned = banInfo.isBanned
+      banDate = banInfo.banDate
     }
 
     return {
@@ -77,8 +88,8 @@ export class SaBlogsService {
         userLogin,
       },
       banInfo: {
-        isBanned: banInfo.isBanned,
-        banDate: banInfo.banDate,
+        isBanned,
+        banDate,
       }
     };
   }

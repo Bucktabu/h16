@@ -5,14 +5,22 @@ import { BlogDBModel } from '../entity/blog-db.model';
 import { BlogSchema } from '../entity/blog.schema';
 import { Injectable } from '@nestjs/common';
 import { ISaBlogsRepository } from './sa-blogs-repository.interface';
+import { BanStatusModel } from "../../../../global-model/ban-status.model";
 
 @Injectable()
 export class SaBlogsRepository implements ISaBlogsRepository {
   async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
+    let filter
+    if (query.banStatus === BanStatusModel.Banned) {
+      filter = { isBanned: true }
+    } else if (query.banStatus === BanStatusModel.NotBanned) {
+      filter = { isBanned: false }
+    }
+
     return BlogSchema.find({
         $and: [
           {name: { $regex: query.searchNameTerm, $options: 'i' }},
-          {isBanned: false}]
+          filter]
       }, { _id: false, __v: false },
     )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
@@ -21,9 +29,16 @@ export class SaBlogsRepository implements ISaBlogsRepository {
       .lean();
   }
 
-  async getTotalCount(searchNameTerm: string): Promise<number> {
+  async getTotalCount(banStatus: string, searchNameTerm: string): Promise<number> {
+    let filter
+    if (banStatus === BanStatusModel.Banned) {
+      filter = { isBanned: true }
+    } else if (banStatus === BanStatusModel.NotBanned) {
+      filter = { isBanned: false }
+    }
+
     return BlogSchema.countDocuments({
-      $and: [{name: { $regex: searchNameTerm, $options: 'i' }}, {isBanned: false}],
+      $and: [{name: { $regex: searchNameTerm, $options: 'i' }}, filter],
     });
   }
 

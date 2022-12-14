@@ -24,13 +24,11 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
-    let filter = {}
+    let filter
     if (query.banStatus === BanStatusModel.Banned) {
       filter = { banStatus: true }
     } else if (query.banStatus === BanStatusModel.NotBanned) {
       filter = { banStatus: false }
-    } else {
-      filter = { $and: [{ banStatus: false }, { banStatus: true }] }
     }
 
     return UserScheme.find({$and: [

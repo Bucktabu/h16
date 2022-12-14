@@ -27,7 +27,7 @@ export class SaBlogsController {
   @Put(':id/ban')
   @HttpCode(204)
   updateBlogStatus(
-    @Body() dto: BanBlogDto,// TODO можно ли не создавать отдельную дто для одного параметра
+    @Body() dto: BanBlogDto,
     @Param('id') blogId: string) {
     return this.saBlogsService.updateBlogBanStatus(blogId, dto.isBanned)
   }
