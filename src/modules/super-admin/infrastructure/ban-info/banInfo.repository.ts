@@ -16,6 +16,7 @@ export class BanInfoRepository implements IBanInfo {
     return BanInfoScheme.find({
       $and: [
         { blogId },
+        { login: { $regex: query.searchLoginTerm, $options: 'i' } },
         { isBanned: true }
       ]}, { _id: false, __v: false })
       .sort({ userLogin: query.sortDirection === 'asc' ? 1 : -1 })
