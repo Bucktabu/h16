@@ -97,9 +97,14 @@ export class BloggerBlogService {
     return await this.blogsRepository.updateBlog(blogId, inputModel);
   }
 
-  async updateUserBanStatus(userId: string, dto: BanUserDto): Promise<boolean> {
+  async updateUserBanStatus(userId: string, dto: BanUserDto): Promise<boolean | null> {
     const banDate = new Date();
     const user = await this.userRepository.getUserByIdOrLoginOrEmail(userId)
+
+    if (!user) {
+      return null
+    }
+
     return await this.banInfoRepository.bloggerUpdateBanStatus(
       userId,
       dto,

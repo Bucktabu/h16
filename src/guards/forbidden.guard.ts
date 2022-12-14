@@ -26,7 +26,6 @@ export class ForbiddenGuard implements CanActivate {
     const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
-      console.log();
       throw new NotFoundException();
     }
 

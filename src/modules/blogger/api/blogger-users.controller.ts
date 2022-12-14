@@ -15,7 +15,7 @@ import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { ForbiddenGuard } from "../../../guards/forbidden.guard";
 import { readdir } from "fs/promises";
 
-@UseGuards(AuthBearerGuard)
+@UseGuards(AuthBearerGuard, ForbiddenGuard)
 @Controller('blogger/users')
 export class BloggerUsersController {
   constructor(protected blogsService: BloggerBlogService) {}
@@ -41,6 +41,12 @@ export class BloggerUsersController {
     @Body() dto: BanUserDto,
     @Param('id') userId: string,
   ) {
-    return await this.blogsService.updateUserBanStatus(userId, dto);
+    const result = await this.blogsService.updateUserBanStatus(userId, dto);
+
+    if (!result) {
+      throw new NotFoundException()
+    }
+
+    return result
   }
 }
