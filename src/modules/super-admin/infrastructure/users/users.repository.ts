@@ -4,6 +4,7 @@ import { UserScheme } from '../entity/users.scheme';
 import { UserDBModel } from '../entity/userDB.model';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { IUsersRepository } from './users-repository.interface';
+import { BanStatusModel } from "../../../../global-model/ban-status.model";
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
@@ -23,8 +24,14 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
+    let banStatus = {}
+    if (query.banStatus === BanStatusModel.Banned) {
+      banStatus = true
+    } else if (query.banStatus === BanStatusModel.NotBanned) {
+      banStatus = false
+    }
     return UserScheme.find({$and: [
-        {banStatus: query.banStatus},
+        {banStatus},
         {$or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
             { email: { $regex: query.searchEmailTerm, $options: 'i' } },
@@ -59,15 +66,21 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getTotalCount(
-    searchLoginTerm: string,
-    searchEmailTerm: string,
+    query: QueryParametersDto
   ): Promise<number> {
-    return UserScheme.countDocuments({
-      $or: [
-        { login: { $regex: searchLoginTerm, $options: 'i' } },
-        { email: { $regex: searchEmailTerm, $options: 'i' } },
-      ],
-    });
+    let banStatus = {}
+    if (query.banStatus === BanStatusModel.Banned) {
+      banStatus = true
+    } else if (query.banStatus === BanStatusModel.NotBanned) {
+      banStatus = false
+    }
+    return UserScheme.countDocuments({$and: [
+        {banStatus},
+        {$or: [
+            { login: { $regex: query.searchLoginTerm, $options: 'i' } },
+            { email: { $regex: query.searchEmailTerm, $options: 'i' } },
+          ]}
+      ]});
   }
 
   // async save(model) {

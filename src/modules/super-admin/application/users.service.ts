@@ -40,10 +40,7 @@ export class UsersService {
       usersDB.map(async (u) => await this.addBanInfo(u)),
     );
 
-    const totalCount = await this.usersRepository.getTotalCount(
-      query.searchLoginTerm,
-      query.searchEmailTerm,
-    );
+    const totalCount = await this.usersRepository.getTotalCount(query);
 
     return paginationContentPage(
       query.pageNumber,

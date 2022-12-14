@@ -7,10 +7,7 @@ export interface IUsersRepository {
   ): Promise<UserDBModel | null>;
   getUsers(query: QueryParametersDto): Promise<UserDBModel[]>;
   getLogin(id: string): Promise<string>;
-  getTotalCount(
-    searchLoginTerm: string,
-    searchEmailTerm: string,
-  ): Promise<number>;
+  getTotalCount(query: QueryParametersDto): Promise<number>;
   createUser(newUser: UserDBModel): Promise<UserDBModel | null>;
   updateUserPassword(
     userId: string,
