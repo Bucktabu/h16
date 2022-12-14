@@ -14,7 +14,8 @@ export class CommentsRepository implements ICommentsRepository {
     return CommentsSchema.find({
       $or: [
         { postId: id },
-        { userId: id }
+        { userId: id },
+        { bloggerId: id}
       ]
     },
       { _id: false, postId: false, __v: false },
@@ -25,8 +26,14 @@ export class CommentsRepository implements ICommentsRepository {
       .lean();
   }
 
-  async getTotalCount(postId: string): Promise<number> {
-    return CommentsSchema.countDocuments({ postId });
+  async getTotalCount(id: string): Promise<number> {
+    return CommentsSchema.countDocuments({
+      $or: [
+        { postId: id },
+        { userId: id },
+        { bloggerId: id}
+      ]
+    });
   }
 
   async getCommentById(commentId: string): Promise<CommentBDModel | null> {

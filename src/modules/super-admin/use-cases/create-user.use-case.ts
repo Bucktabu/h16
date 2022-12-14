@@ -36,6 +36,7 @@ export class CreateUserUseCase {
       hash.passwordSalt,
       hash.passwordHash,
       new Date().toISOString(),
+      false
     );
 
     const emailConfirmation = new EmailConfirmationModel(

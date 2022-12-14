@@ -62,9 +62,9 @@ export class BloggerPostService {
   }
 
   async getComments(bloggerId: string, query: QueryParametersDto): Promise<ContentPageModel> {
-    const comment = await this.commentsRepository.getComments(query, bloggerId) // TODO не верно, нужно добавить блоггер айди в схему комментов
+    const comment = await this.commentsRepository.getComments(query, bloggerId)
     const viewComment = await Promise.all(comment.map(c => this.addAdditionalInfo(bloggerId, c)))
-    const totalCount = await this.
+    const totalCount = await this.commentsRepository.getTotalCount(bloggerId)
 
     return paginationContentPage(
       query.pageNumber,

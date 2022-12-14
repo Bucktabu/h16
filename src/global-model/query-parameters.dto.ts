@@ -1,8 +1,13 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import { SortDirections, SortParametersModel } from './sort-parameters.model';
+import { BanStatusModel } from "./ban-status.model";
 
 export class QueryParametersDto {
+  @IsEnum(BanStatusModel)
+  @IsOptional()
+  banStatus: string = BanStatusModel.All
+
   @IsEnum(SortParametersModel)
   @IsOptional()
   sortBy: string = SortParametersModel.CreatedAt;

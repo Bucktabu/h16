@@ -9,6 +9,7 @@ const usersScheme = new mongoose.Schema<UserDBModel /*, UserModelStaticType*/>({
   passwordHash: { type: String, required: true },
   passwordSalt: { type: String, required: true },
   createdAt: { type: String, required: true },
+  banStatus: { type: Boolean, default: false}
 });
 
 export const UserScheme = mongoose.model<UserDBModel /*, UserModelStaticType*/>(

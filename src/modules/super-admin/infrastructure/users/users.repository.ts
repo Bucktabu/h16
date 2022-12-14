@@ -23,15 +23,15 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
-    return UserScheme.find(
-      {
-        $or: [
-          { login: { $regex: query.searchLoginTerm, $options: 'i' } },
-          { email: { $regex: query.searchEmailTerm, $options: 'i' } },
-        ],
-      },
-      { _id: false, passwordHash: false, passwordSalt: false, __v: false },
-    )
+    return UserScheme.find({$and: [
+        {banStatus: query.banStatus},
+        {$or: [
+            { login: { $regex: query.searchLoginTerm, $options: 'i' } },
+            { email: { $regex: query.searchEmailTerm, $options: 'i' } },
+          ]}
+      ]},
+      { _id: false, passwordHash: false, passwordSalt: false, __v: false }
+      )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)

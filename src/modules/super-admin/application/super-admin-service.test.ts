@@ -12,6 +12,7 @@ import { UsersRepository } from '../infrastructure/users/users.repository';
 import { SaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs.repository';
 import { SaBlogsService } from './sa-blogs-service';
 import { PostsRepository } from "../../public/posts/infrastructure/posts.repository";
+import { BanStatusModel } from "../../../global-model/ban-status.model";
 
 //jest.setTimeout(100000000)
 
@@ -87,6 +88,7 @@ describe('Integration test for super admin service', () => {
 
     it('Should get blogs with pagination, without query', async () => {
       const defaultQuery = {
+        banStatus: BanStatusModel.All,
         sortBy: SortParametersModel.CreatedAt,
         sortDirection: SortDirections.Distending,
         pageNumber: 1,
