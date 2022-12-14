@@ -13,6 +13,7 @@ import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.int
 import { BanInfoModel } from '../../super-admin/infrastructure/entity/banInfo.model';
 import { ViewBanInfoModel } from '../api/dto/view-ban-info.model';
 import { IUsersRepository } from '../../super-admin/infrastructure/users/users-repository.interface';
+import { SortDirections } from "../../../global-model/sort-parameters.model";
 
 @Injectable()
 export class BloggerBlogService {
@@ -58,13 +59,34 @@ export class BloggerBlogService {
 
     const totalCount = await this.banInfoRepository.getTotalCount(blogId, query);
     const viewBanInfo = await Promise.all(
-      banInfo.map(async (b) => await this.viewBanInfo(b)),
+      banInfo.map(async (b) => await this.viewBanInfo(b))
     );
+
+    const bannedUsers = viewBanInfo.sort((a, b) => {
+      if (query.sortDirection === SortDirections.Distending) {
+        if (a.login > b.login) {
+          return 1
+        }
+        if (a.login < b.login) {
+          return -1
+        }
+        return 0
+      }
+      if (query.sortDirection === SortDirections.Ascending) {
+        if (a.login > b.login) {
+          return -1
+        }
+        if (a.login < b.login) {
+          return 1
+        }
+        return 0
+      }
+    })
 
     return paginationContentPage(
       query.pageNumber,
       query.pageSize,
-      viewBanInfo,
+      bannedUsers,
       totalCount,
     );
   }
