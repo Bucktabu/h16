@@ -48,10 +48,9 @@ describe('Integration test for super admin service', () => {
         email: 'someemail@mail.com',
       };
       const result = await createUserUseCase.execute(dto);
-      const user = Promise.resolve(result.user); // TODO get don't resolve promise
+      const user = Promise.resolve(result.user);
       console.log(user);
       expect(result).toStrictEqual({
-        // check type and structure
         user,
         email: dto.email,
         code: expect.any(String),

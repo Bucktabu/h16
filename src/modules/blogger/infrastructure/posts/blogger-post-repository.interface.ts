@@ -8,4 +8,4 @@ export interface IBloggerPostRepository {
   deletePost(postId: string): Promise<boolean>;
 }
 
-export const IBloggerPostRepository = 'IBloggerPostRepository'; // TODO нам нужно экспортировать оба объекта?
+export const IBloggerPostRepository = 'IBloggerPostRepository';

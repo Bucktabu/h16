@@ -8,11 +8,12 @@ import {
 import { Transform } from 'class-transformer';
 import { EmailExistValidator } from '../../../../validation/email-exist-validator.service';
 import { LoginExist } from "../../../../decorator/login-exist.decorator";
+import { LoginExistValidator } from "../../../../validation/login-exist-validator.service";
 
 export class UserDTO {
   @IsString()
   @Transform(({ value }) => value?.trim())
-  @LoginExist()
+  @Validate(LoginExistValidator)
   @Length(3, 10)
   login: string;
 

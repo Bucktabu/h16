@@ -1,7 +1,7 @@
 import { UserDBModel } from '../modules/super-admin/infrastructure/entity/userDB.model';
 import { BanInfoModel } from '../modules/super-admin/infrastructure/entity/banInfo.model';
 
-export const toCreateUserViewModel = async (
+export const toCreateUserViewModel = (
   userDB: UserDBModel,
   banInfo: BanInfoModel,
 ) => {
