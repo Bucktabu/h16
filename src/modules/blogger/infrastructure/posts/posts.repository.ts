@@ -6,8 +6,14 @@ import { IBloggerPostRepository } from './blogger-post-repository.interface';
 
 @Injectable()
 export class BloggerPostRepository implements IBloggerPostRepository {
-  async getPostById(postId: string): Promise<PostDBModel> {
-    return PostsScheme.findOne({postId})
+  async getPostById(id: string): Promise<PostDBModel> {
+    return PostsScheme.findOne({
+        $and: [
+          { id },
+          { isBanned: false }
+        ]
+      },
+      { _id: false, __v: false })
   }
 
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {

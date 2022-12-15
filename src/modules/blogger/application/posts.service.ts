@@ -86,7 +86,7 @@ export class BloggerPostService {
 
   private async addAdditionalInfo(bloggerId, comment: CommentBDModel): Promise<CommentWithAdditionalInfoModel> {
     const postInfo = await this.postsRepository.getPostById(comment.postId);
-    console.log('From postService --------->>>', comment);
+    console.log('From postService --------->>>', postInfo);
     const likesCount = await this.likeRepository.getLikeReactionsCount(comment.id)
     const dislikesCount = await this.likeRepository.getDislikeReactionsCount(comment.id)
     let status = await this.likeRepository.getUserReaction(comment.id, bloggerId)
