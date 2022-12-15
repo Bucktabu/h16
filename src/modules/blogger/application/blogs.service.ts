@@ -13,7 +13,6 @@ import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.int
 import { BanInfoModel } from '../../super-admin/infrastructure/entity/banInfo.model';
 import { ViewBanInfoModel } from '../api/dto/view-ban-info.model';
 import { IUsersRepository } from '../../super-admin/infrastructure/users/users-repository.interface';
-import { SortDirections } from "../../../global-model/sort-parameters.model";
 
 @Injectable()
 export class BloggerBlogService {
