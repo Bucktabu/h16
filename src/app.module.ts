@@ -36,9 +36,9 @@ import { CommentsRepository } from './modules/public/comments/infrastructure/com
 import { LikesRepository } from './modules/public/likes/infrastructure/likes.repository';
 import { PostsRepository } from './modules/public/posts/infrastructure/posts.repository';
 import { SecurityRepository } from './modules/public/security/infrastructure/security.repository';
-import { EmailExistValidationPipe } from './pipe/email-exist-validation.pipe';
+import { EmailExistValidator } from './validation/email-exist-validator.service';
 import { EmailResendingValidationPipe } from './pipe/email-resending.pipe';
-import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
+import { LoginExistValidator } from './validation/login-exist-validator.service';
 import { BlogExistValidator } from './validation/blog-exist.validator';
 import { ConfirmationCodeValidator } from './validation/confirmation-code.validator';
 import { CreateUserUseCase } from './modules/super-admin/use-cases/create-user.use-case';
@@ -70,9 +70,9 @@ const controllers = [
 ];
 
 const pipes = [
-  EmailExistValidationPipe,
+  EmailExistValidator,
   EmailResendingValidationPipe,
-  LoginExistValidationPipe,
+  LoginExistValidator,
 ];
 
 const repositories = [

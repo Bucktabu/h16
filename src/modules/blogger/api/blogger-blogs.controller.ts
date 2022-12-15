@@ -63,11 +63,6 @@ export class BloggerBlogsController {
     @Param('blogId') blogId: string,
   ) {
     const createdPost = await this.postsService.createPost(dto, blogId);
-
-    if (!createdPost) {
-      throw new Error('Post was not created');
-    }
-
     return createdPost;
   }
 

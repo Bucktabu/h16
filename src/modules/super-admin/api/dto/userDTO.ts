@@ -3,27 +3,27 @@ import {
   IsString,
   Length,
   MinLength,
-  Validate,
-} from 'class-validator';
-import { Transform, TransformFnParams } from 'class-transformer';
-import { EmailExistValidationPipe } from '../../../../pipe/email-exist-validation.pipe';
-import { LoginExistValidationPipe } from '../../../../pipe/login-exist-validation,pipe';
+  Validate, Validator
+} from "class-validator";
+import { Transform } from 'class-transformer';
+import { EmailExistValidator } from '../../../../validation/email-exist-validator.service';
+import { LoginExist } from "../../../../decorator/login-exist.decorator";
 
 export class UserDTO {
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  @Validate(LoginExistValidationPipe)
+  @Transform(({ value }) => value?.trim())
+  @LoginExist()
   @Length(3, 10)
   login: string;
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }) => value?.trim())
   @Length(6, 20)
   password: string;
 
   @IsEmail()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  @Validate(EmailExistValidationPipe)
+  @Transform(({ value }) => value?.trim())
+  @Validate(EmailExistValidator)
   @MinLength(3)
   email: string;
 }

@@ -14,6 +14,8 @@ import { CommentBDModel } from "../../public/comments/infrastructure/entity/comm
 import { ILikesRepository } from "../../public/likes/infrastructure/likes-repository.interface";
 import { CommentWithAdditionalInfoModel } from "../api/dto/comment-with-additional-info.model";
 import { paginationContentPage } from "../../../helper.functions";
+import { LikesModel } from "../../public/likes/infrastructure/entity/likes.model";
+import { ReactionModel } from "../../../global-model/reaction.model";
 
 @Injectable()
 export class BloggerPostService {
@@ -86,7 +88,12 @@ export class BloggerPostService {
     const postInfo = await this.postsRepository.getPostById(comment.postId);
     const likesCount = await this.likeRepository.getLikeReactionsCount(comment.id)
     const dislikesCount = await this.likeRepository.getDislikeReactionsCount(comment.id)
-    const myStatus = await this.likeRepository.getUserReaction(comment.id, bloggerId)
+    let status = await this.likeRepository.getUserReaction(comment.id, bloggerId)
+
+    let myStatus = 'None'
+    if (status) {
+      myStatus = status.status
+    }
 
     return {
       id: comment.id,

@@ -1,4 +1,5 @@
 import { LikesModel } from "../../../public/likes/infrastructure/entity/likes.model";
+import { ReactionModel } from "../../../../global-model/reaction.model";
 
 export class CommentWithAdditionalInfoModel {
   id: string
@@ -7,7 +8,7 @@ export class CommentWithAdditionalInfoModel {
   likeInfo: {
     likesCount: number
     dislikesCount: number
-    myStatus: LikesModel,
+    myStatus: string,
   }
   commentatorInfo: {
     userId: string
