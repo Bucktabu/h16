@@ -32,10 +32,10 @@ export class PostsRepository implements IPostsRepository {
       ]});
   }
 
-  async getPostById(postId: string): Promise<PostDBModel | null> {
+  async getPostById(id: string): Promise<PostDBModel | null> {
     return PostsScheme.findOne({
       $and: [
-        { id: postId },
+        { id },
         { isBanned: false }
       ]
     },

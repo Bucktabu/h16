@@ -7,7 +7,7 @@ export interface IPostsRepository {
     blogId: string | undefined,
   ): Promise<PostDBModel[]>;
   getTotalCount(blogId: string | undefined): Promise<number>;
-  getPostById(postId: string): Promise<PostDBModel | null>;
+  getPostById(id: string): Promise<PostDBModel | null>;
   updatePostsBanStatus(blogId: string, isBanned: boolean): Promise<boolean>;
 }
 
