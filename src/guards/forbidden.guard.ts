@@ -18,7 +18,8 @@ export class ForbiddenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    let blogId = req.params.blogId
+    let blogId = req.params.id
+
     if (req.body.blogId) {
       blogId = req.body.blogId
     }
