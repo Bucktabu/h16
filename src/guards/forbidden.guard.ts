@@ -23,7 +23,11 @@ export class ForbiddenGuard implements CanActivate {
       blogId = req.body.blogId
     } else if (req.params.blogId) {
       blogId = req.params.blogId
-    } // TODO blogger/blogs/:blogId/posts and blogger/users/blog/:id
+    } // TODO
+      // PUT blogger/users/:id(userID)/ban and blogId in body,
+      // GET blogger/blogs/:blogId/posts,
+      // POST blogger/blogs/:blogId/posts
+      // and GET blogger/users/blog/:id
 
     const blog = await this.blogsRepository.getBlogById(blogId);
 
