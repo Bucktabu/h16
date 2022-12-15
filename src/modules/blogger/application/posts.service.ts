@@ -100,7 +100,7 @@ export class BloggerPostService {
       id: comment.id,
       content: comment.content,
       createdAt: comment.createdAt,
-      likeInfo: {
+      likesInfo: {
         likesCount,
         dislikesCount,
         myStatus,
@@ -110,7 +110,7 @@ export class BloggerPostService {
         userLogin: comment.userLogin,
       },
       postInfo: {
-        id: comment.postId,
+        id: postInfo.id,
         title: postInfo.title,
         blogId: postInfo.blogId,
         blogName: postInfo.blogName

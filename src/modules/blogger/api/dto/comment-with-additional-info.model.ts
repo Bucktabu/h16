@@ -5,7 +5,7 @@ export class CommentWithAdditionalInfoModel {
   id: string
   content: string
   createdAt: string
-  likeInfo: {
+  likesInfo: {
     likesCount: number
     dislikesCount: number
     myStatus: string,
