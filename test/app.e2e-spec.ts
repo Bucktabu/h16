@@ -17,13 +17,18 @@ describe('e2e tests', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = await moduleFixture.createNestApplication();
     await app.init();
   });
 
-  beforeEach(async () => {
-    await request(app.getHttpServer()).delete('/testing/all-data');
+  afterAll(async () => {
+    await app.getHttpServer().close();
+    await app.close();
   });
+
+  // beforeEach(async () => {
+  //   await request(app.getHttpServer()).delete('/testing/all-data');
+  // });
 
   it('Should return 400. So short input body and incorrect email', async () => {
     await registrationNewUser(
