@@ -6,6 +6,7 @@ export interface IBanInfo {
   getBanInfo(id: string): Promise<BanInfoModel>;
   getBannedUsers(blogId: string, query: QueryParametersDto): Promise<BanInfoModel[]>;
   getTotalCount(id: string, query: QueryParametersDto): Promise<number>;
+  checkBanStatus(userId: string, postId: string): Promise<boolean>;
   createBanInfo(banInfo: BanInfoModel): Promise<BanInfoModel | null>;
   saUpdateBanStatus(
     id: string,

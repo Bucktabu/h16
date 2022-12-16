@@ -1,22 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
-import { LikesRepository } from '../../likes/infrastructure/likes.repository';
-import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostViewModel } from '../api/dto/postsView.model';
-import { UsersRepository } from '../../../super-admin/infrastructure/users/users.repository';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
 import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
 import { IPostsRepository } from '../infrastructure/posts-repository.interface';
 import { IUsersRepository } from '../../../super-admin/infrastructure/users/users-repository.interface';
+import { IBanInfo } from "../../../super-admin/infrastructure/ban-info/ban-info.interface";
 
 @Injectable()
 export class PostsService {
   constructor(
     protected jwtService: JwtService,
     protected likesService: LikesService,
+    @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
     @Inject(IPostsRepository) protected postsRepository: IPostsRepository,
     @Inject(IUsersRepository) protected usersRepository: IUsersRepository,
   ) {}
@@ -51,7 +50,7 @@ export class PostsService {
     token?: string,
   ): Promise<PostViewModel | null> {
     const post = await this.postsRepository.getPostById(postId);
-    console.log(post);
+
     if (!post) {
       return null;
     }
@@ -59,6 +58,13 @@ export class PostsService {
     const userId = await this.jwtService.getUserIdViaToken(token);
 
     return await this.addLikesInfoForPost(post, userId);
+  }
+
+  async checkBanStatus(
+    userId: string,
+    postId: string,
+  ): Promise<boolean> {
+    return await this.banInfoRepository.checkBanStatus(userId, postId)
   }
 
   async updateLikesInfo(

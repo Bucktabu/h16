@@ -42,6 +42,14 @@ export class BanInfoRepository implements IBanInfo {
     }
   }
 
+  async checkBanStatus(userId: string, postId: string): Promise<boolean> {
+    const result = await BanInfoScheme.countDocuments({
+      $and: [ { parentId: userId }, { postId }, { isBanned: true } ]
+    })
+
+    return result > 0
+  }
+
   async saUpdateBanStatus(
     parentId: string,
     isBanned: boolean,
