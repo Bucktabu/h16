@@ -5,32 +5,28 @@ import { BindBlogDto } from '../api/dto/bind-blog.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { BlogDBModel } from '../infrastructure/entity/blog-db.model';
 import { BlogViewWithOwnerAndBanInfo } from '../api/dto/blog-view-with-owner-and-ban.info';
-import { ISaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs-repository.interface';
 import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
 import { IBanInfo } from "../infrastructure/ban-info/ban-info.interface";
 import { IPostsRepository } from "../../public/posts/infrastructure/posts-repository.interface";
+import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
 
 @Injectable()
 export class SaBlogsService {
   constructor(
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
-    @Inject(ISaBlogsRepository) protected saBlogsRepository: ISaBlogsRepository,
+    @Inject(IBlogsRepository) protected blogsRepository: IBlogsRepository,
     @Inject(IUsersRepository) protected userRepository: IUsersRepository,
     @Inject(IPostsRepository) protected postsRepository: IPostsRepository,
   ) {}
 
   async getBlogs(query: QueryParametersDto): Promise<ContentPageModel | null> {
-    const blogsDB = await this.saBlogsRepository.getBlogs(query);
-
-    // if (!blogsDB.length) {
-    //   return null;
-    // }
+    const blogsDB = await this.blogsRepository.saGetBlogs(query);
 
     const blogs = await Promise.all(
       blogsDB.map(async (b) => await this.addOwnerInfo(b)),
     );
 
-    const totalCount = await this.saBlogsRepository.getTotalCount(
+    const totalCount = await this.blogsRepository.saGetTotalCount(
       query.banStatus,
       query.searchNameTerm,
     );
@@ -44,14 +40,14 @@ export class SaBlogsService {
   }
 
   async bindBlog(params: BindBlogDto) {
-    return this.saBlogsRepository.bindBlog(params);
+    return this.blogsRepository.bindBlog(params);
   }
 
   async updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
     const banDate = new Date()
     await this.postsRepository.updatePostsBanStatus(blogId, isBanned)
     await this.banInfoRepository.saUpdateBanStatus(blogId, isBanned, banDate)
-    return this.saBlogsRepository.updateBlogBanStatus(blogId, isBanned)
+    return this.blogsRepository.updateBlogBanStatus(blogId, isBanned)
   }
 
   private async addOwnerInfo(

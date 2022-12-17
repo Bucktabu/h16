@@ -8,7 +8,6 @@ import { BanInfoRepository } from './modules/super-admin/infrastructure/ban-info
 import { EmailConfirmationRepository } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.repository';
 import { SaBlogsController } from './modules/super-admin/api/sa-blogs.controller';
 import { SaBlogsService } from './modules/super-admin/application/sa-blogs-service';
-import { SaBlogsRepository } from './modules/super-admin/infrastructure/sa-blogs/sa-blogs.repository';
 import { UsersController } from './modules/super-admin/api/users.controller';
 import { UsersService } from './modules/super-admin/application/users.service';
 import { UsersRepository } from './modules/super-admin/infrastructure/users/users.repository';
@@ -40,7 +39,6 @@ import { LoginExistValidator } from './validation/login-exist-validator.service'
 import { BlogExistValidator } from './validation/blog-exist.validator';
 import { ConfirmationCodeValidator } from './validation/confirmation-code.validator';
 import { CreateUserUseCase } from './modules/super-admin/use-cases/create-user.use-case';
-import { IBloggerBlogRepository } from './modules/blogger/infrastructure/blogs/blogger-blog-repository.interface';
 import { IJwtRepository } from './modules/public/auth/infrastructure/jwt-repository.interface';
 import { IBlogsRepository } from './modules/public/blogs/infrastructure/blogs-repository.interface';
 import { ICommentsRepository } from './modules/public/comments/infrastructure/comments-repository.interface';
@@ -81,7 +79,6 @@ const repositories = [
   { provide: ILikesRepository, useClass: LikesRepository },
   { provide: IPostsRepository, useClass: PostsRepository },
   { provide: ISecurityRepository, useClass: SecurityRepository },
-  { provide: ISaBlogsRepository, useClass: SaBlogsRepository },
   { provide: IUsersRepository, useClass: UsersRepository },
 ];
 

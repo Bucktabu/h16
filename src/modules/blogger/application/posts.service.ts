@@ -4,7 +4,6 @@ import { PostDBModel } from '../../public/posts/infrastructure/entity/post-db.mo
 import { PostViewModel } from '../../public/posts/api/dto/postsView.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
-import { IBloggerBlogRepository } from '../infrastructure/blogs/blogger-blog-repository.interface';
 import { QueryParametersDto } from "../../../global-model/query-parameters.dto";
 import { ContentPageModel } from "../../../global-model/contentPage.model";
 import { ICommentsRepository } from "../../public/comments/infrastructure/comments-repository.interface";

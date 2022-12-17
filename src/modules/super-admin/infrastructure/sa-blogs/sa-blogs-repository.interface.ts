@@ -4,8 +4,8 @@ import { BindBlogDto } from '../../api/dto/bind-blog.dto';
 import { BanStatusModel } from "../../../../global-model/ban-status.model";
 
 export interface ISaBlogsRepository {
-  getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]>;
-  getTotalCount(banStatus: string, searchNameTerm: string): Promise<number>;
+  saGetBlogs(query: QueryParametersDto): Promise<BlogDBModel[]>;
+  saGetTotalCount(banStatus: string, searchNameTerm: string): Promise<number>;
   getBlogById(id: string): Promise<BlogDBModel | null>;
   bindBlog(params: BindBlogDto): Promise<boolean>;
   updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean>;

@@ -1,10 +1,9 @@
 import { ExecutionContext, Inject, PipeTransform } from '@nestjs/common';
-import { SaBlogsRepository } from '../modules/super-admin/infrastructure/sa-blogs/sa-blogs.repository';
-import { ISaBlogsRepository } from '../modules/super-admin/infrastructure/sa-blogs/sa-blogs-repository.interface';
+import { IBlogsRepository } from "../modules/public/blogs/infrastructure/blogs-repository.interface";
 
 export class NotOwnedBlogValidation implements PipeTransform {
   constructor(
-    @Inject(ISaBlogsRepository) protected saBlogRepository: ISaBlogsRepository,
+    @Inject(IBlogsRepository) protected saBlogRepository: IBlogsRepository,
   ) {}
 
   async transform(context: ExecutionContext, metadata) {

@@ -9,10 +9,10 @@ import { BanInfoRepository } from '../infrastructure/ban-info/banInfo.repository
 import { EmailConfirmationRepository } from '../infrastructure/email-confirmation/email-confirmation.repository';
 import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { UsersRepository } from '../infrastructure/users/users.repository';
-import { SaBlogsRepository } from '../infrastructure/sa-blogs/sa-blogs.repository';
 import { SaBlogsService } from './sa-blogs-service';
 import { PostsRepository } from "../../public/posts/infrastructure/posts.repository";
 import { BanStatusModel } from "../../../global-model/ban-status.model";
+import { BlogsRepository } from "../../public/blogs/infrastructure/blogs.repository";
 
 //jest.setTimeout(100000000)
 
@@ -76,10 +76,10 @@ describe('Integration test for super admin service', () => {
     });
   });
 
-  const saBlogsRepository = new SaBlogsRepository();
+  const blogsRepository = new BlogsRepository();
   const userRepository = new UsersRepository();
   const postRepository = new PostsRepository();
-  const saBlogsService = new SaBlogsService(banInfoRepository, saBlogsRepository, userRepository, postRepository);
+  const saBlogsService = new SaBlogsService(banInfoRepository, blogsRepository, userRepository, postRepository);
   describe('Get blogs', () => {
     beforeAll(async () => {
       await mongoose.connection.db.dropDatabase();
