@@ -40,8 +40,8 @@ export class Post {
   @Prop({String, required: true})
   createdAt: string;
 
-  @Prop({String, required: true})
-  isBanned: string;
+  @Prop({Boolean, required: true})
+  isBanned: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)

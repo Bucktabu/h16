@@ -21,7 +21,7 @@ export class BlogsRepository implements IBlogsRepository {
         { isBanned: false }
       ]
     },
-    { _id: false, __v: false })
+    { _id: false, isBanned: false, __v: false })
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
