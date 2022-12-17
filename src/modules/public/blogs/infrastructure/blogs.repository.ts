@@ -15,10 +15,7 @@ export class BlogsRepository implements IBlogsRepository {
   constructor(@InjectModel(Blog.name) private blogsRepository: Model<BlogDocument>) {}
 
   async getBlogs(query: QueryParametersDto, userId?: string): Promise<BlogDBModel[]> {
-    let filter = {}
-    if (userId) {
-      filter = {userId}
-    }
+    const filter = this.userIdFilter(userId)
 
     return this.blogsRepository.find({
       $and: [
@@ -35,10 +32,7 @@ export class BlogsRepository implements IBlogsRepository {
   }
 
   async getTotalCount(searchNameTerm: string, userId?: string): Promise<number> {
-    let filter = {}
-    if (userId) {
-      filter = {userId}
-    }
+    const filter = this.userIdFilter(userId)
 
     return this.blogsRepository.countDocuments({
       $and: [
@@ -49,42 +43,8 @@ export class BlogsRepository implements IBlogsRepository {
     );
   }
 
-  // async bloggerGetBlogs(
-  //   userId: string,
-  //   query: QueryParametersDto,
-  // ): Promise<BlogDBModel[]> {
-  //   return this.blogsRepository.find(
-  //     {
-  //       $and: [
-  //         { userId },
-  //         { name: { $regex: query.searchNameTerm, $options: 'i' } },
-  //         { isBanned: false },
-  //       ],
-  //     },
-  //     { _id: false, __v: false, userId: false, isBanned: false },
-  //   )
-  //     .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
-  //     .skip(giveSkipNumber(query.pageNumber, query.pageSize))
-  //     .limit(query.pageSize)
-  //     .lean();
-  // }
-  //
-  // async bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number> {
-  //   return this.blogsRepository.countDocuments({
-  //     $and: [
-  //       { userId },
-  //       { name: { $regex: searchNameTerm, $options: 'i' } },
-  //       { isBanned: false }],
-  //   });
-  // }
-
   async saGetBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
-    let filter = {}
-    if (query.banStatus === BanStatusModel.Banned) {
-      filter = { isBanned: true }
-    } else if (query.banStatus === BanStatusModel.NotBanned) {
-      filter = { isBanned: false }
-    }
+    const filter = this.banStatusFilter(query.banStatus)
 
     return this.blogsRepository.find({
         $and: [
@@ -99,12 +59,7 @@ export class BlogsRepository implements IBlogsRepository {
   }
 
   async saGetTotalCount(banStatus: string, searchNameTerm: string): Promise<number> {
-    let filter = {}
-    if (banStatus === BanStatusModel.Banned) {
-      filter = { isBanned: true }
-    } else if (banStatus === BanStatusModel.NotBanned) {
-      filter = { isBanned: false }
-    }
+    const filter = this.banStatusFilter(banStatus)
 
     return this.blogsRepository.countDocuments({
       $and: [{name: { $regex: searchNameTerm, $options: 'i' }}, filter],
@@ -167,5 +122,25 @@ export class BlogsRepository implements IBlogsRepository {
     const result = await this.blogsRepository.deleteOne({ id: blogId });
 
     return result.deletedCount === 1;
+  }
+
+  private userIdFilter(userId: string | null) {
+    let filter = {}
+    if (userId) {
+      filter = {userId}
+    }
+
+    return filter
+  }
+
+  private banStatusFilter(banStatus: string | null) {
+    let filter = {}
+    if (banStatus === BanStatusModel.Banned) {
+      filter = { isBanned: true }
+    } else if (banStatus === BanStatusModel.NotBanned) {
+      filter = { isBanned: false }
+    }
+
+    return filter
   }
 }
