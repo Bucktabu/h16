@@ -15,9 +15,14 @@ export class BlogsRepository implements IBlogsRepository {
   constructor(@InjectModel(Blog.name) private blogsRepository: Model<BlogDocument>) {}
 
   async getBlogs(query: QueryParametersDto, userId?: string): Promise<BlogDBModel[]> {
+    let filter = {}
+    if (userId) {
+      filter = {userId}
+    }
+
     return this.blogsRepository.find({
       $and: [
-        { userId },
+        filter,
         { name: { $regex: query.searchNameTerm, $options: 'i' } },
         { isBanned: false }
       ]
@@ -30,9 +35,14 @@ export class BlogsRepository implements IBlogsRepository {
   }
 
   async getTotalCount(searchNameTerm: string, userId?: string): Promise<number> {
+    let filter = {}
+    if (userId) {
+      filter = {userId}
+    }
+
     return this.blogsRepository.countDocuments({
       $and: [
-        { userId },
+        filter,
         { name: { $regex: searchNameTerm, $options: 'i' } },
         { isBanned: false }
       ]},
