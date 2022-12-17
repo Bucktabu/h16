@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { EmailConfirmationScheme } from '../entity/emailConfirm.scheme';
 import { EmailConfirmationModel } from '../entity/emailConfirmation.model';
 import { IEmailConfirmation } from './email-confirmation.interface';
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
+import { EmailConfirmation, EmailConfirmationDocument } from "../entity/emailConfirm.scheme";
 
 @Injectable()
 export class EmailConfirmationRepository implements IEmailConfirmation {
+  constructor(@InjectModel(EmailConfirmation.name) private emailConfirmationRepository: Model<EmailConfirmationDocument>) {}
+
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
-  ): Promise</*EmailConfirmationModel | null*/ any> {
+  ): Promise<EmailConfirmationModel | null> {
     // TODO Type error
-    return EmailConfirmationScheme.findOne(
+    return this.emailConfirmationRepository.findOne(
       { $or: [{ confirmationCode: codeOrId }, { id: codeOrId }] },
       { _id: false, __v: false },
     );
@@ -17,7 +21,7 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
 
   async checkConfirmation(id: string): Promise<boolean | null> {
     try {
-      const result = await EmailConfirmationScheme.findOne(
+      const result = await this.emailConfirmationRepository.findOne(
         { id },
         {
           _id: false,
@@ -38,7 +42,7 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
     emailConfirmation: EmailConfirmationModel,
   ): Promise<EmailConfirmationModel | null> {
     try {
-      await EmailConfirmationScheme.create(emailConfirmation);
+      await this.emailConfirmationRepository.create(emailConfirmation);
       return emailConfirmation;
     } catch (e) {
       return null;
@@ -50,7 +54,7 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
     confirmationCode: string,
     expirationDate?: Date,
   ): Promise<boolean> {
-    const result = await EmailConfirmationScheme.updateOne(
+    const result = await this.emailConfirmationRepository.updateOne(
       { id },
       { $set: { confirmationCode, expirationDate } },
     );
@@ -59,7 +63,7 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
   }
 
   async updateConfirmationInfo(idOrCode: string): Promise<boolean> {
-    const result = await EmailConfirmationScheme.updateOne(
+    const result = await this.emailConfirmationRepository.updateOne(
       { idOrCode },
       { $set: { isConfirmed: true } },
     );
@@ -68,7 +72,7 @@ export class EmailConfirmationRepository implements IEmailConfirmation {
   }
 
   async deleteEmailConfirmationById(id: string): Promise<boolean> {
-    const result = await EmailConfirmationScheme.deleteOne({ id });
+    const result = await this.emailConfirmationRepository.deleteOne({ id });
 
     return result.deletedCount === 1;
   }

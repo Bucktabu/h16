@@ -4,7 +4,6 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { EmailConfirmationRepository } from '../modules/super-admin/infrastructure/email-confirmation/email-confirmation.repository';
 import { IEmailConfirmation } from '../modules/super-admin/infrastructure/email-confirmation/email-confirmation.interface';
 
 @ValidatorConstraint({ name: 'ConfirmationCodeValid', async: true })
@@ -25,7 +24,15 @@ export class ConfirmationCodeValidator implements ValidatorConstraintInterface {
       return false;
     }
 
-    return emailConfirmation.canBeConfirmed(); // TODO 'smart' object
+    if (emailConfirmation.isConfirmed === true) {
+      return false;
+    }
+
+    if (emailConfirmation.expirationDate < new Date()) {
+      return false;
+    }
+
+    return true;
   }
 
   defaultMessage(args: ValidationArguments) {

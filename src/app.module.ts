@@ -61,6 +61,10 @@ import { Security, SecuritySchema } from "./modules/public/security/infrastructu
 import { BanInfo, BanInfoSchema } from "./modules/super-admin/infrastructure/entity/banInfo.scheme";
 import { User, UserScheme } from "./modules/super-admin/infrastructure/entity/users.scheme";
 import { UserDevice, UserDeviceSchema } from "./modules/public/security/infrastructure/entity/user-device.scheme";
+import {
+  EmailConfirmation,
+  EmailConfirmationSchema
+} from "./modules/super-admin/infrastructure/entity/emailConfirm.scheme";
 
 const controllers = [
   BloggerBlogsController,
@@ -114,6 +118,7 @@ const schemes = [
   { name: BanInfo.name, schema: BanInfoSchema },
   { name: Blog.name, schema: BlogSchema },
   { name: Comment.name, schema: CommentSchema },
+  { name: EmailConfirmation.name, schema: EmailConfirmationSchema },
   { name: Like.name, schema: LikeSchema },
   { name: Post.name, schema: PostSchema },
   { name: Security.name, schema: SecuritySchema },

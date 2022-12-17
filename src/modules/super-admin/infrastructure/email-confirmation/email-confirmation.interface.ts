@@ -3,7 +3,7 @@ import { EmailConfirmationModel } from '../entity/emailConfirmation.model';
 export interface IEmailConfirmation {
   getEmailConfirmationByCodeOrId(
     codeOrId: string,
-  ): Promise</*EmailConfirmationModel | null*/ any>;
+  ): Promise<EmailConfirmationModel | null>;
   checkConfirmation(id: string): Promise<boolean | null>;
   createEmailConfirmation(
     emailConfirmation: EmailConfirmationModel,

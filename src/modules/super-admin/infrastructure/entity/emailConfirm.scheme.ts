@@ -1,41 +1,31 @@
-import mongoose, { Model } from 'mongoose';
-import { EmailConfirmationModel } from './emailConfirmation.model';
+// import mongoose, { Model } from 'mongoose';
+// import { EmailConfirmationModel } from './emailConfirmation.model';
+//
+// const emailConfirmationScheme = new mongoose.Schema({
+//   id: { type: String, required: true },
+//   confirmationCode: { type: String, required: true },
+//   expirationDate: { type: Date, required: true },
+//   isConfirmed: { type: Boolean, required: true, default: false },
+// });
 
-const emailConfirmationScheme = new mongoose.Schema<
-  EmailConfirmationModel,
-  EmailConfirmationModelType,
-  EmailConfirmMethodType
->({
-  id: { type: String, required: true },
-  confirmationCode: { type: String, required: true },
-  expirationDate: { type: Date, required: true },
-  isConfirmed: { type: Boolean, required: true, default: false },
-});
+import { HydratedDocument } from "mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-emailConfirmationScheme.method('canBeConfirmed', function canBeConfirmed() {
-  const that = this as EmailConfirmationModel;
-  if (that.isConfirmed === true) {
-    return false;
-  }
+export type EmailConfirmationDocument = HydratedDocument<EmailConfirmation>
 
-  if (that.expirationDate < new Date()) {
-    return false;
-  }
+@Schema()
+export class EmailConfirmation {
+  @Prop( {String, required: true})
+  id: string;
 
-  return true;
-});
+  @Prop( {String, required: true})
+  confirmationCode: string;
 
-export const EmailConfirmationScheme = mongoose.model<
-  EmailConfirmationModel,
-  EmailConfirmationModelType
->('emailConfirmation', emailConfirmationScheme);
+  @Prop( {Date, required: true})
+  expirationDate: Date;
 
-export type EmailConfirmMethodType = {
-  canBeConfirmed: () => boolean;
-};
+  @Prop( {Boolean, required: true})
+  isConfirmed: boolean;
+}
 
-type EmailConfirmationModelType = Model<
-  EmailConfirmationModel,
-  {},
-  EmailConfirmMethodType
->;
+export const EmailConfirmationSchema = SchemaFactory.createForClass(EmailConfirmation)
