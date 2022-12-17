@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { PostDBModel } from './entity/post-db.model';
-import { PostsScheme } from './entity/posts.scheme';
+import { PostDocument, Post } from "./entity/posts.scheme";
 import { giveSkipNumber } from '../../../../helper.functions';
 import { IPostsRepository } from './posts-repository.interface';
 import { PostDto } from "../../../blogger/api/dto/post.dto";
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class PostsRepository implements IPostsRepository {
+  constructor(@InjectModel(Post.name) private postsRepository: Model<PostDocument>) {}
+
   async getPosts(
     query: QueryParametersDto,
     blogId: string | undefined,
   ): Promise<PostDBModel[]> {
-    return PostsScheme.find({
+    return this.postsRepository.find({
       $and: [
         { blogId: { $regex: blogId } },
         { isBanned: false }
@@ -26,7 +30,7 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async getTotalCount(blogId: string | undefined): Promise<number> {
-    return PostsScheme.countDocuments({
+    return this.postsRepository.countDocuments({
       $and: [
         { blogId: { $regex: blogId } },
         { isBanned: false }
@@ -34,7 +38,7 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async getPostById(id: string): Promise<PostDBModel | null> {
-    return PostsScheme.findOne({
+    return this.postsRepository.findOne({
       $and: [
         { id },
         { isBanned: false }
@@ -45,7 +49,7 @@ export class PostsRepository implements IPostsRepository {
 
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
     try {
-      await PostsScheme.create(newPost);
+      await this.postsRepository.create(newPost);
       return newPost;
     } catch (e) {
       return null;
@@ -53,7 +57,7 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async updatePost(postId: string, dto: PostDto): Promise<boolean> {
-    const result = await PostsScheme.updateOne(
+    const result = await this.postsRepository.updateOne(
       { id: postId },
       {
         $set: {
@@ -69,7 +73,7 @@ export class PostsRepository implements IPostsRepository {
 
   async updatePostsBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
     try {
-      await PostsScheme.updateMany({ blogId }, {$set: {isBanned}})
+      await this.postsRepository.updateMany({ blogId }, {$set: {isBanned}})
       return true
     } catch (e) {
       return false
@@ -77,7 +81,7 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async deletePost(postId: string): Promise<boolean> {
-    const result = await PostsScheme.deleteOne({ id: postId });
+    const result = await this.postsRepository.deleteOne({ id: postId });
 
     return result.deletedCount === 1;
   }

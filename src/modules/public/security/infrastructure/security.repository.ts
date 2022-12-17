@@ -1,19 +1,23 @@
-import { SecurityScheme } from './entity/security.scheme';
+import { Security, SecurityDocument } from "./entity/security.scheme";
 import { DeviceSecurityModel } from './entity/deviceSecurity.model';
 import { Injectable } from '@nestjs/common';
 import { ISecurityRepository } from './security-repository.interface';
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class SecurityRepository implements ISecurityRepository {
+  constructor(@InjectModel(Security.name) private securityRepository: Model<SecurityDocument>) {}
+
   async getAllActiveSessions(userId: string): Promise<DeviceSecurityModel[]> {
-    return SecurityScheme.find(
+    return this.securityRepository.find(
       { userId },
       { projection: { _id: false } },
     ).lean();
   }
 
   async getDeviseById(deviceId: string): Promise<DeviceSecurityModel | null> {
-    return SecurityScheme.findOne(
+    return this.securityRepository.findOne(
       { 'userDevice.deviceId': deviceId },
       { projection: { _id: false } },
     );
@@ -23,7 +27,7 @@ export class SecurityRepository implements ISecurityRepository {
     createDevice: DeviceSecurityModel,
   ): Promise<DeviceSecurityModel | null> {
     try {
-      return SecurityScheme.create(createDevice);
+      return this.securityRepository.create(createDevice);
     } catch (e) {
       return null;
     }
@@ -34,7 +38,7 @@ export class SecurityRepository implements ISecurityRepository {
     iat: string,
     exp: string,
   ): Promise<boolean> {
-    const result = await SecurityScheme.updateOne(
+    const result = await this.securityRepository.updateOne(
       {
         'userDevice.deviceId': deviceId,
       },
@@ -51,7 +55,7 @@ export class SecurityRepository implements ISecurityRepository {
     deviceId: string,
   ): Promise<boolean> {
     try {
-      await SecurityScheme.deleteMany({
+      await this.securityRepository.deleteMany({
         userId,
         'userDevice.deviceId': { $ne: deviceId },
       });
@@ -63,7 +67,7 @@ export class SecurityRepository implements ISecurityRepository {
   }
 
   async deleteDeviceById(deviceId: string): Promise<boolean> {
-    const result = await SecurityScheme.deleteOne({
+    const result = await this.securityRepository.deleteOne({
       'userDevice.deviceId': deviceId,
     });
 

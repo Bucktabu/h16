@@ -53,6 +53,11 @@ import {
   TokenBlackList,
   TokenBlackListSchema
 } from "./modules/public/auth/infrastructure/entity/tokenBlackList.scheme";
+import { Blog, BlogSchema } from "./modules/public/blogs/infrastructure/entity/blog.schema";
+import { Comment, CommentSchema } from "./modules/public/comments/infrastructure/entity/comments.scheme";
+import { Post, PostSchema } from "./modules/public/posts/infrastructure/entity/posts.scheme";
+import { Like, LikeSchema } from "./modules/public/likes/infrastructure/entity/likes.scheme";
+import { Security, SecuritySchema } from "./modules/public/security/infrastructure/entity/security.scheme";
 
 const controllers = [
   BloggerBlogsController,
@@ -103,7 +108,11 @@ const services = [
 ];
 
 const schemes = [
-  //{ name: Blog.name, schema: BlogSchema },
+  { name: Blog.name, schema: BlogSchema },
+  { name: Comment.name, schema: CommentSchema },
+  { name: Like.name, schema: LikeSchema },
+  { name: Post.name, schema: PostSchema },
+  { name: Security.name, schema: SecuritySchema },
   { name: TokenBlackList.name, schema: TokenBlackListSchema },
 ];
 
