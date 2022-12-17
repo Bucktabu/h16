@@ -1,6 +1,6 @@
 import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
 import { PostDto } from '../api/dto/post.dto';
-import { PostDBModel } from '../infrastructure/entity/post-db.model';
+import { PostDBModel } from '../../public/posts/infrastructure/entity/post-db.model';
 import { PostViewModel } from '../../public/posts/api/dto/postsView.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
@@ -16,14 +16,15 @@ import { CommentWithAdditionalInfoModel } from "../api/dto/comment-with-addition
 import { paginationContentPage } from "../../../helper.functions";
 import { LikesModel } from "../../public/likes/infrastructure/entity/likes.model";
 import { ReactionModel } from "../../../global-model/reaction.model";
+import { IPostsRepository } from "../../public/posts/infrastructure/posts-repository.interface";
 
 @Injectable()
 export class BloggerPostService {
   constructor(
     @Inject(ICommentsRepository) protected commentsRepository: ICommentsRepository,
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
-    @Inject(IBloggerPostRepository)
-    protected postsRepository: IBloggerPostRepository,
+    @Inject(IPostsRepository)
+    protected postsRepository: IPostsRepository,
     @Inject(IBloggerBlogRepository)
     protected blogsRepository: IBloggerBlogRepository,
     @Inject(ILikesRepository) protected likeRepository: ILikesRepository
@@ -86,7 +87,6 @@ export class BloggerPostService {
 
   private async addAdditionalInfo(bloggerId, comment: CommentBDModel): Promise<CommentWithAdditionalInfoModel> {
     const postInfo = await this.postsRepository.getPostById(comment.postId);
-    console.log('From postService --------->>>', postInfo);
     const likesCount = await this.likeRepository.getLikeReactionsCount(comment.id)
     const dislikesCount = await this.likeRepository.getDislikeReactionsCount(comment.id)
     let status = await this.likeRepository.getUserReaction(comment.id, bloggerId)

@@ -1,4 +1,4 @@
-import { PostDBModel } from '../entity/post-db.model';
+import { PostDBModel } from '../../../public/posts/infrastructure/entity/post-db.model';
 import { PostDto } from '../../api/dto/post.dto';
 
 export interface IBloggerPostRepository {

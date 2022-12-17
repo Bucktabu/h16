@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
-import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
-import { PostsScheme } from '../../../blogger/infrastructure/entity/posts.scheme';
+import { PostDBModel } from './entity/post-db.model';
+import { PostsScheme } from './entity/posts.scheme';
 import { giveSkipNumber } from '../../../../helper.functions';
 import { IPostsRepository } from './posts-repository.interface';
+import { PostDto } from "../../../blogger/api/dto/post.dto";
 
 @Injectable()
 export class PostsRepository implements IPostsRepository {
@@ -42,6 +43,30 @@ export class PostsRepository implements IPostsRepository {
     { _id: false, __v: false });
   }
 
+  async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
+    try {
+      await PostsScheme.create(newPost);
+      return newPost;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async updatePost(postId: string, dto: PostDto): Promise<boolean> {
+    const result = await PostsScheme.updateOne(
+      { id: postId },
+      {
+        $set: {
+          title: dto.title,
+          shortDescription: dto.shortDescription,
+          content: dto.content,
+        },
+      },
+    );
+
+    return result.matchedCount === 1;
+  }
+
   async updatePostsBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
     try {
       await PostsScheme.updateMany({ blogId }, {$set: {isBanned}})
@@ -49,5 +74,11 @@ export class PostsRepository implements IPostsRepository {
     } catch (e) {
       return false
     }
+  }
+
+  async deletePost(postId: string): Promise<boolean> {
+    const result = await PostsScheme.deleteOne({ id: postId });
+
+    return result.deletedCount === 1;
   }
 }

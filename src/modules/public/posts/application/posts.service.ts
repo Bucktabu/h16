@@ -5,7 +5,7 @@ import { PostViewModel } from '../api/dto/postsView.model';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { ContentPageModel } from '../../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../../helper.functions';
-import { PostDBModel } from '../../../blogger/infrastructure/entity/post-db.model';
+import { PostDBModel } from '../infrastructure/entity/post-db.model';
 import { IPostsRepository } from '../infrastructure/posts-repository.interface';
 import { IUsersRepository } from '../../../super-admin/infrastructure/users/users-repository.interface';
 import { IBanInfo } from "../../../super-admin/infrastructure/ban-info/ban-info.interface";

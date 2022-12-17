@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { BloggerBlogsController } from './modules/blogger/api/blogger-blogs.controller';
 import { BloggerPostService } from './modules/blogger/application/posts.service';
 import { BloggerBlogService } from './modules/blogger/application/blogs.service';
-import { BloggerPostRepository } from './modules/blogger/infrastructure/posts/posts.repository';
 import { BloggerBlogRepository } from './modules/blogger/infrastructure/blogs/blogs.repository';
 import { BanInfoRepository } from './modules/super-admin/infrastructure/ban-info/banInfo.repository';
 import { EmailConfirmationRepository } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.repository';
@@ -77,7 +76,6 @@ const pipes = [
 
 const repositories = [
   { provide: IBloggerBlogRepository, useClass: BloggerBlogRepository },
-  { provide: IBloggerPostRepository, useClass: BloggerPostRepository },
   { provide: IBanInfo, useClass: BanInfoRepository },
   { provide: IBlogsRepository, useClass: BlogsRepository },
   { provide: ICommentsRepository, useClass: CommentsRepository },
