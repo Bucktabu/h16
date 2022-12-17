@@ -49,6 +49,10 @@ import { IBanInfo } from './modules/super-admin/infrastructure/ban-info/ban-info
 import { IEmailConfirmation } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.interface';
 import { IUsersRepository } from './modules/super-admin/infrastructure/users/users-repository.interface';
 import { BloggerUsersController } from "./modules/blogger/api/blogger-users.controller";
+import {
+  TokenBlackList,
+  TokenBlackListSchema
+} from "./modules/public/auth/infrastructure/entity/tokenBlackList.scheme";
 
 const controllers = [
   BloggerBlogsController,
@@ -99,7 +103,8 @@ const services = [
 ];
 
 const schemes = [
-  // { name: Blog.name, schema: BlogSchema },
+  //{ name: Blog.name, schema: BlogSchema },
+  { name: TokenBlackList.name, schema: TokenBlackListSchema },
 ];
 
 const validators = [BlogExistValidator, ConfirmationCodeValidator];
@@ -110,7 +115,7 @@ const useCases = [CreateUserUseCase];
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    //MongooseModule.forFeature(schemes)
+    MongooseModule.forFeature(schemes)
     //ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
   ],
   controllers: [...controllers],
