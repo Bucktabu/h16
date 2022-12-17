@@ -1,5 +1,5 @@
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
-import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
+import { BlogDBModel } from './entity/blog-db.model';
 import { BlogDto } from "../../../blogger/api/dto/blog.dto";
 import { BindBlogDto } from "../../../super-admin/api/dto/bind-blog.dto";
 

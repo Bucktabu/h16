@@ -3,7 +3,7 @@ import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { BindBlogDto } from '../api/dto/bind-blog.dto';
 import { Inject, Injectable } from '@nestjs/common';
-import { BlogDBModel } from '../infrastructure/entity/blog-db.model';
+import { BlogDBModel } from '../../public/blogs/infrastructure/entity/blog-db.model';
 import { BlogViewWithOwnerAndBanInfo } from '../api/dto/blog-view-with-owner-and-ban.info';
 import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
 import { IBanInfo } from "../infrastructure/ban-info/ban-info.interface";

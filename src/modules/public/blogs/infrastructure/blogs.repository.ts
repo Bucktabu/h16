@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
-import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
-import { BlogSchema } from '../../../super-admin/infrastructure/entity/blog.schema';
+import { BlogDBModel } from './entity/blog-db.model';
+import { BlogSchema } from './entity/blog.schema';
 import { giveSkipNumber } from '../../../../helper.functions';
 import { LikesScheme } from '../../likes/infrastructure/entity/likes.scheme';
 import { IBlogsRepository } from './blogs-repository.interface';

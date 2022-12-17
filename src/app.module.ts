@@ -47,7 +47,6 @@ import { IPostsRepository } from './modules/public/posts/infrastructure/posts-re
 import { ISecurityRepository } from './modules/public/security/infrastructure/security-repository.interface';
 import { IBanInfo } from './modules/super-admin/infrastructure/ban-info/ban-info.interface';
 import { IEmailConfirmation } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.interface';
-import { ISaBlogsRepository } from './modules/super-admin/infrastructure/sa-blogs/sa-blogs-repository.interface';
 import { IUsersRepository } from './modules/super-admin/infrastructure/users/users-repository.interface';
 import { BloggerUsersController } from "./modules/blogger/api/blogger-users.controller";
 

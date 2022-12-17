@@ -5,7 +5,7 @@ import { toBlogViewModel } from '../../../data-mapper/to-blog-view.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
-import { BlogDBModel } from '../../super-admin/infrastructure/entity/blog-db.model';
+import { BlogDBModel } from '../../public/blogs/infrastructure/entity/blog-db.model';
 import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
 import { BanUserDto } from '../api/dto/ban-user.dto';
 import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.interface';
