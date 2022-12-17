@@ -1,15 +1,12 @@
 import { Controller, Delete, HttpCode, HttpStatus } from '@nestjs/common';
-import mongoose, { connection, Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
-import { Blog, BlogDocument } from "../public/blogs/infrastructure/entity/blog.schema";
+import mongoose  from "mongoose";
 
 @Controller('testing')
 export class TestingController {
-  constructor(@InjectModel(Blog.name) private blogsRepository: Model<BlogDocument>) {}
   @Delete('all-data')
   @HttpCode(204)
   async deleteAll() {
-    await this.blogsRepository.db.dropDatabase();
+    await mongoose.connection.db.dropDatabase();
     return HttpStatus.NO_CONTENT;
   }
 
