@@ -40,7 +40,7 @@ export class Post {
   @Prop({String, required: true})
   createdAt: string;
 
-  @Prop({Boolean, required: true})
+  @Prop({Boolean, default: false})
   isBanned: boolean;
 }
 

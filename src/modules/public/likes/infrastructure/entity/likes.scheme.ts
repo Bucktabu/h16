@@ -32,7 +32,7 @@ export class Like {
   @Prop( {String, required: true})
   login: string;
 
-  @Prop( {Boolean, required: true})
+  @Prop( {Boolean, default: false})
   isBanned: boolean;
 }
 

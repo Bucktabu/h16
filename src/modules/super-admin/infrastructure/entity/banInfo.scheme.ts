@@ -20,7 +20,7 @@ export class BanInfo {
   @Prop( {String, required: true})
   parentId: string;
 
-  @Prop( {Boolean, required: true})
+  @Prop( {Boolean, default: false})
   isBanned: boolean;
 
   @Prop( {Date})
