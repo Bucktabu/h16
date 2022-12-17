@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { giveSkipNumber } from '../../../../helper.functions';
-import { UserScheme } from '../entity/users.scheme';
+import { User, UserDocument, UserScheme } from "../entity/users.scheme";
 import { UserDBModel } from '../entity/userDB.model';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { IUsersRepository } from './users-repository.interface';
 import { BanStatusModel } from "../../../../global-model/ban-status.model";
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
+  constructor(@InjectModel(User.name) private usersRepository: Model<UserDocument>) {}
+
   async getUserByIdOrLoginOrEmail(
     IdOrLoginOrEmail: string,
   ): Promise<UserDBModel | null> {
-    return UserScheme.findOne(
+    return this.usersRepository.findOne(
       {
         $or: [
           { id: IdOrLoginOrEmail },
@@ -31,7 +35,7 @@ export class UsersRepository implements IUsersRepository {
       filter = { banStatus: false }
     }
 
-    return UserScheme.find({$and: [
+    return this.usersRepository.find({$and: [
         {filter},
         {$or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
@@ -48,7 +52,7 @@ export class UsersRepository implements IUsersRepository {
 
   async getLogin(id: string): Promise<string | null> {
     try {
-      const result = await UserScheme.findOne(
+      const result = await this.usersRepository.findOne(
         { id },
         {
           _id: false,
@@ -78,7 +82,7 @@ export class UsersRepository implements IUsersRepository {
       filter = { $and: [{ banStatus: false }, { banStatus: true }] }
     }
 
-    return UserScheme.countDocuments({$and: [
+    return this.usersRepository.countDocuments({$and: [
         {filter},
         {$or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
@@ -93,7 +97,7 @@ export class UsersRepository implements IUsersRepository {
 
   async createUser(newUser: UserDBModel): Promise<UserDBModel | null> {
     try {
-      await UserScheme.create(newUser);
+      await this.usersRepository.create(newUser);
       return newUser;
     } catch (e) {
       return null;
@@ -105,7 +109,7 @@ export class UsersRepository implements IUsersRepository {
     passwordSalt: string,
     passwordHash: string,
   ): Promise<boolean> {
-    const result = await UserScheme.updateOne(
+    const result = await this.usersRepository.updateOne(
       { id: userId },
       { $set: { passwordSalt, passwordHash } },
     );
@@ -114,7 +118,7 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async deleteUserById(userId: string): Promise<boolean> {
-    const result = await UserScheme.deleteOne({ id: userId });
+    const result = await this.usersRepository.deleteOne({ id: userId });
 
     return result.deletedCount === 1;
   }

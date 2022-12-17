@@ -1,19 +1,23 @@
 import { BanInfoModel } from '../entity/banInfo.model';
-import { BanInfoScheme } from '../entity/banInfo.scheme';
+import { BanInfo, BanInfoDocument } from "../entity/banInfo.scheme";
 import { Injectable } from '@nestjs/common';
 import { IBanInfo } from './ban-info.interface';
 import { BanUserDto } from '../../../blogger/api/dto/ban-user.dto';
 import { giveSkipNumber } from "../../../../helper.functions";
 import { QueryParametersDto } from "../../../../global-model/query-parameters.dto";
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class BanInfoRepository implements IBanInfo {
+  constructor(@InjectModel(BanInfo.name) private banInfoRepository: Model<BanInfoDocument>) {}
+
   async getBanInfo(parentId: string): Promise<BanInfoModel> {
-    return BanInfoScheme.findOne({ parentId }, { _id: false, id: false, __v: false });
+    return this.banInfoRepository.findOne({ parentId }, { _id: false, id: false, __v: false });
   }
 
   async getBannedUsers(blogId: string, query: QueryParametersDto): Promise<BanInfoModel[]> {
-    return BanInfoScheme.find({
+    return this.banInfoRepository.find({
       $and: [
         { blogId },
         { login: { $regex: query.searchLoginTerm, $options: 'i' } },
@@ -26,7 +30,7 @@ export class BanInfoRepository implements IBanInfo {
   }
 
   async getTotalCount(id: string): Promise<number> {
-    return BanInfoScheme.countDocuments({
+    return this.banInfoRepository.countDocuments({
       $and: [
         { $or: [ { parentId: id }, { blogId: id } ] },
         { isBanned: true }
@@ -35,7 +39,7 @@ export class BanInfoRepository implements IBanInfo {
 
   async createBanInfo(banInfo: BanInfoModel): Promise<BanInfoModel | null> {
     try {
-      await BanInfoScheme.create(banInfo);
+      await this.banInfoRepository.create(banInfo);
       return banInfo;
     } catch (e) {
       return null;
@@ -43,7 +47,7 @@ export class BanInfoRepository implements IBanInfo {
   }
 
   async checkBanStatus(userId: string, postId: string): Promise<boolean> {
-    const result = await BanInfoScheme.countDocuments({
+    const result = await this.banInfoRepository.countDocuments({
       $and: [ { parentId: userId }, { postId }, { isBanned: true } ]
     })
 
@@ -57,7 +61,7 @@ export class BanInfoRepository implements IBanInfo {
     banReason?: string,
   ): Promise<boolean> {
     try {
-      await BanInfoScheme.updateOne(
+      await this.banInfoRepository.updateOne(
         {parentId},
         { $set: { isBanned, banReason, banDate } },
         { upsert: true }
@@ -75,7 +79,7 @@ export class BanInfoRepository implements IBanInfo {
     userLogin: string
   ): Promise<boolean> {
     try {
-      await BanInfoScheme.updateOne(
+      await this.banInfoRepository.updateOne(
         {
           parentId,
           blogId: dto.blogId,
@@ -92,7 +96,7 @@ export class BanInfoRepository implements IBanInfo {
   }
 
   async deleteBanInfoById(parentId: string): Promise<boolean> {
-    const result = await BanInfoScheme.deleteOne({ parentId });
+    const result = await this.banInfoRepository.deleteOne({ parentId });
 
     return result.deletedCount === 1;
   }

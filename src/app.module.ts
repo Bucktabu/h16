@@ -58,6 +58,9 @@ import { Comment, CommentSchema } from "./modules/public/comments/infrastructure
 import { Post, PostSchema } from "./modules/public/posts/infrastructure/entity/posts.scheme";
 import { Like, LikeSchema } from "./modules/public/likes/infrastructure/entity/likes.scheme";
 import { Security, SecuritySchema } from "./modules/public/security/infrastructure/entity/security.scheme";
+import { BanInfo, BanInfoSchema } from "./modules/super-admin/infrastructure/entity/banInfo.scheme";
+import { User, UserScheme } from "./modules/super-admin/infrastructure/entity/users.scheme";
+import { UserDevice, UserDeviceSchema } from "./modules/public/security/infrastructure/entity/user-device.scheme";
 
 const controllers = [
   BloggerBlogsController,
@@ -108,12 +111,15 @@ const services = [
 ];
 
 const schemes = [
+  { name: BanInfo.name, schema: BanInfoSchema },
   { name: Blog.name, schema: BlogSchema },
   { name: Comment.name, schema: CommentSchema },
   { name: Like.name, schema: LikeSchema },
   { name: Post.name, schema: PostSchema },
   { name: Security.name, schema: SecuritySchema },
   { name: TokenBlackList.name, schema: TokenBlackListSchema },
+  { name: User.name, schema: UserScheme },
+  { name: UserDevice.name, schema: UserDeviceSchema }
 ];
 
 const validators = [BlogExistValidator, ConfirmationCodeValidator];
