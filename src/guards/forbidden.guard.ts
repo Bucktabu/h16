@@ -6,13 +6,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { IBloggerBlogRepository } from '../modules/blogger/infrastructure/blogs/blogger-blog-repository.interface';
+import { IBlogsRepository } from "../modules/public/blogs/infrastructure/blogs-repository.interface";
 
 @Injectable()
 export class ForbiddenGuard implements CanActivate {
   constructor(
-    @Inject(IBloggerBlogRepository)
-    protected blogsRepository: IBloggerBlogRepository,
+    @Inject(IBlogsRepository)
+    protected blogsRepository: IBlogsRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

@@ -5,7 +5,6 @@ import { PostViewModel } from '../../public/posts/api/dto/postsView.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Inject, Injectable } from '@nestjs/common';
 import { IBloggerBlogRepository } from '../infrastructure/blogs/blogger-blog-repository.interface';
-import { IBloggerPostRepository } from '../infrastructure/posts/blogger-post-repository.interface';
 import { QueryParametersDto } from "../../../global-model/query-parameters.dto";
 import { ContentPageModel } from "../../../global-model/contentPage.model";
 import { ICommentsRepository } from "../../public/comments/infrastructure/comments-repository.interface";
@@ -14,9 +13,8 @@ import { CommentBDModel } from "../../public/comments/infrastructure/entity/comm
 import { ILikesRepository } from "../../public/likes/infrastructure/likes-repository.interface";
 import { CommentWithAdditionalInfoModel } from "../api/dto/comment-with-additional-info.model";
 import { paginationContentPage } from "../../../helper.functions";
-import { LikesModel } from "../../public/likes/infrastructure/entity/likes.model";
-import { ReactionModel } from "../../../global-model/reaction.model";
 import { IPostsRepository } from "../../public/posts/infrastructure/posts-repository.interface";
+import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
 
 @Injectable()
 export class BloggerPostService {
@@ -25,8 +23,8 @@ export class BloggerPostService {
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
     @Inject(IPostsRepository)
     protected postsRepository: IPostsRepository,
-    @Inject(IBloggerBlogRepository)
-    protected blogsRepository: IBloggerBlogRepository,
+    @Inject(IBlogsRepository)
+    protected blogsRepository: IBlogsRepository,
     @Inject(ILikesRepository) protected likeRepository: ILikesRepository
   ) {}
 

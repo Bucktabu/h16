@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { BloggerBlogsController } from './modules/blogger/api/blogger-blogs.controller';
 import { BloggerPostService } from './modules/blogger/application/posts.service';
 import { BloggerBlogService } from './modules/blogger/application/blogs.service';
-import { BloggerBlogRepository } from './modules/blogger/infrastructure/blogs/blogs.repository';
 import { BanInfoRepository } from './modules/super-admin/infrastructure/ban-info/banInfo.repository';
 import { EmailConfirmationRepository } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.repository';
 import { SaBlogsController } from './modules/super-admin/api/sa-blogs.controller';
@@ -42,7 +41,6 @@ import { BlogExistValidator } from './validation/blog-exist.validator';
 import { ConfirmationCodeValidator } from './validation/confirmation-code.validator';
 import { CreateUserUseCase } from './modules/super-admin/use-cases/create-user.use-case';
 import { IBloggerBlogRepository } from './modules/blogger/infrastructure/blogs/blogger-blog-repository.interface';
-import { IBloggerPostRepository } from './modules/blogger/infrastructure/posts/blogger-post-repository.interface';
 import { IJwtRepository } from './modules/public/auth/infrastructure/jwt-repository.interface';
 import { IBlogsRepository } from './modules/public/blogs/infrastructure/blogs-repository.interface';
 import { ICommentsRepository } from './modules/public/comments/infrastructure/comments-repository.interface';
@@ -75,7 +73,6 @@ const pipes = [
 ];
 
 const repositories = [
-  { provide: IBloggerBlogRepository, useClass: BloggerBlogRepository },
   { provide: IBanInfo, useClass: BanInfoRepository },
   { provide: IBlogsRepository, useClass: BlogsRepository },
   { provide: ICommentsRepository, useClass: CommentsRepository },

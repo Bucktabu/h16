@@ -3,8 +3,8 @@ import { QueryParametersDto } from '../../../../global-model/query-parameters.dt
 import { BlogDBModel } from '../../../super-admin/infrastructure/entity/blog-db.model';
 
 export interface IBloggerBlogRepository {
-  getBlogs(userId: string, query: QueryParametersDto): Promise<BlogDBModel[]>;
-  getTotalCount(userId: string, searchNameTerm: string): Promise<number>;
+  bloggerGetBlogs(userId: string, query: QueryParametersDto): Promise<BlogDBModel[]>;
+  bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number>;
   getBlogById(id: string): Promise<BlogDBModel | null>;
   createBlog(newBlog: BlogDBModel): Promise<BlogDBModel | null>;
   updateBlog(blogId: string, inputModel: BlogDto): Promise<boolean>;

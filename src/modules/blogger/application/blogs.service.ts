@@ -7,19 +7,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { BlogDBModel } from '../../super-admin/infrastructure/entity/blog-db.model';
 import { BlogViewModel } from '../../public/blogs/api/dto/blogView.model';
-import { IBloggerBlogRepository } from '../infrastructure/blogs/blogger-blog-repository.interface';
 import { BanUserDto } from '../api/dto/ban-user.dto';
 import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.interface';
 import { BanInfoModel } from '../../super-admin/infrastructure/entity/banInfo.model';
 import { ViewBanInfoModel } from '../api/dto/view-ban-info.model';
 import { IUsersRepository } from '../../super-admin/infrastructure/users/users-repository.interface';
+import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
 
 @Injectable()
 export class BloggerBlogService {
   constructor(
     @Inject(IBanInfo) protected banInfoRepository: IBanInfo,
-    @Inject(IBloggerBlogRepository)
-    protected blogsRepository: IBloggerBlogRepository,
+    @Inject(IBlogsRepository)
+    protected blogsRepository: IBlogsRepository,
     @Inject(IUsersRepository) protected userRepository: IUsersRepository,
   ) {}
 
@@ -27,13 +27,13 @@ export class BloggerBlogService {
     userId: string,
     query: QueryParametersDto,
   ): Promise<ContentPageModel | null> {
-    const blogs = await this.blogsRepository.getBlogs(userId, query);
+    const blogs = await this.blogsRepository.bloggerGetBlogs(userId, query);
 
     if (!blogs) {
       return null;
     }
 
-    const totalCount = await this.blogsRepository.getTotalCount(
+    const totalCount = await this.blogsRepository.bloggerGetTotalCount(
       userId,
       query.searchNameTerm,
     );
