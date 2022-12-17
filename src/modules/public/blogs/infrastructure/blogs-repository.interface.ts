@@ -4,13 +4,13 @@ import { BlogDto } from "../../../blogger/api/dto/blog.dto";
 import { BindBlogDto } from "../../../super-admin/api/dto/bind-blog.dto";
 
 export interface IBlogsRepository {
-  getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]>;
-  getTotalCount(searchNameTerm: string): Promise<number>;
-  bloggerGetBlogs(
-    userId: string,
-    query: QueryParametersDto,
-  ): Promise<BlogDBModel[]>
-  bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number>;
+  getBlogs(query: QueryParametersDto, userId?: string): Promise<BlogDBModel[]>;
+  getTotalCount(searchNameTerm: string, userId?: string): Promise<number>;
+  // bloggerGetBlogs(
+  //   userId: string,
+  //   query: QueryParametersDto,
+  // ): Promise<BlogDBModel[]>
+  // bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number>;
   saGetBlogs(query: QueryParametersDto): Promise<BlogDBModel[]>;
   saGetTotalCount(banStatus: string, searchNameTerm: string): Promise<number>;
   getBlogById(id: string): Promise<BlogDBModel | null>;

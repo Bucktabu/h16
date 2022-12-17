@@ -24,7 +24,7 @@ export class EmailConfirmation {
   @Prop( {Date, required: true})
   expirationDate: Date;
 
-  @Prop( {Boolean, default: false})
+  @Prop( {Boolean, default: false}) // TODO ! for boolean need use default options not required!
   isConfirmed: boolean;
 }
 

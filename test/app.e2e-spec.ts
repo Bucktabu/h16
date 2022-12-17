@@ -26,9 +26,9 @@ describe('e2e tests', () => {
     await app.close();
   });
 
-  // beforeEach(async () => {
-  //   await request(app.getHttpServer()).delete('/testing/all-data');
-  // });
+  beforeEach(async () => {
+    await request(app.getHttpServer()).delete('/testing/all-data');
+  });
 
   it('Should return 400. So short input body and incorrect email', async () => {
     await registrationNewUser(

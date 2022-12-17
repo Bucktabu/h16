@@ -27,15 +27,15 @@ export class BloggerBlogService {
     userId: string,
     query: QueryParametersDto,
   ): Promise<ContentPageModel | null> {
-    const blogs = await this.blogsRepository.bloggerGetBlogs(userId, query);
+    const blogs = await this.blogsRepository.getBlogs(query, userId);
 
     if (!blogs) {
       return null;
     }
 
-    const totalCount = await this.blogsRepository.bloggerGetTotalCount(
-      userId,
+    const totalCount = await this.blogsRepository.getTotalCount(
       query.searchNameTerm,
+      userId
     );
 
     return paginationContentPage(

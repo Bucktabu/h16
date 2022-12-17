@@ -14,9 +14,10 @@ import { InjectModel } from "@nestjs/mongoose";
 export class BlogsRepository implements IBlogsRepository {
   constructor(@InjectModel(Blog.name) private blogsRepository: Model<BlogDocument>) {}
 
-  async getBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
+  async getBlogs(query: QueryParametersDto, userId?: string): Promise<BlogDBModel[]> {
     return this.blogsRepository.find({
       $and: [
+        { userId },
         { name: { $regex: query.searchNameTerm, $options: 'i' } },
         { isBanned: false }
       ]
@@ -28,43 +29,44 @@ export class BlogsRepository implements IBlogsRepository {
       .lean();
   }
 
-  async getTotalCount(searchNameTerm: string): Promise<number> {
+  async getTotalCount(searchNameTerm: string, userId?: string): Promise<number> {
     return this.blogsRepository.countDocuments({
       $and: [
+        { userId },
         { name: { $regex: searchNameTerm, $options: 'i' } },
         { isBanned: false }
       ]},
     );
   }
 
-  async bloggerGetBlogs(
-    userId: string,
-    query: QueryParametersDto,
-  ): Promise<BlogDBModel[]> {
-    return this.blogsRepository.find(
-      {
-        $and: [
-          { userId },
-          { name: { $regex: query.searchNameTerm, $options: 'i' } },
-          { isBanned: false },
-        ],
-      },
-      { _id: false, __v: false, userId: false, isBanned: false },
-    )
-      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
-      .skip(giveSkipNumber(query.pageNumber, query.pageSize))
-      .limit(query.pageSize)
-      .lean();
-  }
-
-  async bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number> {
-    return this.blogsRepository.countDocuments({
-      $and: [
-        { userId },
-        { name: { $regex: searchNameTerm, $options: 'i' } },
-        { isBanned: false }],
-    });
-  }
+  // async bloggerGetBlogs(
+  //   userId: string,
+  //   query: QueryParametersDto,
+  // ): Promise<BlogDBModel[]> {
+  //   return this.blogsRepository.find(
+  //     {
+  //       $and: [
+  //         { userId },
+  //         { name: { $regex: query.searchNameTerm, $options: 'i' } },
+  //         { isBanned: false },
+  //       ],
+  //     },
+  //     { _id: false, __v: false, userId: false, isBanned: false },
+  //   )
+  //     .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+  //     .skip(giveSkipNumber(query.pageNumber, query.pageSize))
+  //     .limit(query.pageSize)
+  //     .lean();
+  // }
+  //
+  // async bloggerGetTotalCount(userId: string, searchNameTerm: string): Promise<number> {
+  //   return this.blogsRepository.countDocuments({
+  //     $and: [
+  //       { userId },
+  //       { name: { $regex: searchNameTerm, $options: 'i' } },
+  //       { isBanned: false }],
+  //   });
+  // }
 
   async saGetBlogs(query: QueryParametersDto): Promise<BlogDBModel[]> {
     let filter = {}
