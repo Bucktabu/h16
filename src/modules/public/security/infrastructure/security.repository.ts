@@ -1,19 +1,21 @@
-import { Security, SecurityDocument } from "./entity/security.scheme";
+import { Security, SecurityDocument } from './entity/security.scheme';
 import { DeviceSecurityModel } from './entity/deviceSecurity.model';
 import { Injectable } from '@nestjs/common';
 import { ISecurityRepository } from './security-repository.interface';
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class SecurityRepository implements ISecurityRepository {
-  constructor(@InjectModel(Security.name) private securityRepository: Model<SecurityDocument>) {}
+  constructor(
+    @InjectModel(Security.name)
+    private securityRepository: Model<SecurityDocument>,
+  ) {}
 
   async getAllActiveSessions(userId: string): Promise<DeviceSecurityModel[]> {
-    return this.securityRepository.find(
-      { userId },
-      { projection: { _id: false } },
-    ).lean();
+    return this.securityRepository
+      .find({ userId }, { projection: { _id: false } })
+      .lean();
   }
 
   async getDeviseById(deviceId: string): Promise<DeviceSecurityModel | null> {

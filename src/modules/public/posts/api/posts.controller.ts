@@ -1,6 +1,7 @@
 import {
   Body,
-  Controller, ForbiddenException,
+  Controller,
+  ForbiddenException,
   Get,
   HttpCode,
   NotFoundException,
@@ -9,8 +10,8 @@ import {
   Put,
   Query,
   Req,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { CommentsService } from '../../comments/application/comments.service';
 import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
@@ -81,10 +82,10 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    const banStatus = await this.postsService.checkBanStatus(user.id, postId)
+    const banStatus = await this.postsService.checkBanStatus(user.id, postId);
 
     if (banStatus) {
-      throw new ForbiddenException()
+      throw new ForbiddenException();
     }
 
     return this.commentsService.createComment(postId, dto.content, user);

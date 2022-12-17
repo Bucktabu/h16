@@ -1,7 +1,10 @@
 import { Controller, Delete, HttpCode, HttpStatus } from '@nestjs/common';
-import mongoose, { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
-import { Blog, BlogDocument } from "../public/blogs/infrastructure/entity/blog.schema";
+import mongoose, { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  Blog,
+  BlogDocument,
+} from '../public/blogs/infrastructure/entity/blog.schema';
 
 @Controller('testing')
 export class TestingController {

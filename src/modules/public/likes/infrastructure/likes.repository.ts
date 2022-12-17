@@ -1,24 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { Like, LikeDocument } from "./entity/likes.scheme";
+import { Like, LikeDocument } from './entity/likes.scheme';
 import { NewestLikesModel } from './entity/newestLikes.model';
 import { LikesModel } from './entity/likes.model';
 import { ILikesRepository } from './likes-repository.interface';
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class LikesRepository implements ILikesRepository {
-  constructor(@InjectModel(Like.name) private likesRepository: Model<LikeDocument>) {}
+  constructor(
+    @InjectModel(Like.name) private likesRepository: Model<LikeDocument>,
+  ) {}
 
   async getUserReaction(
     parentId: string,
     userId: string,
   ): Promise<LikesModel | null> {
     try {
-      return this.likesRepository.findOne(
-        { parentId, userId, isBanned: false },
-        { _id: false, parentId: false, userId: false, __v: false },
-      ).lean();
+      return this.likesRepository
+        .findOne(
+          { parentId, userId, isBanned: false },
+          { _id: false, parentId: false, userId: false, __v: false },
+        )
+        .lean();
     } catch (e) {
       return null;
     }
@@ -26,10 +30,11 @@ export class LikesRepository implements ILikesRepository {
 
   async getNewestLikes(parentId: string): Promise<NewestLikesModel[] | null> {
     try {
-      return this.likesRepository.find(
-        { parentId, status: 'Like', isBanned: false },
-        { _id: false, parentId: false, status: false, __v: false },
-      )
+      return this.likesRepository
+        .find(
+          { parentId, status: 'Like', isBanned: false },
+          { _id: false, parentId: false, status: false, __v: false },
+        )
         .sort({ addedAt: -1 })
         .limit(3)
         .lean();

@@ -1,6 +1,6 @@
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { PostDBModel } from './entity/post-db.model';
-import { PostDto } from "../../../blogger/api/dto/post.dto";
+import { PostDto } from '../../../blogger/api/dto/post.dto';
 
 export interface IPostsRepository {
   getPosts(

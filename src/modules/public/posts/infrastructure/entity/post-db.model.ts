@@ -7,6 +7,6 @@ export class PostDBModel {
     public blogId: string,
     public blogName: string,
     public createdAt: string,
-    public isBanned: boolean
+    public isBanned: boolean,
   ) {}
 }

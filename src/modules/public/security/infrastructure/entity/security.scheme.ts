@@ -1,7 +1,7 @@
-import mongoose, { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument } from 'mongoose';
 import { DeviceSecurityModel } from './deviceSecurity.model';
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { UserDevice } from "./user-device.scheme";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { UserDevice } from './user-device.scheme';
 
 // const securityScheme = new mongoose.Schema<DeviceSecurityModel>({
 //   userId: { type: String, required: true },
@@ -17,15 +17,15 @@ import { UserDevice } from "./user-device.scheme";
 //
 // export const SecurityScheme = mongoose.model('security', securityScheme);
 
-export type SecurityDocument = HydratedDocument<Security>
+export type SecurityDocument = HydratedDocument<Security>;
 
 @Schema()
 export class Security {
-  @Prop({String, required: true})
+  @Prop({ String, required: true })
   userId: string;
 
-  @Prop({type: UserDevice})
+  @Prop({ type: UserDevice })
   userDevice: UserDevice;
 }
 
-export const SecuritySchema = SchemaFactory.createForClass(Security)
+export const SecuritySchema = SchemaFactory.createForClass(Security);

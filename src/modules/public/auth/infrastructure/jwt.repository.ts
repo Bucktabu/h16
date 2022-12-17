@@ -1,11 +1,16 @@
-import { TokenBlackList, TokenBlackListDocument } from "./entity/tokenBlackList.scheme";
+import {
+  TokenBlackList,
+  TokenBlackListDocument,
+} from './entity/tokenBlackList.scheme';
 import { IJwtRepository } from './jwt-repository.interface';
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 export class JwtRepository implements IJwtRepository {
-  constructor(@InjectModel(TokenBlackList.name) private jwtRepository: Model<TokenBlackListDocument>) {
-  }
+  constructor(
+    @InjectModel(TokenBlackList.name)
+    private jwtRepository: Model<TokenBlackListDocument>,
+  ) {}
 
   async giveToken(refreshToken: string): Promise<string> {
     return this.jwtRepository.findOne({ refreshToken });

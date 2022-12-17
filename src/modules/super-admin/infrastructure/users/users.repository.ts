@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { giveSkipNumber } from '../../../../helper.functions';
-import { User, UserDocument, UserScheme } from "../entity/users.scheme";
+import { User, UserDocument, UserScheme } from '../entity/users.scheme';
 import { UserDBModel } from '../entity/userDB.model';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { IUsersRepository } from './users-repository.interface';
-import { BanStatusModel } from "../../../../global-model/ban-status.model";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { BanStatusModel } from '../../../../global-model/ban-status.model';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
-  constructor(@InjectModel(User.name) private usersRepository: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private usersRepository: Model<UserDocument>,
+  ) {}
 
   async getUserByIdOrLoginOrEmail(
     IdOrLoginOrEmail: string,
@@ -28,21 +30,27 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async getUsers(query: QueryParametersDto): Promise<UserDBModel[]> {
-    let filter
+    let filter;
     if (query.banStatus === BanStatusModel.Banned) {
-      filter = { banStatus: true }
+      filter = { banStatus: true };
     } else if (query.banStatus === BanStatusModel.NotBanned) {
-      filter = { banStatus: false }
+      filter = { banStatus: false };
     }
 
-    return this.usersRepository.find({$and: [
-        {filter},
-        {$or: [
-            { login: { $regex: query.searchLoginTerm, $options: 'i' } },
-            { email: { $regex: query.searchEmailTerm, $options: 'i' } },
-          ]}
-      ]},
-      { _id: false, passwordHash: false, passwordSalt: false, __v: false }
+    return this.usersRepository
+      .find(
+        {
+          $and: [
+            { filter },
+            {
+              $or: [
+                { login: { $regex: query.searchLoginTerm, $options: 'i' } },
+                { email: { $regex: query.searchEmailTerm, $options: 'i' } },
+              ],
+            },
+          ],
+        },
+        { _id: false, passwordHash: false, passwordSalt: false, __v: false },
       )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
@@ -70,25 +78,27 @@ export class UsersRepository implements IUsersRepository {
     }
   }
 
-  async getTotalCount(
-    query: QueryParametersDto
-  ): Promise<number> {
-    let filter = {}
+  async getTotalCount(query: QueryParametersDto): Promise<number> {
+    let filter = {};
     if (query.banStatus === BanStatusModel.Banned) {
-      filter = { banStatus: true }
+      filter = { banStatus: true };
     } else if (query.banStatus === BanStatusModel.NotBanned) {
-      filter = { banStatus: false }
+      filter = { banStatus: false };
     } else {
-      filter = { $and: [{ banStatus: false }, { banStatus: true }] }
+      filter = { $and: [{ banStatus: false }, { banStatus: true }] };
     }
 
-    return this.usersRepository.countDocuments({$and: [
-        {filter},
-        {$or: [
+    return this.usersRepository.countDocuments({
+      $and: [
+        { filter },
+        {
+          $or: [
             { login: { $regex: query.searchLoginTerm, $options: 'i' } },
             { email: { $regex: query.searchEmailTerm, $options: 'i' } },
-          ]}
-      ]});
+          ],
+        },
+      ],
+    });
   }
 
   // async save(model) {

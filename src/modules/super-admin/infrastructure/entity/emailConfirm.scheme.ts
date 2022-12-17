@@ -8,24 +8,25 @@
 //   isConfirmed: { type: Boolean, required: true, default: false },
 // });
 
-import { HydratedDocument } from "mongoose";
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type EmailConfirmationDocument = HydratedDocument<EmailConfirmation>
+export type EmailConfirmationDocument = HydratedDocument<EmailConfirmation>;
 
 @Schema()
 export class EmailConfirmation {
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   id: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   confirmationCode: string;
 
-  @Prop( {Date, required: true})
+  @Prop({ Date, required: true })
   expirationDate: Date;
 
-  @Prop( {Boolean, default: false}) // TODO ! for boolean need use default options not required!
+  @Prop({ Boolean, default: false }) // TODO ! for boolean need use default options not required!
   isConfirmed: boolean;
 }
 
-export const EmailConfirmationSchema = SchemaFactory.createForClass(EmailConfirmation)
+export const EmailConfirmationSchema =
+  SchemaFactory.createForClass(EmailConfirmation);

@@ -10,9 +10,9 @@ import { EmailConfirmationRepository } from '../infrastructure/email-confirmatio
 import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { UsersRepository } from '../infrastructure/users/users.repository';
 import { SaBlogsService } from './sa-blogs-service';
-import { PostsRepository } from "../../public/posts/infrastructure/posts.repository";
-import { BanStatusModel } from "../../../global-model/ban-status.model";
-import { BlogsRepository } from "../../public/blogs/infrastructure/blogs.repository";
+import { PostsRepository } from '../../public/posts/infrastructure/posts.repository';
+import { BanStatusModel } from '../../../global-model/ban-status.model';
+import { BlogsRepository } from '../../public/blogs/infrastructure/blogs.repository';
 
 //jest.setTimeout(100000000)
 

@@ -1,29 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { Comment, CommentDocument } from "./entity/comments.scheme";
+import { Comment, CommentDocument } from './entity/comments.scheme';
 import { CommentBDModel } from './entity/commentDB.model';
 import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
 import { giveSkipNumber } from '../../../../helper.functions';
 import { ICommentsRepository } from './comments-repository.interface';
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CommentsRepository implements ICommentsRepository {
-  constructor(@InjectModel(Comment.name) private commentsRepository: Model<CommentDocument>) {}
+  constructor(
+    @InjectModel(Comment.name)
+    private commentsRepository: Model<CommentDocument>,
+  ) {}
 
   async getComments(
     query: QueryParametersDto,
     id: string,
   ): Promise<CommentBDModel[]> {
-    return this.commentsRepository.find({
-      $or: [
-        { postId: id },
-        { userId: id },
-        { bloggerId: id}
-      ]
-    },
-      { _id: false, __v: false },
-    )
+    return this.commentsRepository
+      .find(
+        {
+          $or: [{ postId: id }, { userId: id }, { bloggerId: id }],
+        },
+        { _id: false, __v: false },
+      )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
@@ -32,11 +33,7 @@ export class CommentsRepository implements ICommentsRepository {
 
   async getTotalCount(id: string): Promise<number> {
     return this.commentsRepository.countDocuments({
-      $or: [
-        { postId: id },
-        { userId: id },
-        { bloggerId: id}
-      ]
+      $or: [{ postId: id }, { userId: id }, { bloggerId: id }],
     });
   }
 

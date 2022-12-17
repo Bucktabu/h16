@@ -14,30 +14,30 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 //
 // export const BlogSchema = mongoose.model('blogs', blogScheme);
 
-export type BlogDocument = HydratedDocument<Blog>
+export type BlogDocument = HydratedDocument<Blog>;
 
 @Schema()
 export class Blog {
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   id: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   userId: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   name: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   websiteUrl: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   description: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   createdAt: string;
 
-  @Prop( {Boolean, default: false})
+  @Prop({ Boolean, default: false })
   isBanned: boolean;
 }
 
-export const BlogSchema = SchemaFactory.createForClass(Blog)
+export const BlogSchema = SchemaFactory.createForClass(Blog);

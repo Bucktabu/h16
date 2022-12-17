@@ -1,23 +1,23 @@
-import { LikesModel } from "../../../public/likes/infrastructure/entity/likes.model";
-import { ReactionModel } from "../../../../global-model/reaction.model";
+import { LikesModel } from '../../../public/likes/infrastructure/entity/likes.model';
+import { ReactionModel } from '../../../../global-model/reaction.model';
 
 export class CommentWithAdditionalInfoModel {
-  id: string
-  content: string
-  createdAt: string
+  id: string;
+  content: string;
+  createdAt: string;
   likesInfo: {
-    likesCount: number
-    dislikesCount: number
-    myStatus: string,
-  }
+    likesCount: number;
+    dislikesCount: number;
+    myStatus: string;
+  };
   commentatorInfo: {
-    userId: string
-    userLogin: string
-  }
+    userId: string;
+    userLogin: string;
+  };
   postInfo: {
-    id: string
-    title: string
-    blogId: string
-    blogName: string
-  }
+    id: string;
+    title: string;
+    blogId: string;
+    blogName: string;
+  };
 }

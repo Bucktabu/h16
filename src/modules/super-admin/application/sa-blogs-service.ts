@@ -6,9 +6,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BlogDBModel } from '../../public/blogs/infrastructure/entity/blog-db.model';
 import { BlogViewWithOwnerAndBanInfo } from '../api/dto/blog-view-with-owner-and-ban.info';
 import { IUsersRepository } from '../infrastructure/users/users-repository.interface';
-import { IBanInfo } from "../infrastructure/ban-info/ban-info.interface";
-import { IPostsRepository } from "../../public/posts/infrastructure/posts-repository.interface";
-import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
+import { IBanInfo } from '../infrastructure/ban-info/ban-info.interface';
+import { IPostsRepository } from '../../public/posts/infrastructure/posts-repository.interface';
+import { IBlogsRepository } from '../../public/blogs/infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class SaBlogsService {
@@ -43,11 +43,14 @@ export class SaBlogsService {
     return this.blogsRepository.bindBlog(params);
   }
 
-  async updateBlogBanStatus(blogId: string, isBanned: boolean): Promise<boolean> {
-    const banDate = new Date()
-    await this.postsRepository.updatePostsBanStatus(blogId, isBanned)
-    await this.banInfoRepository.saUpdateBanStatus(blogId, isBanned, banDate)
-    return this.blogsRepository.updateBlogBanStatus(blogId, isBanned)
+  async updateBlogBanStatus(
+    blogId: string,
+    isBanned: boolean,
+  ): Promise<boolean> {
+    const banDate = new Date();
+    await this.postsRepository.updatePostsBanStatus(blogId, isBanned);
+    await this.banInfoRepository.saUpdateBanStatus(blogId, isBanned, banDate);
+    return this.blogsRepository.updateBanStatus(blogId, isBanned);
   }
 
   private async addOwnerInfo(
@@ -63,14 +66,14 @@ export class SaBlogsService {
       userId = ownerInfo.id;
       userLogin = ownerInfo.login;
     }
-    
-    const banInfo = await this.banInfoRepository.getBanInfo(blog.id)
-    
-    let isBanned = false
-    let banDate = null
+
+    const banInfo = await this.banInfoRepository.getBanInfo(blog.id);
+
+    let isBanned = false;
+    let banDate = null;
     if (banInfo) {
-      isBanned = banInfo.isBanned
-      banDate = banInfo.banDate
+      isBanned = banInfo.isBanned;
+      banDate = banInfo.banDate;
     }
 
     return {
@@ -86,7 +89,7 @@ export class SaBlogsService {
       banInfo: {
         isBanned,
         banDate,
-      }
+      },
     };
   }
 }

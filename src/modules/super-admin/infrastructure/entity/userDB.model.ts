@@ -6,6 +6,6 @@ export class UserDBModel {
     public passwordSalt: string,
     public passwordHash: string,
     public createdAt: string,
-    public banStatus: boolean
+    public banStatus: boolean,
   ) {}
 }

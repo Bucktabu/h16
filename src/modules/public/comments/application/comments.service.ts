@@ -14,8 +14,8 @@ import { toCommentOutputBeforeCreate } from '../../../../data-mapper/to-comment-
 import { ICommentsRepository } from '../infrastructure/comments-repository.interface';
 import { ILikesRepository } from '../../likes/infrastructure/likes-repository.interface';
 import { IBanInfo } from '../../../super-admin/infrastructure/ban-info/ban-info.interface';
-import { IPostsRepository } from "../../posts/infrastructure/posts-repository.interface";
-import { IBlogsRepository } from "../../blogs/infrastructure/blogs-repository.interface";
+import { IPostsRepository } from '../../posts/infrastructure/posts-repository.interface';
+import { IBlogsRepository } from '../../blogs/infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class CommentsService {
@@ -28,7 +28,6 @@ export class CommentsService {
     protected commentsRepository: ICommentsRepository,
     @Inject(ILikesRepository) protected likesRepository: ILikesRepository,
     @Inject(IPostsRepository) protected postsRepository: IPostsRepository,
-
   ) {}
 
   async getComments(
@@ -82,8 +81,8 @@ export class CommentsService {
     user: UserDBModel,
   ): Promise<CommentViewModel | null> {
     const commentId = uuidv4();
-    const post = await this.postsRepository.getPostById(postId)
-    const blog = await this.blogsRepository.getBlogById(post.blogId)
+    const post = await this.postsRepository.getPostById(postId);
+    const blog = await this.blogsRepository.getBlogById(post.blogId);
 
     const newComment = new CommentBDModel(
       commentId,

@@ -2,18 +2,19 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode, NotFoundException,
+  HttpCode,
+  NotFoundException,
   Param,
   Put,
   Query,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { BloggerBlogService } from '../application/blogs.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
-import { ForbiddenGuard } from "../../../guards/forbidden.guard";
-import { readdir } from "fs/promises";
+import { ForbiddenGuard } from '../../../guards/forbidden.guard';
+import { readdir } from 'fs/promises';
 
 @UseGuards(AuthBearerGuard, ForbiddenGuard)
 @Controller('blogger/users')
@@ -28,10 +29,10 @@ export class BloggerUsersController {
     const result = await this.blogsService.getBannedUsers(blogId, query);
 
     if (!result) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return result
+    return result;
   }
 
   @UseGuards(ForbiddenGuard)
@@ -44,9 +45,9 @@ export class BloggerUsersController {
     const result = await this.blogsService.updateUserBanStatus(userId, dto);
 
     if (!result) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return result
+    return result;
   }
 }

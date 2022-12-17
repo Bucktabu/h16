@@ -1,9 +1,19 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { QueryParametersDto } from '../../../global-model/query-parameters.dto';
 import { SaBlogsService } from '../application/sa-blogs-service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BindBlogDto } from './dto/bind-blog.dto';
-import { BanBlogDto } from "./dto/ban-blog.dto";
+import { BanBlogDto } from './dto/ban-blog.dto';
 
 @UseGuards(AuthBasicGuard)
 @Controller('sa/blogs')
@@ -26,9 +36,7 @@ export class SaBlogsController {
 
   @Put(':id/ban')
   @HttpCode(204)
-  updateBlogStatus(
-    @Body() dto: BanBlogDto,
-    @Param('id') blogId: string) {
-    return this.saBlogsService.updateBlogBanStatus(blogId, dto.isBanned)
+  updateBlogStatus(@Body() dto: BanBlogDto, @Param('id') blogId: string) {
+    return this.saBlogsService.updateBlogBanStatus(blogId, dto.isBanned);
   }
 }

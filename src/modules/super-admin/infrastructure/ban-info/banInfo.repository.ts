@@ -1,28 +1,42 @@
 import { BanInfoModel } from '../entity/banInfo.model';
-import { BanInfo, BanInfoDocument } from "../entity/banInfo.scheme";
+import { BanInfo, BanInfoDocument } from '../entity/banInfo.scheme';
 import { Injectable } from '@nestjs/common';
 import { IBanInfo } from './ban-info.interface';
 import { BanUserDto } from '../../../blogger/api/dto/ban-user.dto';
-import { giveSkipNumber } from "../../../../helper.functions";
-import { QueryParametersDto } from "../../../../global-model/query-parameters.dto";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { giveSkipNumber } from '../../../../helper.functions';
+import { QueryParametersDto } from '../../../../global-model/query-parameters.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class BanInfoRepository implements IBanInfo {
-  constructor(@InjectModel(BanInfo.name) private banInfoRepository: Model<BanInfoDocument>) {}
+  constructor(
+    @InjectModel(BanInfo.name)
+    private banInfoRepository: Model<BanInfoDocument>,
+  ) {}
 
   async getBanInfo(parentId: string): Promise<BanInfoModel> {
-    return this.banInfoRepository.findOne({ parentId }, { _id: false, id: false, __v: false });
+    return this.banInfoRepository.findOne(
+      { parentId },
+      { _id: false, id: false, __v: false },
+    );
   }
 
-  async getBannedUsers(blogId: string, query: QueryParametersDto): Promise<BanInfoModel[]> {
-    return this.banInfoRepository.find({
-      $and: [
-        { blogId },
-        { login: { $regex: query.searchLoginTerm, $options: 'i' } },
-        { isBanned: true }
-      ]}, { _id: false, __v: false })
+  async getBannedUsers(
+    blogId: string,
+    query: QueryParametersDto,
+  ): Promise<BanInfoModel[]> {
+    return this.banInfoRepository
+      .find(
+        {
+          $and: [
+            { blogId },
+            { login: { $regex: query.searchLoginTerm, $options: 'i' } },
+            { isBanned: true },
+          ],
+        },
+        { _id: false, __v: false },
+      )
       .sort({ userLogin: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
@@ -31,10 +45,8 @@ export class BanInfoRepository implements IBanInfo {
 
   async getTotalCount(id: string): Promise<number> {
     return this.banInfoRepository.countDocuments({
-      $and: [
-        { $or: [ { parentId: id }, { blogId: id } ] },
-        { isBanned: true }
-      ] });
+      $and: [{ $or: [{ parentId: id }, { blogId: id }] }, { isBanned: true }],
+    });
   }
 
   async createBanInfo(banInfo: BanInfoModel): Promise<BanInfoModel | null> {
@@ -48,10 +60,10 @@ export class BanInfoRepository implements IBanInfo {
 
   async checkBanStatus(userId: string, postId: string): Promise<boolean> {
     const result = await this.banInfoRepository.countDocuments({
-      $and: [ { parentId: userId }, { postId }, { isBanned: true } ]
-    })
+      $and: [{ parentId: userId }, { postId }, { isBanned: true }],
+    });
 
-    return result > 0
+    return result > 0;
   }
 
   async saUpdateBanStatus(
@@ -62,13 +74,13 @@ export class BanInfoRepository implements IBanInfo {
   ): Promise<boolean> {
     try {
       await this.banInfoRepository.updateOne(
-        {parentId},
+        { parentId },
         { $set: { isBanned, banReason, banDate } },
-        { upsert: true }
-      )
-      return true
+        { upsert: true },
+      );
+      return true;
     } catch (e) {
-      return false
+      return false;
     }
   }
 
@@ -76,7 +88,7 @@ export class BanInfoRepository implements IBanInfo {
     parentId: string,
     dto: BanUserDto,
     banDate: Date,
-    userLogin: string
+    userLogin: string,
   ): Promise<boolean> {
     try {
       await this.banInfoRepository.updateOne(
@@ -85,7 +97,12 @@ export class BanInfoRepository implements IBanInfo {
           blogId: dto.blogId,
         },
         {
-          $set: { isBanned: dto.isBanned, banReason: dto.banReason, banDate, userLogin },
+          $set: {
+            isBanned: dto.isBanned,
+            banReason: dto.banReason,
+            banDate,
+            userLogin,
+          },
         },
         { upsert: true },
       );

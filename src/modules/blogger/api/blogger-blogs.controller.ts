@@ -37,7 +37,7 @@ export class BloggerBlogsController {
 
   @Get('comments')
   getComments(@Query() query: QueryParametersDto, @User() user: UserDBModel) {
-    return this.postsService.getComments(user.id, query)
+    return this.postsService.getComments(user.id, query);
   }
 
   @Post()

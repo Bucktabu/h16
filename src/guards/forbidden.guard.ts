@@ -6,7 +6,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { IBlogsRepository } from "../modules/public/blogs/infrastructure/blogs-repository.interface";
+import { IBlogsRepository } from '../modules/public/blogs/infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class ForbiddenGuard implements CanActivate {
@@ -18,11 +18,11 @@ export class ForbiddenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    let blogId = req.params.id
+    let blogId = req.params.id;
     if (req.body.blogId) {
-      blogId = req.body.blogId
+      blogId = req.body.blogId;
     } else if (req.params.blogId) {
-      blogId = req.params.blogId
+      blogId = req.params.blogId;
     }
 
     const blog = await this.blogsRepository.getBlogById(blogId);

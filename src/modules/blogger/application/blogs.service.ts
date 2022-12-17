@@ -12,7 +12,7 @@ import { IBanInfo } from '../../super-admin/infrastructure/ban-info/ban-info.int
 import { BanInfoModel } from '../../super-admin/infrastructure/entity/banInfo.model';
 import { ViewBanInfoModel } from '../api/dto/view-ban-info.model';
 import { IUsersRepository } from '../../super-admin/infrastructure/users/users-repository.interface';
-import { IBlogsRepository } from "../../public/blogs/infrastructure/blogs-repository.interface";
+import { IBlogsRepository } from '../../public/blogs/infrastructure/blogs-repository.interface';
 
 @Injectable()
 export class BloggerBlogService {
@@ -35,7 +35,7 @@ export class BloggerBlogService {
 
     const totalCount = await this.blogsRepository.getTotalCount(
       query.searchNameTerm,
-      userId
+      userId,
     );
 
     return paginationContentPage(
@@ -53,12 +53,15 @@ export class BloggerBlogService {
     const banInfo = await this.banInfoRepository.getBannedUsers(blogId, query);
 
     if (!banInfo) {
-      return null
+      return null;
     }
 
-    const totalCount = await this.banInfoRepository.getTotalCount(blogId, query);
+    const totalCount = await this.banInfoRepository.getTotalCount(
+      blogId,
+      query,
+    );
     const viewBanInfo = await Promise.all(
-      banInfo.map(async (b) => await this.viewBanInfo(b))
+      banInfo.map(async (b) => await this.viewBanInfo(b)),
     );
 
     return paginationContentPage(
@@ -96,19 +99,22 @@ export class BloggerBlogService {
     return await this.blogsRepository.updateBlog(blogId, inputModel);
   }
 
-  async updateUserBanStatus(userId: string, dto: BanUserDto): Promise<boolean | null> {
+  async updateUserBanStatus(
+    userId: string,
+    dto: BanUserDto,
+  ): Promise<boolean | null> {
     const banDate = new Date();
-    const user = await this.userRepository.getUserByIdOrLoginOrEmail(userId)
+    const user = await this.userRepository.getUserByIdOrLoginOrEmail(userId);
 
     if (!user) {
-      return null
+      return null;
     }
 
     return await this.banInfoRepository.bloggerUpdateBanStatus(
       userId,
       dto,
       banDate,
-      user.login
+      user.login,
     );
   }
 

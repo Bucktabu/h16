@@ -48,23 +48,47 @@ import { ISecurityRepository } from './modules/public/security/infrastructure/se
 import { IBanInfo } from './modules/super-admin/infrastructure/ban-info/ban-info.interface';
 import { IEmailConfirmation } from './modules/super-admin/infrastructure/email-confirmation/email-confirmation.interface';
 import { IUsersRepository } from './modules/super-admin/infrastructure/users/users-repository.interface';
-import { BloggerUsersController } from "./modules/blogger/api/blogger-users.controller";
+import { BloggerUsersController } from './modules/blogger/api/blogger-users.controller';
 import {
   TokenBlackList,
-  TokenBlackListSchema
-} from "./modules/public/auth/infrastructure/entity/tokenBlackList.scheme";
-import { Blog, BlogSchema } from "./modules/public/blogs/infrastructure/entity/blog.schema";
-import { Comment, CommentSchema } from "./modules/public/comments/infrastructure/entity/comments.scheme";
-import { Post, PostSchema } from "./modules/public/posts/infrastructure/entity/posts.scheme";
-import { Like, LikeSchema } from "./modules/public/likes/infrastructure/entity/likes.scheme";
-import { Security, SecuritySchema } from "./modules/public/security/infrastructure/entity/security.scheme";
-import { BanInfo, BanInfoSchema } from "./modules/super-admin/infrastructure/entity/banInfo.scheme";
-import { User, UserScheme } from "./modules/super-admin/infrastructure/entity/users.scheme";
-import { UserDevice, UserDeviceSchema } from "./modules/public/security/infrastructure/entity/user-device.scheme";
+  TokenBlackListSchema,
+} from './modules/public/auth/infrastructure/entity/tokenBlackList.scheme';
+import {
+  Blog,
+  BlogSchema,
+} from './modules/public/blogs/infrastructure/entity/blog.schema';
+import {
+  Comment,
+  CommentSchema,
+} from './modules/public/comments/infrastructure/entity/comments.scheme';
+import {
+  Post,
+  PostSchema,
+} from './modules/public/posts/infrastructure/entity/posts.scheme';
+import {
+  Like,
+  LikeSchema,
+} from './modules/public/likes/infrastructure/entity/likes.scheme';
+import {
+  Security,
+  SecuritySchema,
+} from './modules/public/security/infrastructure/entity/security.scheme';
+import {
+  BanInfo,
+  BanInfoSchema,
+} from './modules/super-admin/infrastructure/entity/banInfo.scheme';
+import {
+  User,
+  UserScheme,
+} from './modules/super-admin/infrastructure/entity/users.scheme';
+import {
+  UserDevice,
+  UserDeviceSchema,
+} from './modules/public/security/infrastructure/entity/user-device.scheme';
 import {
   EmailConfirmation,
-  EmailConfirmationSchema
-} from "./modules/super-admin/infrastructure/entity/emailConfirm.scheme";
+  EmailConfirmationSchema,
+} from './modules/super-admin/infrastructure/entity/emailConfirm.scheme';
 
 const controllers = [
   BloggerBlogsController,
@@ -124,7 +148,7 @@ const schemes = [
   { name: Security.name, schema: SecuritySchema },
   { name: TokenBlackList.name, schema: TokenBlackListSchema },
   { name: User.name, schema: UserScheme },
-  { name: UserDevice.name, schema: UserDeviceSchema }
+  { name: UserDevice.name, schema: UserDeviceSchema },
 ];
 
 const validators = [BlogExistValidator, ConfirmationCodeValidator];
@@ -135,7 +159,7 @@ const useCases = [CreateUserUseCase];
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    MongooseModule.forFeature(schemes)
+    MongooseModule.forFeature(schemes),
     //ThrottlerModule.forRoot({ ttl: 10, limit: 5 }),
   ],
   controllers: [...controllers],

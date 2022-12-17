@@ -1,5 +1,5 @@
 import { ExecutionContext, Inject, PipeTransform } from '@nestjs/common';
-import { IBlogsRepository } from "../modules/public/blogs/infrastructure/blogs-repository.interface";
+import { IBlogsRepository } from '../modules/public/blogs/infrastructure/blogs-repository.interface';
 
 export class NotOwnedBlogValidation implements PipeTransform {
   constructor(

@@ -8,7 +8,7 @@ import { paginationContentPage } from '../../../../helper.functions';
 import { PostDBModel } from '../infrastructure/entity/post-db.model';
 import { IPostsRepository } from '../infrastructure/posts-repository.interface';
 import { IUsersRepository } from '../../../super-admin/infrastructure/users/users-repository.interface';
-import { IBanInfo } from "../../../super-admin/infrastructure/ban-info/ban-info.interface";
+import { IBanInfo } from '../../../super-admin/infrastructure/ban-info/ban-info.interface';
 
 @Injectable()
 export class PostsService {
@@ -60,11 +60,8 @@ export class PostsService {
     return await this.addLikesInfoForPost(post, userId);
   }
 
-  async checkBanStatus(
-    userId: string,
-    postId: string,
-  ): Promise<boolean> {
-    return await this.banInfoRepository.checkBanStatus(userId, postId)
+  async checkBanStatus(userId: string, postId: string): Promise<boolean> {
+    return await this.banInfoRepository.checkBanStatus(userId, postId);
   }
 
   async updateLikesInfo(

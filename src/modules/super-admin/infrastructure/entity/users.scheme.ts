@@ -1,7 +1,7 @@
-import mongoose, { HydratedDocument, Model } from "mongoose";
+import mongoose, { HydratedDocument, Model } from 'mongoose';
 import { UserDBModel } from './userDB.model';
 import { UserDTO } from '../../api/dto/userDTO';
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 // const usersScheme = new mongoose.Schema<UserDBModel /*, UserModelStaticType*/>({
 //   id: { type: String, required: true },
@@ -18,30 +18,30 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 //   usersScheme,
 // );
 
-export type UserDocument = HydratedDocument<User>
+export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   id: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   login: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   email: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   passwordHash: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   passwordSalt: string;
 
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   createdAt: string;
 
-  @Prop( {Boolean, default: false})
+  @Prop({ Boolean, default: false })
   banStatus: boolean;
 }
 
-export const UserScheme = SchemaFactory.createForClass(User)
+export const UserScheme = SchemaFactory.createForClass(User);

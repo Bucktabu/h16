@@ -1,6 +1,6 @@
-import mongoose, { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument } from 'mongoose';
 import { BanInfoModel } from './banInfo.model';
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 // const banInfoScheme = new mongoose.Schema<BanInfoModel>({
 //   parentId: { type: String, required: true },
@@ -13,27 +13,27 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 //
 // export const BanInfoScheme = mongoose.model('banInfo', banInfoScheme);
 
-export type BanInfoDocument = HydratedDocument<BanInfo>
+export type BanInfoDocument = HydratedDocument<BanInfo>;
 
 @Schema()
 export class BanInfo {
-  @Prop( {String, required: true})
+  @Prop({ String, required: true })
   parentId: string;
 
-  @Prop( {Boolean, default: false})
+  @Prop({ Boolean, default: false })
   isBanned: boolean;
 
-  @Prop( {Date})
+  @Prop({ Date })
   banDate: Date;
 
-  @Prop( {String})
+  @Prop({ String })
   banReason: string;
 
-  @Prop( {String})
+  @Prop({ String })
   blogId: string;
 
-  @Prop( {String})
+  @Prop({ String })
   userLogin: string;
 }
 
-export const BanInfoSchema = SchemaFactory.createForClass(BanInfo)
+export const BanInfoSchema = SchemaFactory.createForClass(BanInfo);

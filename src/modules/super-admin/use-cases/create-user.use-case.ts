@@ -36,7 +36,7 @@ export class CreateUserUseCase {
       hash.passwordSalt,
       hash.passwordHash,
       new Date().toISOString(),
-      false
+      false,
     );
 
     const emailConfirmation = new EmailConfirmationModel(
@@ -46,7 +46,14 @@ export class CreateUserUseCase {
       false,
     );
 
-    const banInfo = new BanInfoModel(userAccountId, false, null, null, null, dto.login);
+    const banInfo = new BanInfoModel(
+      userAccountId,
+      false,
+      null,
+      null,
+      null,
+      dto.login,
+    );
 
     const userAccount = new UserAccountModel(
       accountData,
